@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	  tal:define="lang request.locale_name"
+	  lang="${lang}" xml:lang="${lang}"
+	  i18n:domain="pyams_security">
+<head>
+	<title i18n:translate=""><span tal:replace="settings.subject_prefix" i18n:name="header"></span> Registration notice</title>
+	<meta charset="utf-8">
+</head>
+<body>
+	${structure:message}
+	<p i18n:translate="">The login what was given to your account is: <tal:var content="user.login" i18n:name="login" />.</p>
+	<p><span i18n:translate="">To confirm your registration, please click on the following link and re-enter your login credentials:</span><br />
+		<a tal:define="url tales:absolute_url(site);
+					   href string:${url}/@@user-confirmation.html?hash=${user.activation_hash};"
+		   href="${href}">${href}></a>
+	</p>
+	<p i18n:translate="">If you don't want to confirm this registration, please just ignore this message and your registration information
+						 will be deleted within 30 days.</p>
+	<p i18n:translate="">Thank you for using our services.</p>
+	<div>${structure:tales:html(settings.signature)}</div>
+</body>
+</html>

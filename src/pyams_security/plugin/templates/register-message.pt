@@ -1,0 +1,6 @@
+<i18n:var domain="pyams_security">
+	<p i18n:translate="">Hello,</p>
+	<p i18n:translate=""><tal:var content="settings.service_name" i18n:name="service_name" /> is a service provided by
+		<tal:var content="settings.service_owner" i18n:name="service_owner" />.</p>
+	<p i18n:translate="">You have registered a new account that you may confirm before being able to use the service.</p>
+</i18n:var>
