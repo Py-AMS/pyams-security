@@ -45,10 +45,10 @@ LOGGER = logging.getLogger('PyAMS (security)')
 class SecurityManager(Folder):
     """Security manager utility"""
 
-    enable_social_login = FieldProperty(ISecurityManager['enable_social_login'])
-    social_users_folder = FieldProperty(ISecurityManager['social_users_folder'])
+    enable_oauth_login = FieldProperty(ISecurityManager['enable_oauth_login'])
+    oauth_users_folder = FieldProperty(ISecurityManager['oauth_users_folder'])
     authomatic_secret = FieldProperty(ISecurityManager['authomatic_secret'])
-    social_login_use_popup = FieldProperty(ISecurityManager['social_login_use_popup'])
+    oauth_login_use_popup = FieldProperty(ISecurityManager['oauth_login_use_popup'])
     open_registration = FieldProperty(ISecurityManager['open_registration'])
     users_folder = FieldProperty(ISecurityManager['users_folder'])
 
@@ -313,5 +313,4 @@ def get_principal(request, principal_id=None):
             principal_id = request.authenticated_userid
         if principal_id:
             return manager.get_principal(principal_id)
-        else:
-            return UnknownPrincipal
+        return UnknownPrincipal

@@ -480,6 +480,83 @@ which will be the request context is none is provided:
     'users:user1'
 
 
+Using OAuth authentication
+--------------------------
+
+You can activate OAuth authentication by using the Authomatic package, which provides support
+for OAuth1 and OAuth2 protocols.
+
+There are several steps required to activate this: you must first register your site or application
+on at least one OAuth authentication provider, which will give you a public and a private tokens;
+then, register these provider settings into the security manager, and create a "OAuth users
+folder", which will be used to store properties of principals which have been authenticated with
+an OAuth provider; and finally, activate these settings into the security manager:
+
+    >>> from pyams_security.plugin.oauth import OAuthLoginProviderConnection
+    >>> github_provider = OAuthLoginProviderConnection()
+    >>> github_provider.provider_name = 'github'
+    >>> github_provider.provider_id = 1
+    >>> github_provider.consumer_key = 'this-is-my-consumer-key'
+    >>> github_provider.consumer_secret = 'this-is-my-consumer-secret'
+
+    >>> from pyams_utils.factory import register_factory
+    >>> from pyams_security.interfaces import IOAuthLoginConfiguration
+    >>> from pyams_security.plugin.oauth import OAuthLoginConfiguration
+    >>> register_factory(IOAuthLoginConfiguration, OAuthLoginConfiguration)
+    >>> login_configuration = IOAuthLoginConfiguration(sm)
+    >>> login_configuration['github'] = github_provider
+
+    >>> from pyams_security.plugin.oauth import OAuthUsersFolder
+    >>> oauth_folder = OAuthUsersFolder()
+    >>> oauth_folder.prefix = 'oauth'
+    >>> oauth_folder.title = 'OAuth principals'
+    >>> sm['oauth'] = oauth_folder
+
+    >>> sm.oauth_users_folder = oauth_folder.__name__
+    >>> sm.enable_oauth_login = True
+
+When everything is enabled, we can accept authentication by using an external OAuth provider.
+
+    >>> from pyams_security.skin.oauth import login
+    >>> login_request = DummyRequest(path='/login/oauth/github', referer='/',
+    ...                              matchdict={'provider_name': 'github'})
+    >>> login_result = login(login_request)
+    >>> login_result
+    <Response at 0x... 302 Found>
+    >>> login_result.location
+    'https://github.com/login/oauth/authorize...client_id=this-is-my-consumer-key...'
+    >>> login_result.headers.get('Set-Cookie')
+    'authomatic=...; Domain=example.com; Path=; HttpOnly'
+
+So the login request first returns a redirect response to OAuth provider URL; after correct
+authentication, a new OAuth principal is created into OAuth users folder; this new principal
+will be usable as any local user, to affect roles for example.
+
+
+Missing and unknown principals
+------------------------------
+
+There are two custom principals which are the "Unknown principal" and the "Missing principal": the
+first one is used by security manager when provided principal ID is none; the second one is used
+when provided principal ID is doesn't matching any active principal:
+
+    >>> unknown = sm.get_principal(None)
+    >>> unknown
+    <...UnknownPrincipal object at 0x...>
+    >>> unknown.id
+    '__none__'
+    >>> unknown.title
+    '< unknown principal >'
+
+    >>> missing = sm.get_principal('Missing ID')
+    >>> missing
+    <...MissingPrincipal object at 0x...>
+    >>> missing.id
+    'Missing ID'
+    >>> missing.title
+    'MissingPrincipal: Missing ID'
+
+
 Principals groups
 -----------------
 
@@ -551,6 +628,18 @@ And we can have groups of groups:
     >>> handle_added_principals(PrincipalsAddedToGroupEvent(super_group, super_group.principals))
     >>> sorted(groups_folder.get_all_principals(user1_id))
     ['groups:group1', 'groups:super_group']
+
+
+Principals searching view
+-------------------------
+
+A small AJAX view is provided to find principals; this view is typically used by input widgets
+used to select principals, and returns results as JSON:
+
+    >>> from pyams_security.skin import find_principals
+    >>> search_request = DummyRequest(params={'query': 'john'})
+    >>> pprint.pprint(find_principals(search_request))
+    [{'id': 'users:user1', 'text': 'John Doe <user@example.com>'}]
 
 
 PyAMS authentication policy
@@ -806,4 +895,9 @@ Let's finish by revoking role and verifying that all edit permission is not deni
     <ACLDenied instance at ... with msg "ACLDenied permission 'edit' via ACE '<default deny>' in ACL [...] on context <...MyContext object at 0x...> for principals {...}">
 
 
+Tests cleanup:
+
+    >>> from pyams_utils.registry import set_local_registry
+    >>> set_local_registry(None)
+    >>> manager.clear()
     >>> tearDown()

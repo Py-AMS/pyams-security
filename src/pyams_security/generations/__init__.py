@@ -30,6 +30,30 @@ from pyams_utils.registry import get_current_registry, utility_config
 __docformat__ = 'restructuredtext'
 
 
+RENAMED_CLASSES = {
+    'pyams_security.interfaces ISocialUsersFolderPlugin':
+        'pyams_security.interfaces IOAuthUsersFolderPlugin',
+    'pyams_security.interfaces ISocialUser':
+        'pyams_security.interfaces IOAuthUser',
+    'pyams_security.interfaces ISocialLoginProviderInfo':
+        'pyams_security.interfaces IOAuthLoginProviderInfo',
+    'pyams_security.interfaces ISocialLoginConfiguration':
+        'pyams_security.interfaces IOAuthLoginConfiguration',
+    'pyams_security.interfaces ISocialLoginProviderConnection':
+        'pyams_security.interfaces IOAuthLoginProviderConnection',
+    'pyams_security.plugin.social SocialUser':
+        'pyams_security.plugin.oauth OAuthUser',
+    'pyams_security.plugin.social SocialUsersFolder':
+        'pyams_security.plugin.oauth OAuthUsersFolder',
+    'pyams_security.plugin.social SocialLoginProviderInfo':
+        'pyams_security.plugin.social OAuthLoginProviderInfo',
+    'pyams_security.plugin.social SocialLoginConfiguration':
+        'pyams_security.plugin.oauth OAuthLoginConfiguration',
+    'pyams_security.plugin.social SocialLoginProviderConnection':
+        'pyams_security.plugin.oauth OAuthLoginProviderConnection'
+}
+
+
 REQUIRED_UTILITIES = (
     (ISecurityManager, '', SecurityManager, 'Security manager'),
     (IPrincipalAnnotationUtility, '', PrincipalAnnotationUtility, 'User profiles')

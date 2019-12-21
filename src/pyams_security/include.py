@@ -52,4 +52,8 @@ def include_package(config):
     config.add_subscriber_predicate('role_selector', RoleSelector)
     config.add_subscriber_predicate('plugin_selector', PluginSelector)
 
+    # add login route
+    config.add_route('oauth_login', '/login/oauth/{provider_name}')
+    config.add_route('jwt_login', '/login/jwt')
+
     config.scan()

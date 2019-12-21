@@ -26,7 +26,8 @@ from zope.location.interfaces import IContained
 from zope.schema import Bool, Choice, Datetime, Dict, Int, List, Set, Text, TextLine, Tuple
 
 from pyams_security.interfaces.names import OAUTH_PROVIDERS_VOCABULARY_NAME, \
-    PASSWORD_MANAGERS_VOCABULARY_NAME, SOCIAL_USERS_FOLDERS_VOCABULARY_NAME
+    PASSWORD_MANAGERS_VOCABULARY_NAME, OAUTH_USERS_FOLDERS_VOCABULARY_NAME, \
+    USERS_FOLDERS_VOCABULARY_NAME
 from pyams_security.schema import PermissionsSetField, PrincipalsSetField
 from pyams_utils.schema import EncodedPasswordField
 
@@ -242,19 +243,19 @@ class IGroupsAwareDirectoryPlugin(Interface):
 
 
 #
-# Social users interfaces
+# OAuth users interfaces
 #
 
-class ISocialUsersFolderPlugin(IDirectorySearchPlugin):
-    """Social users folder interface"""
+class IOAuthUsersFolderPlugin(IDirectorySearchPlugin):
+    """OAuth users folder interface"""
 
-    contains('pyams_security.interfaces.ISocialUser')
+    contains('pyams_security.interfaces.IOAuthUser')
 
 
-class ISocialUser(IAttributeAnnotatable):
-    """Social user interface"""
+class IOAuthUser(IAttributeAnnotatable):
+    """OAuth user interface"""
 
-    containers(ISocialUsersFolderPlugin)
+    containers(IOAuthUsersFolderPlugin)
 
     user_id = TextLine(title=_("Internal provider ID"))
 
@@ -575,21 +576,22 @@ class ISecurityManager(IContainer, IDirectoryPluginInfo, IAttributeAnnotatable):
 
     contains(IPlugin)
 
-    enable_social_login = Bool(title=_("Enable social login?"),
-                               description=_("Enable login via social OAuth plug-ins"),
-                               required=False,
-                               default=False)
+    enable_oauth_login = Bool(title=_("Enable OAuth login?"),
+                              description=_("Enable login via OAuth authentication providers"),
+                              required=False,
+                              default=False)
 
-    social_users_folder = Choice(title=_("Social users folder"),
-                                 description=_("Name of folder used to store social users "
-                                               "properties"),
-                                 required=False,
-                                 vocabulary=SOCIAL_USERS_FOLDERS_VOCABULARY_NAME)
+    oauth_users_folder = Choice(title=_("OAuth users folder"),
+                                description=_("Name of folder used to store properties of users "
+                                              "authenticated with OAuth"),
+                                required=False,
+                                vocabulary=OAUTH_USERS_FOLDERS_VOCABULARY_NAME)
 
     @invariant
-    def check_social_users_folder(self):
-        if self.enable_social_login and not self.social_users_folder:
-            raise Invalid(_("You can't activate social login without selecting a social users "
+    def check_oauth_users_folder(self):
+        """Check for OAuth configuration"""
+        if self.enable_oauth_login and not self.oauth_users_folder:
+            raise Invalid(_("You can't activate OAuth login without selecting an OAuth users "
                             "folder"))
 
     authomatic_secret = TextLine(title=_("Authomatic secret"),
@@ -598,9 +600,9 @@ class ISecurityManager(IContainer, IDirectoryPluginInfo, IAttributeAnnotatable):
                                  default='this is not a secret',
                                  required=True)
 
-    social_login_use_popup = Bool(title=_("Use social popup?"),
-                                  required=True,
-                                  default=False)
+    oauth_login_use_popup = Bool(title=_("Use OAuth popup?"),
+                                 required=True,
+                                 default=False)
 
     open_registration = Bool(title=_("Enable free registration?"),
                              description=_("If 'Yes', any use will be able to create a new user "
@@ -611,7 +613,7 @@ class ISecurityManager(IContainer, IDirectoryPluginInfo, IAttributeAnnotatable):
     users_folder = Choice(title=_("Users folder"),
                           description=_("Name of users folder used to store registered principals"),
                           required=False,
-                          vocabulary='PyAMS users folders')
+                          vocabulary=USERS_FOLDERS_VOCABULARY_NAME)
 
     @invariant
     def check_users_folder(self):
@@ -667,16 +669,12 @@ class ISecurityManager(IContainer, IDirectoryPluginInfo, IAttributeAnnotatable):
 LOGIN_REFERER_KEY = 'pyams_security.login.referer'
 
 
-class ILoginView(Interface):
-    """Login view marker interface"""
-
-
 #
-# Social login providers configuration
+# OAuth login providers configuration
 #
 
-class ISocialLoginProviderInfo(Interface):
-    """Social login provider info
+class IOAuthLoginProviderInfo(Interface):
+    """OAuth login provider info
 
     This interface is used to adapt providers to
     get minimum information like icon class, URLs
@@ -698,19 +696,19 @@ class ISocialLoginProviderInfo(Interface):
                  value_type=TextLine())
 
 
-class ISocialLoginConfiguration(Interface):
-    """Social login configuration interface"""
+class IOAuthLoginConfiguration(Interface):
+    """OAuth login configuration interface"""
 
-    contains('pyams_securiy.interfaces.ISocialLoginProviderConnection')
+    contains('pyams_securiy.interfaces.IOAuthLoginProviderConnection')
 
     def get_oauth_configuration(self):
         """Get Authomatic configuration"""
 
 
-class ISocialLoginProviderConnection(Interface):
-    """Social login provider info"""
+class IOAuthLoginProviderConnection(Interface):
+    """OAuth login provider info"""
 
-    containers(ISocialLoginConfiguration)
+    containers(IOAuthLoginConfiguration)
 
     provider_name = Choice(title=_("Provider name"),
                            vocabulary=OAUTH_PROVIDERS_VOCABULARY_NAME,
@@ -729,6 +727,11 @@ class ISocialLoginProviderConnection(Interface):
 
     def get_configuration(self):
         """Get provider configuration"""
+
+
+#
+# JWT authentication
+#
 
 
 #

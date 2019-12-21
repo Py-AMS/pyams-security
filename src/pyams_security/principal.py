@@ -54,7 +54,7 @@ class UnknownPrincipal:
     """Unknown principal info"""
 
     id = '__none__'
-    title = _("<missing principal ID>")
+    title = _("< unknown principal >")
 
 
 UnknownPrincipal = UnknownPrincipal()
