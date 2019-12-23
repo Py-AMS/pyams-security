@@ -16,8 +16,6 @@ This module is used for Pyramid integration.
 """
 
 import jwt
-from jwt.contrib.algorithms.py_ecdsa import ECAlgorithm
-from jwt.contrib.algorithms.pycrypto import RSAAlgorithm
 from zope.password.interfaces import IPasswordManager
 from zope.password.password import MD5PasswordManager, PlainTextPasswordManager, \
     SHA1PasswordManager, SSHAPasswordManager
@@ -66,13 +64,22 @@ def include_package(config):
     # update JWT algorithms
     try:
         import pycrypto  # pylint: disable=import-outside-toplevel,unused-import
+    except ImportError:
+        pass
+    else:
+        from jwt.contrib.algorithms.pycrypto import RSAAlgorithm
+        # pylint: disable=import-outside-toplevel
+        jwt.unregister_algorithm('RS256')
+        jwt.register_algorithm('RS256', RSAAlgorithm(RSAAlgorithm.SHA256))
+
+    try:
         import ecdsa  # pylint: disable=import-outside-toplevel,unused-import
     except ImportError:
         pass
     else:
-        jwt.unregister_algorithm('RS256')
+        from jwt.contrib.algorithms.py_ecdsa import ECAlgorithm
+        # pylint: disable=import-outside-toplevel
         jwt.unregister_algorithm('ES256')
-        jwt.register_algorithm('RS256', RSAAlgorithm(RSAAlgorithm.SHA256))
         jwt.register_algorithm('ES256', ECAlgorithm(ECAlgorithm.SHA256))
 
     config.scan()
