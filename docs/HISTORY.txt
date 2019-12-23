@@ -1,6 +1,10 @@
 Changelog
 =========
 
+1.0.2
+-----
+ - added support for HS512 and RS512 JWT encryption protocols
+
 1.0.1
 -----
  - updated imports in include file for tests integration
