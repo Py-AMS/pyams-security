@@ -437,12 +437,12 @@ use them:
     >>> policy = PyAMSAuthenticationPolicy(secret='my secret',
     ...                                    http_only=True,
     ...                                    secure=False,
-    ...                                    credentials=('http',))
+    ...                                    credentials=('jwt', 'http'))
     >>> config.set_authentication_policy(policy)
 
     >>> request = new_test_request('user1', 'passwd', registry=config.registry)
     >>> list(sm.get_credentials_plugins(request))
-    [<pyams_security.plugin.http.HttpBasicCredentialsPlugin object at 0x...>]
+    [<...JWTAuthenticationPlugin object at 0x...>, <...HttpBasicCredentialsPlugin object at 0x...>]
     >>> list(sm.get_authentication_plugins())
     [<...AdminAuthenticationPlugin object at 0x...>, <...UsersFolder object at 0x...>]
     >>> list(sm.get_directory_plugins())
@@ -517,10 +517,10 @@ an OAuth provider; and finally, activate these settings into the security manage
 
 When everything is enabled, we can accept authentication by using an external OAuth provider.
 
-    >>> from pyams_security.skin.oauth import login
+    >>> from pyams_security.skin.oauth import login as oauth_login
     >>> login_request = DummyRequest(path='/login/oauth/github', referer='/',
     ...                              matchdict={'provider_name': 'github'})
-    >>> login_result = login(login_request)
+    >>> login_result = oauth_login(login_request)
     >>> login_result
     <Response at 0x... 302 Found>
     >>> login_result.location
@@ -531,6 +531,61 @@ When everything is enabled, we can accept authentication by using an external OA
 So the login request first returns a redirect response to OAuth provider URL; after correct
 authentication, a new OAuth principal is created into OAuth users folder; this new principal
 will be usable as any local user, to affect roles for example.
+
+
+Using JWT authentication
+------------------------
+
+You can login on PyAMS application server using a JWT token, is this one is activated.
+Please note that using JWT is not mandatory, you can combine JWT with other authentication
+methods.
+
+You have to set several security manager properties to use JWT:
+
+    >>> sm.jwt_algorithm = 'HS256'
+    >>> sm.jwt_secret = 'my secret'
+    >>> sm.enable_jwt_login = True
+
+    >>> from pyams_security.plugin.jwt import create_jwt_token
+    >>> from pyams_security.skin.jwt import login as jwt_login
+    >>> jwt_request = DummyRequest(method='POST', path='/login/jwt',
+    ...                            params={'login': 'user1', 'password': 'passwd'})
+    >>> jwt_request.create_jwt_token = lambda *args, **kwargs: create_jwt_token(jwt_request, *args, **kwargs)
+    >>> jwt_result = jwt_login(jwt_request)
+    >>> pprint.pprint(jwt_result)
+    {'status': 'success',
+     'token': 'eyJ...'}
+
+Let's now try to use this token:
+
+    >>> jwt_request = DummyRequest(authorization=('JWT', jwt_result['token']))
+    >>> jwt_principal_id = sm.authenticated_userid(jwt_request)
+    >>> jwt_principal_id
+    'users:user1'
+
+As JWT authentication don't use cookies, "remember" and "forget" authentication policies don't
+return anything:
+
+    >>> policy.authenticated_userid(jwt_request)
+    'users:user1'
+    >>> policy.remember(jwt_request, jwt_principal_id)
+    >>> policy.forget(jwt_request)
+
+We can try the same process using bad credentials or a bad JWT token:
+
+    >>> jwt_request = DummyRequest(method='POST', path='/login/jwt',
+    ...                            params={'login': 'user1', 'password': 'badpasswd'})
+    >>> jwt_request.create_jwt_token = lambda *args, **kwargs: create_jwt_token(jwt_request, *args, **kwargs)
+    >>> jwt_result = jwt_login(jwt_request)
+    >>> pprint.pprint(jwt_result)
+    {'message': 'Invalid credentials!', 'status': 'error'}
+
+    >>> jwt_request = DummyRequest(authorization=('JWT', 'abc.def.ghi'), remote_addr='127.0.0.1')
+    >>> jwt_principal_id = sm.authenticated_userid(jwt_request)
+    >>> jwt_principal_id is None
+    True
+    >>> policy.authenticated_userid(jwt_request) is None
+    True
 
 
 Missing and unknown principals
@@ -658,6 +713,14 @@ The PyAMS authentication policy relies on the security manager
 
     >>> sorted(policy.effective_principals(request))
     ['system.Authenticated', 'system.Everyone', 'user1']
+
+    >>> headers = policy.remember(request, 'users:user1')
+    >>> headers[0]
+    ('Set-Cookie', 'auth_ticket=...!userid_type:b64unicode; Path=/; HttpOnly; SameSite=Lax')
+
+    >>> headers = policy.forget(request)
+    >>> headers[0]
+    ('Set-Cookie', 'auth_ticket=; Max-Age=0; Path=/; expires=Wed, 31-Dec-97 23:59:59 GMT; HttpOnly; SameSite=Lax')
 
 
 Custom schema fields

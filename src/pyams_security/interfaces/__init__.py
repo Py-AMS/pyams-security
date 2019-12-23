@@ -26,7 +26,7 @@ from zope.location.interfaces import IContained
 from zope.schema import Bool, Choice, Datetime, Dict, Int, List, Set, Text, TextLine, Tuple
 
 from pyams_security.interfaces.names import OAUTH_PROVIDERS_VOCABULARY_NAME, \
-    PASSWORD_MANAGERS_VOCABULARY_NAME, OAUTH_USERS_FOLDERS_VOCABULARY_NAME, \
+    OAUTH_USERS_FOLDERS_VOCABULARY_NAME, PASSWORD_MANAGERS_VOCABULARY_NAME, \
     USERS_FOLDERS_VOCABULARY_NAME
 from pyams_security.schema import PermissionsSetField, PrincipalsSetField
 from pyams_utils.schema import EncodedPasswordField
@@ -34,7 +34,7 @@ from pyams_utils.schema import EncodedPasswordField
 
 __docformat__ = 'restructuredtext'
 
-from pyams_security import _
+from pyams_security import _  # pylint: disable=ungrouped-imports
 
 
 #
@@ -70,7 +70,7 @@ class IRoleEvent(IObjectEvent):
 class RoleEvent(ObjectEvent):
     """Base role event"""
 
-    def __init__(self, object, role_id, principal_id):
+    def __init__(self, object, role_id, principal_id):  # pylint: disable=redefined-builtin
         super(RoleEvent, self).__init__(object)
         self.role_id = role_id
         self.principal_id = principal_id
@@ -132,7 +132,7 @@ class ICredentials(Interface):
     prefix = TextLine(title="Credentials plug-in prefix",
                       description="Prefix of plug-in which extracted credentials")
 
-    id = TextLine(title="Credentials ID")
+    id = TextLine(title="Credentials ID")  # pylint: disable=invalid-name
 
     attributes = Dict(title="Credentials attributes",
                       description="Attributes dictionary defined by each credentials plug-in",
@@ -316,6 +316,11 @@ class IUsersFolderPlugin(IAuthenticationPlugin, IDirectorySearchPlugin):
         """Check for existence of given login"""
 
 
+MAJS = range(ord('A'), ord('Z') + 1)
+MINS = range(ord('a'), ord('z') + 1)
+NUMS = range(ord('0'), ord('9') + 1)
+
+
 def check_password(password):
     """Check validity of a given password"""
     nbmaj = 0
@@ -323,11 +328,11 @@ def check_password(password):
     nbn = 0
     nbo = 0
     for car in password:
-        if ord(car) in range(ord('A'), ord('Z') + 1):
+        if ord(car) in MAJS:
             nbmaj += 1
-        elif ord(car) in range(ord('a'), ord('z') + 1):
+        elif ord(car) in MINS:
             nbmin += 1
-        elif ord(car) in range(ord('0'), ord('9') + 1):
+        elif ord(car) in NUMS:
             nbn += 1
         else:
             nbo += 1
@@ -349,6 +354,7 @@ class IUserRegistrationInfo(Interface):
 
     @invariant
     def check_login(self):
+        """Set login as mail when missing"""
         if not self.login:
             self.login = self.email
 
@@ -359,6 +365,7 @@ class IUserRegistrationInfo(Interface):
 
     @invariant
     def check_email(self):
+        """Check for valid email"""
         if not EMAIL_REGEX.match(self.email):
             raise Invalid(_("Your email address is not valid!"))
 
@@ -384,6 +391,7 @@ class IUserRegistrationInfo(Interface):
 
     @invariant
     def check_password(self):
+        """Check for password confirmation"""
         if self.password != self.confirmed_password:
             raise Invalid(_("You didn't confirmed your password correctly!"))
         check_password(self.password)
@@ -407,6 +415,7 @@ class IUserRegistrationConfirmationInfo(Interface):
 
     @invariant
     def check_password(self):
+        """Check for password confirmation"""
         if self.password != self.confirmed_password:
             raise Invalid(_("You didn't confirmed your password correctly!"))
         check_password(self.password)
@@ -423,6 +432,7 @@ class ILocalUser(IAttributeAnnotatable):
 
     @invariant
     def check_login(self):
+        """Set login as mail when missing"""
         if not self.login:
             self.login = self.email
 
@@ -431,6 +441,7 @@ class ILocalUser(IAttributeAnnotatable):
 
     @invariant
     def check_email(self):
+        """Check for invalid email address"""
         if not EMAIL_REGEX.match(self.email):
             raise Invalid(_("Given email address is not valid!"))
 
@@ -489,7 +500,7 @@ class ILocalUser(IAttributeAnnotatable):
     def generate_secret(self, login, password):
         """Generate secret key of this profile"""
 
-    def check_activation(self, hash, login, password):
+    def check_activation(self, hash, login, password):  # pylint: disable=redefined-builtin
         """Check activation for given settings"""
 
     def to_dict(self):
@@ -576,6 +587,47 @@ class ISecurityManager(IContainer, IDirectoryPluginInfo, IAttributeAnnotatable):
 
     contains(IPlugin)
 
+    enable_jwt_login = Bool(title=_("Enable JWT login?"),
+                            description=_("Enable login via JWT authentication"),
+                            required=False,
+                            default=False)
+
+    jwt_algorithm = Choice(title=_("JWT encoding algorithm"),
+                           description=_(""),
+                           required=False,
+                           values=('RS256', 'HS256'),
+                           default='RS256')
+
+    jwt_secret = TextLine(title=_("JWT secret"),
+                          description=_("This secret is required when using HS256 encryption"),
+                          required=False)
+
+    jwt_private_key = Text(title=_("JWT private key"),
+                           description=_("The secret key is required when using RS256 algorithm"),
+                           required=False)
+
+    jwt_public_key = Text(title=_("JWT public key"),
+                          description=_("The public key is required when using RS256 algorithm"),
+                          required=False)
+
+    jwt_expiration = Int(title=_("Token lifetime"),
+                         description=_("JWT token lifetime, in seconds"),
+                         required=False)
+
+    @invariant
+    def check_jwt(self):
+        """Check for JWT configuration"""
+        if self.enable_jwt_login:
+            if not self.jwt_algorithm:
+                raise Invalid(_("You must choose an algorithm to enable JWT authentication"))
+            if self.jwt_algorithm == 'HS256':
+                if not self.jwt_secret:
+                    raise Invalid(_("You must define JWT secret to use HS256 algorithm"))
+            elif self.jwt_algorithm == 'RS256':
+                if not (self.jwt_secret_key and self.jwt_public_key):
+                    raise Invalid(_("You must define a private and a public key to use RS256 "
+                                    "algorithm"))
+
     enable_oauth_login = Bool(title=_("Enable OAuth login?"),
                               description=_("Enable login via OAuth authentication providers"),
                               required=False,
@@ -617,6 +669,7 @@ class ISecurityManager(IContainer, IDirectoryPluginInfo, IAttributeAnnotatable):
 
     @invariant
     def check_users_folder(self):
+        """Check for open registration"""
         if self.open_registration and not self.users_folder:
             raise Invalid(_("You can't activate open registration without selecting a users "
                             "folder"))
@@ -730,8 +783,30 @@ class IOAuthLoginProviderConnection(Interface):
 
 
 #
-# JWT authentication
+# JWT authentication utility interface
 #
+
+class IJWTAuthenticationPlugin(IAuthenticationPlugin):
+    """JWT authentication policy"""
+
+    audience = Attribute("Token audience")
+    leeway = Attribute("Token leeway")
+    http_header = Attribute("HTTP header used for JWT token")
+    auth_type = Attribute("JWT authentication type")
+    callback = Attribute("JWT authentication callback")
+    json_encoder = Attribute("JSON encoder used to encode token claims")
+
+    def is_enabled(self):
+        """Boolean value used to specify if plugin is enabled"""
+
+    def create_token(self, principal, expiration=None, audience=None, **claims):
+        """Create JWT token"""
+
+    def get_claims(self, request):
+        """Extract claims from JWT token"""
+
+    def unauthenticated_userid(self, request):
+        """User ID claimed by request credentials, if any"""
 
 
 #
