@@ -33,7 +33,7 @@ test:
               awk 'BEGIN { lines=0; cov=0 }
                    { lines = lines + $1; cov = cov + $1 * $2 / 100 }
                    END { printf "%.2f", cov / lines * 100 }')
-        - anybadge --label=Coverage --file=./coverage/coverage.svg --value=$GLOBAL_COVER 20=red 40=orange 60=yellow 80=green
+        - anybadge --label=Coverage --file=./coverage/coverage.svg --value=$GLOBAL_COVER coverage
         - echo "Global tests coverage is $GLOBAL_COVER %"
     artifacts:
         paths:
@@ -55,7 +55,7 @@ pylint:
         - mkdir ./pylint
         - ./bin/pylint src/pyams_security/ | tee ./pylint/pylint.log || pylint-exit $?
         - PYLINT_SCORE=$(sed -n 's/^Your code has been rated at \([-0-9.]*\)\/.*/\1/p' ./pylint/pylint.log)
-        - anybadge --label=Pylint --file=./pylint/pylint.svg --value=$PYLINT_SCORE 2=red 4=orange 8=yellow 10=green
+        - anybadge --label=Pylint --file=./pylint/pylint.svg --value=$PYLINT_SCORE pylint
         - echo "Pylint score is $PYLINT_SCORE"
     artifacts:
         paths:
