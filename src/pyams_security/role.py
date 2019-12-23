@@ -11,6 +11,8 @@
 #
 
 """PyAMS_security.role module
+
+This module provides classes related to roles definition and registration.
 """
 
 from zope.interface import implementer
@@ -31,7 +33,7 @@ __docformat__ = 'restructuredtext'
 class Role:
     """Role utility class"""
 
-    id = FieldProperty(IRole['id'])
+    id = FieldProperty(IRole['id'])  # pylint: disable=invalid-name
     title = FieldProperty(IRole['title'])
     description = FieldProperty(IRole['description'])
     permissions = FieldProperty(IRole['permissions'])
@@ -40,7 +42,7 @@ class Role:
     def __init__(self, values=None, **args):
         if not isinstance(values, dict):
             values = args
-        self.id = values.get('id')
+        self.id = values.get('id')  # pylint: disable=invalid-name
         self.title = values.get('title')
         self.description = values.get('description')
         self.permissions = values.get('permissions')
@@ -62,12 +64,13 @@ class RoleSelector:
             '''Handle granted manager role on site root'''
     """
 
-    def __init__(self, roles, config):
+    def __init__(self, roles, config):  # pylint: disable=unused-argument
         if not isinstance(roles, (list, tuple, set)):
             roles = {roles}
         self.roles = roles
 
     def text(self):
+        """Predicate text output"""
         return 'role_selector = %s' % str(self.roles)
 
     phash = text
@@ -111,7 +114,7 @@ class RolesVocabulary(SimpleVocabulary):
 
     interface = IRole
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self, *args, **kwargs):  # pylint: disable=unused-argument
         request = check_request()
         registry = request.registry
         translate = request.localizer.translate

@@ -12,6 +12,7 @@
 
 """PyAMS_security.plugin.userfolder module
 
+This module is used to define local users.
 """
 
 import base64
@@ -53,7 +54,7 @@ from pyams_utils.vocabulary import vocabulary_config
 
 __docformat__ = 'restructuredtext'
 
-from pyams_security import _
+from pyams_security import _  # pylint: disable=ungrouped-imports
 
 
 @implementer(ILocalUser)
@@ -271,9 +272,9 @@ def handle_new_local_user(event):
     """Send a confirmation message when a new user is recorded"""
     security = query_utility(ISecurityManager)
     settings = INotificationSettings(security)
-    if not settings.enable_notifications:
+    if not settings.enable_notifications:  # pylint: disable=assignment-from-no-return
         return
-    mailer = settings.get_mailer()
+    mailer = settings.get_mailer()  # pylint: disable=assignment-from-no-return
     if mailer is None:
         return
     request = check_request()
@@ -282,10 +283,12 @@ def handle_new_local_user(event):
     i18n_settings = II18n(settings)
     message_text, template_name = None, None
     if user.self_registered:
+        # pylint: disable=assignment-from-no-return
         message_text = i18n_settings.query_attribute('registration_template', request=request)
         if not message_text:
             template_name = 'register-message.pt'
     elif user.wait_confirmation:
+        # pylint: disable=assignment-from-no-return
         message_text = i18n_settings.query_attribute('confirmation_template', request=request)
         if not message_text:
             template_name = 'register-info.pt'

@@ -12,6 +12,7 @@
 
 """PyAMS_site.profile module
 
+This module defines classes and functions to handle public profiles.
 """
 
 from persistent import Persistent
@@ -26,7 +27,7 @@ from zope.traversing.interfaces import ITraversable
 
 from pyams_file.property import FileProperty
 from pyams_security.interfaces import ADMIN_USER_ID
-from pyams_security.interfaces.base import PUBLIC_PERMISSION, IPrincipalInfo
+from pyams_security.interfaces.base import IPrincipalInfo, PUBLIC_PERMISSION
 from pyams_security.interfaces.profile import IPublicProfile, PUBLIC_PROFILE_KEY
 from pyams_utils.adapter import ContextRequestAdapter, adapter_config, get_annotation_adapter
 from pyams_utils.factory import factory_config
@@ -44,7 +45,9 @@ class PublicProfile(Persistent, Contained):
 
     avatar = FileProperty(IPublicProfile['avatar'])
 
-    def __acl__(self):
+    @staticmethod
+    def __acl__():
+        """Default profile ACL"""
         result = [(Allow, ADMIN_USER_ID, ALL_PERMISSIONS)]
         request = query_request()
         if request is not None:
@@ -54,7 +57,7 @@ class PublicProfile(Persistent, Contained):
 
 
 @adapter_config(context=Interface, provides=IPublicProfile)
-def public_profile_factory(context):
+def public_profile_factory(context):  # pylint: disable=unused-argument
     """Generic public profile factory
 
     Applied on any context, this adapter returns public profile associated
@@ -65,21 +68,22 @@ def public_profile_factory(context):
 
 
 @adapter_config(context=IRequest, provides=IPublicProfile)
-def request_public_profile_factory(request):
+def request_profile_factory(request):
     """Request public profile factory"""
     return IPublicProfile(request.principal)
 
 
 @adapter_config(context=IPrincipalInfo, provides=IPublicProfile)
-def principal_public_profile_factory(principal):
+def principal_profile_factory(principal):
     """Principal public profile factory adapter
 
     Public profile is stored using IPrincipalAnnotations utility (using the
     IPrincipalInfo to IAnnotations adapter defined into :py:mod:pyams_security.principal
-    module.
+    module).
     """
 
     def public_profile_callback(profile):
+        """Public profile creation callback"""
         request = get_current_request()
         if request is not None:
             root = request.root
@@ -95,13 +99,13 @@ def principal_public_profile_factory(principal):
 class ProfileTraverser(ContextRequestAdapter):
     """++profile++ namespace traverser"""
 
-    def traverse(self, name, furtherpath=None):
+    def traverse(self, name, furtherpath=None):  # pylint: disable=unused-argument
+        """Profile traverser"""
         if not name:
             return IPublicProfile(self.request.principal)
-        else:
-            intids = get_utility(IIntIds)
-            profile = intids.queryObject(int(name))
-            return IPublicProfile(profile, None)
+        intids = get_utility(IIntIds)
+        profile = intids.queryObject(int(name))
+        return IPublicProfile(profile, None)
 
 
 @adapter_config(name='public_profile', context=(Interface, Interface), provides=ITALESExtension)
@@ -109,6 +113,7 @@ class PublicProfileExtension(ContextRequestAdapter):
     """public_profile TALES extension"""
 
     def render(self, request=None):
+        """Render TALES extension"""
         if request is None:
             request = self.request
         return IPublicProfile(request)

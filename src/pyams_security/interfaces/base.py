@@ -10,12 +10,13 @@
 # FOR A PARTICULAR PURPOSE.
 #
 
-"""PyAMS_*** module
+"""PyAMS_security.interfaces.base module
 
+This module defines base security permissions and interfaces.
 """
 
 from zope.interface import Interface
-from zope.schema import TextLine, Text, Set, Dict
+from zope.schema import Dict, Set, Text, TextLine
 
 
 __docformat__ = 'restructuredtext'
@@ -50,6 +51,7 @@ MANAGE_ROLES_PERMISSION = 'pyams.ManageRoles'
 class IPermission(Interface):
     """Permission interface"""
 
+    # pylint: disable=invalid-name
     id = TextLine(title="Unique ID",
                   required=True)
 
@@ -67,6 +69,7 @@ class IRole(Interface):
     these permissions are also granted to the principal.
     """
 
+    # pylint: disable=invalid-name
     id = TextLine(title="Unique ID",
                   required=True)
 
@@ -94,6 +97,7 @@ class IPrincipalInfo(Interface):
     This is the generic interface of objects defined in request 'principal' attribute.
     """
 
+    # pylint: disable=invalid-name
     id = TextLine(title="Globally unique ID",
                   required=True)
 

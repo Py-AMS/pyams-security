@@ -12,6 +12,8 @@
 
 """PyAMS_security.plugin.admin module
 
+This module defines system principals which are used for system management tasks and for
+internal services.
 """
 
 from persistent import Persistent
@@ -44,17 +46,20 @@ class AdminAuthenticationPlugin(Persistent, Contained):
 
     @property
     def password(self):
+        """Get current password"""
         return self._password
 
     @password.setter
     def password(self, value):
+        """Encode passsword before storing new value"""
         if value:
             manager = get_utility(IPasswordManager, name='SSHA')
             self._password = manager.encodePassword(value)
         else:
             self._password = None
 
-    def authenticate(self, credentials, request):
+    def authenticate(self, credentials, request):  # pylint: disable=unused-argument
+        """Try to authenticate principal using given credentials"""
         if not (self.enabled and self.password):
             return None
         attrs = credentials.attributes
@@ -66,6 +71,7 @@ class AdminAuthenticationPlugin(Persistent, Contained):
         return None
 
     def get_principal(self, principal_id, info=True):
+        """Get principal matching given principal ID"""
         if not self.enabled:
             return None
         if not principal_id.startswith(self.prefix + ':'):
@@ -75,10 +81,11 @@ class AdminAuthenticationPlugin(Persistent, Contained):
             if info:
                 return PrincipalInfo(id=principal_id,
                                      title=self.title)
-            else:
-                return self
+            return self
+        return None
 
     def get_all_principals(self, principal_id):
+        """Get all principals matching given principal ID"""
         if not self.enabled:
             return set()
         if self.get_principal(principal_id) is not None:
@@ -86,8 +93,9 @@ class AdminAuthenticationPlugin(Persistent, Contained):
         return set()
 
     def find_principals(self, query):
+        """Search principals matching given query"""
         if not query:
-            return None
+            return
         query = query.lower()
         if (query == self.login or
                 query in self.title.lower()):

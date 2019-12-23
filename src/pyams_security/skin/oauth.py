@@ -26,8 +26,8 @@ from pyramid.response import Response
 from pyramid.security import remember
 from pyramid.view import view_config
 
-from pyams_security.interfaces import AuthenticatedPrincipalEvent, ISecurityManager, \
-    IOAuthLoginConfiguration, LOGIN_REFERER_KEY
+from pyams_security.interfaces import AuthenticatedPrincipalEvent, IOAuthLoginConfiguration, \
+    ISecurityManager, LOGIN_REFERER_KEY
 from pyams_utils.registry import query_utility
 
 
@@ -47,6 +47,7 @@ def login(request):
         session[LOGIN_REFERER_KEY] = request.referer
     # init authomatic
     provider_name = request.matchdict.get('provider_name')
+    # pylint: disable=assignment-from-no-return
     configuration = IOAuthLoginConfiguration(manager).get_oauth_configuration()
     authomatic = Authomatic(config=configuration, secret=manager.authomatic_secret,
                             logging_level=WARNING)

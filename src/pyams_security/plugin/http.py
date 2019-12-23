@@ -12,6 +12,7 @@
 
 """PyAMS_security.plugin.http module
 
+This module defines an HTTP authentication module.
 """
 
 import base64
@@ -25,7 +26,7 @@ from pyams_utils.wsgi import wsgi_environ_cache
 
 __docformat__ = 'restructuredtext'
 
-from pyams_security import _
+from pyams_security import _  # pylint: disable=ungrouped-imports
 
 
 ENVKEY_PARSED_CREDENTIALS = "pyams_security.http.basic.credentials"
@@ -48,7 +49,7 @@ class HttpBasicCredentialsPlugin:
     enabled = True
 
     @wsgi_environ_cache(ENVKEY_PARSED_CREDENTIALS)
-    def extract_credentials(self, request, **kwargs):
+    def extract_credentials(self, request, **kwargs):  # pylint: disable=unused-argument
         """Extract login/password credentials from given request"""
         auth = request.headers.get('Authorization')
         if not auth:
@@ -65,7 +66,7 @@ class HttpBasicCredentialsPlugin:
             login, password = token.split(':', 1)
             if login.startswith('{'):
                 principal_id = CUSTOM_LOGIN.sub(r'\1:\2', login)
-                prefix, login = principal_id.split(':')
+                prefix, login = principal_id.split(':')  # pylint: disable=unused-variable
             else:
                 principal_id = login
             return Credentials(self.prefix, principal_id, login=login, password=password)

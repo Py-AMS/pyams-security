@@ -12,6 +12,7 @@
 
 """PyAMS_security.permission module
 
+This module provides classes related to permissions definition and registration.
 """
 
 from zope.interface import implementer
@@ -31,14 +32,14 @@ __docformat__ = 'restructuredtext'
 class Permission:
     """Permission utility class"""
 
-    id = FieldProperty(IPermission['id'])
+    id = FieldProperty(IPermission['id'])  # pylint: disable=invalid-name
     title = FieldProperty(IPermission['title'])
     description = FieldProperty(IPermission['description'])
 
-    def __init__(self, values=None, **args):
+    def __init__(self, values=None, **args):  # pylint: disable=unused-argument
         if not isinstance(values, dict):
             values = args
-        self.id = values.get('id')
+        self.id = values.get('id')  # pylint: disable=invalid-name
         self.title = values.get('title')
         self.description = values.get('description')
 
@@ -61,7 +62,7 @@ class PermissionsVocabulary(SimpleVocabulary):
 
     interface = IPermission
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self, *args, **kwargs):  # pylint: disable=unused-argument
         request = check_request()
         registry = request.registry
         translate = request.localizer.translate

@@ -12,6 +12,7 @@
 
 """PyAMS_security.interfaces.notification module
 
+This module defines notifications related interfaces.
 """
 
 from zope.annotation.interfaces import IAttributeAnnotatable
@@ -42,6 +43,7 @@ class INotificationSettings(IAttributeAnnotatable):
 
     @invariant
     def check_mailer(self):
+        """Check mailer to enable notifications"""
         if self.enable_notifications and not self.mailer:
             raise Invalid(_("Notifications can't be enabled without mailer utility"))
 

@@ -47,6 +47,7 @@ __docformat__ = 'restructuredtext'
 
 @implementer(IOAuthUser)
 class OAuthUser(Persistent, Contained):
+    # pylint: disable=too-many-instance-attributes
     """OAuth user persistent class"""
 
     user_id = FieldProperty(IOAuthUser['user_id'])
@@ -68,6 +69,7 @@ class OAuthUser(Persistent, Contained):
 
     @property
     def title(self):
+        """Get user label"""
         if self.name:
             result = self.name
         elif self.first_name:
@@ -80,12 +82,13 @@ class OAuthUser(Persistent, Contained):
 
     @property
     def title_with_source(self):
+        """Get user label, including provider name"""
         return '{title} ({provider})'.format(title=self.title,
                                              provider=self.provider_name.capitalize())
 
 
 @adapter_config(context=IOAuthUser, provides=IPrincipalInfo)
-def oauth_user_principal_info_adapter(user):
+def oauth_user_principal_adapter(user):
     """OAuth user principal info adapter"""
     return PrincipalInfo(id="{}:{}".format(user.__parent__.prefix, user.user_id),
                          title=user.name)
@@ -105,7 +108,7 @@ class OAuthUsersFolder(Folder):
             return None
         if not principal_id.startswith(self.prefix + ':'):
             return None
-        prefix, login = principal_id.split(':', 1)
+        prefix, login = principal_id.split(':', 1)  # pylint: disable=unused-variable
         user = self.get(login)
         if user is not None:
             if info:
@@ -126,9 +129,9 @@ class OAuthUsersFolder(Folder):
     def find_principals(self, query):
         """Find principals matching given query"""
         if not self.enabled:
-            raise StopIteration
+            return
         if not query:
-            return None
+            return
         query = query.lower()
         for user in self.values():
             if (query == user.user_id or
@@ -154,7 +157,7 @@ class OAuthUsersFolder(Folder):
 class OAuthUsersFolderVocabulary(SimpleVocabulary):
     """'PyAMS OAuth users folders' vocabulary"""
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self, *args, **kwargs):  # pylint: disable=unused-argument
         terms = []
         manager = query_utility(ISecurityManager)
         if manager is not None:
@@ -165,7 +168,7 @@ class OAuthUsersFolderVocabulary(SimpleVocabulary):
 
 
 @subscriber(IAuthenticatedPrincipalEvent, plugin_selector=IOAuthUsersFolderPlugin)
-def handle_authenticated_oauth_principal(event):
+def handle_authenticated_oauth_principal(event):  # pylint: disable=invalid-name
     """Handle authenticated OAuth principal"""
     manager = query_utility(ISecurityManager)
     oauth_folder = manager.get(manager.oauth_users_folder)
@@ -217,8 +220,8 @@ class OAuthLoginProviderInfo:
     def __init__(self, name, provider, **kwargs):
         self.name = name
         self.provider = provider
-        for k, v in kwargs.items():
-            setattr(self, k, v)
+        for key, value in kwargs.items():
+            setattr(self, key, value)
 
 
 PROVIDERS_INFO = {
@@ -368,7 +371,7 @@ def get_provider_info(provider_name):
 class OAuthProvidersVocabulary(SimpleVocabulary):
     """OAuth providers vocabulary"""
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self, *args, **kwargs):  # pylint: disable=unused-argument
         terms = []
         for key, provider in PROVIDERS_INFO.items():
             terms.append(SimpleTerm(key, title=provider.name))
@@ -381,6 +384,7 @@ class OAuthLoginConfiguration(Folder):
     """OAuth login configuration"""
 
     def get_oauth_configuration(self):
+        """Get OAuth configuration of registered providers"""
         result = {}
         for provider in self.values():
             provider_info = get_provider_info(provider.provider_name)
@@ -398,7 +402,7 @@ OAUTH_LOGIN_CONFIGURATION_KEY = 'pyams_security.plugin.oauth'
 
 
 @adapter_config(context=ISecurityManager, provides=IOAuthLoginConfiguration)
-def oauth_login_configuration_adapter(context):
+def oauth_login_configuration_adapter(context):  # pylint: disable=invalid-name
     """OAuth login configuration adapter"""
     return get_annotation_adapter(context, OAUTH_LOGIN_CONFIGURATION_KEY,
                                   IOAuthLoginConfiguration,
@@ -409,7 +413,8 @@ def oauth_login_configuration_adapter(context):
 class SecurityManagerOAuthTraverser(ContextAdapter):
     """++oauth-config++ namespace traverser"""
 
-    def traverse(self, name, furtherpath=None):
+    def traverse(self, name, furtherpath=None):  # pylint: disable=unused-argument
+        """Traverse to OAuth configuration"""
         return IOAuthLoginConfiguration(self.context)
 
 
@@ -423,4 +428,5 @@ class OAuthLoginProviderConnection(Persistent):
     consumer_secret = FieldProperty(IOAuthLoginProviderConnection['consumer_secret'])
 
     def get_configuration(self):
+        """Get OAuth configuration of given provider"""
         return get_provider_info(self.provider_name)

@@ -11,6 +11,8 @@
 #
 
 """PyAMS_security.notification module
+
+This module handles notificaiton settings.
 """
 
 from persistent import Persistent
@@ -43,6 +45,7 @@ class NotificationSettings(Persistent):
     signature = FieldProperty(INotificationSettings['signature'])
 
     def get_mailer(self):
+        """Get mailer utility matching current selection"""
         if self.mailer is not None:
             return query_utility(IMailer, name=self.mailer)
         return None
@@ -52,6 +55,6 @@ NOTIFICATIONS_KEY = 'pyams_security.notifications'
 
 
 @adapter_config(context=ISecurityManager, provides=INotificationSettings)
-def security_notification_settings_factory(context):
+def security_notification_factory(context):
     """Security manager notifications factory adapter"""
     return get_annotation_adapter(context, NOTIFICATIONS_KEY, INotificationSettings, locate=False)

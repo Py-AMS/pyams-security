@@ -12,6 +12,7 @@
 
 """PyAMS_security.security module
 
+This module provides role-based security policy.
 """
 
 import logging
@@ -239,7 +240,7 @@ class ProtectedObjectMixin:
     def __acl__(self):
         protected = IProtectedObject(self, None)
         if protected is not None:
-            acl = protected.__acl__()
+            acl = protected.__acl__()  # pylint: disable=assignment-from-no-return
             if callable(acl):
                 acl = acl(protected)
             return acl

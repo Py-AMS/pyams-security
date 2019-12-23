@@ -29,7 +29,7 @@ from pyams_i18n.interfaces import II18n
 from pyams_security.interfaces import IRoleProtectedObject, \
     ISecurityManager
 from pyams_security.interfaces.notification import INotificationSettings
-from pyams_security.notification import NotificationSettings, security_notification_settings_factory
+from pyams_security.notification import NotificationSettings, security_notification_factory
 from pyams_security.security import RoleProtectedObject
 from pyams_utils.factory import register_factory
 from pyams_utils.registry import set_local_registry
@@ -59,7 +59,7 @@ def setup_tests_registry():
     mailer = DummyMailer()
     register_factory(INotificationSettings, NotificationSettings)
     registry.registerUtility(mailer, provided=IMailer, name='mailer')
-    registry.registerAdapter(security_notification_settings_factory, (ISecurityManager, ),
+    registry.registerAdapter(security_notification_factory, (ISecurityManager, ),
                              provided=INotificationSettings)
     return config
 

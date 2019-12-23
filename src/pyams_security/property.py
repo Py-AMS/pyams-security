@@ -12,6 +12,7 @@
 
 """PyAMS_security.property module
 
+This module defines a custom field property used to store roles.
 """
 
 from zope.schema.interfaces import IField, ISet
@@ -70,6 +71,7 @@ class RolePrincipalsFieldProperty:
         if not IRoleProtectedObject.providedBy(protection):
             raise ValueError("Can't use role properties on object not providing "
                              "IRoleProtectedObject interface!")
+        # pylint: disable=assignment-from-no-return
         old_principals = protection.get_principals(self.__role_id)
         if not isinstance(value, set):
             value = {value}

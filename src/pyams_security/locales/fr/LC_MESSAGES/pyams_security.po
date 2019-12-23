@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PyAMS_security 1.0\n"
-"POT-Creation-Date: 2019-12-21 10:44+0100\n"
+"POT-Creation-Date: 2019-12-21 14:36+0100\n"
 "PO-Revision-Date: 2019-12-21 22:19+0100\n"
 "Last-Translator: Thierry Florac <tflorac@ulthar.net>\n"
 "Language-Team: French\n"
@@ -271,67 +271,104 @@ msgstr ""
 "utilisateurs, mais également d'autres groupes"
 
 #: src/pyams_security/interfaces/__init__.py:579
-msgid "Enable social login?"
-msgstr "Autoriser la connexion OAuth ?"
+msgid "Enable JWT login?"
+msgstr "Autoriser l'authentification JWT ?"
 
 #: src/pyams_security/interfaces/__init__.py:580
-msgid "Enable login via social OAuth plug-ins"
-msgstr "Autoriser la connexion via les modules d'authentification OAuth"
+msgid "Enable login via JWT authentication"
+msgstr "Autoriser la connexion via un jeton JWT"
 
 #: src/pyams_security/interfaces/__init__.py:584
-msgid "Social users folder"
+msgid "JWT encoding algorithm"
+msgstr "Algorithme d'encodage JWT"
+
+#: src/pyams_security/interfaces/__init__.py:590
+msgid "JWT secret"
+msgstr "Secret JWT"
+
+#: src/pyams_security/interfaces/__init__.py:591
+msgid "This secret is required when using HS256 encryption"
+msgstr "Ce mot de passe est nécessaire pour l'encryptage HS256"
+
+#: src/pyams_security/interfaces/__init__.py:594
+msgid "JWT private key"
+msgstr "Clé privée JWT"
+
+#: src/pyams_security/interfaces/__init__.py:595
+msgid "The secret key is required when using RS256 algorithm"
+msgstr "Une clé privée est nécessaire pour l'encryptage RS256"
+
+#: src/pyams_security/interfaces/__init__.py:598
+msgid "JWT public key"
+msgstr "Clé publique JWT"
+
+#: src/pyams_security/interfaces/__init__.py:599
+msgid "The public key is required when using RS256 algorithm"
+msgstr "Une clé publique est nécessaire pour l'encryptage RS256"
+
+#: src/pyams_security/interfaces/__init__.py:615
+msgid "Enable OAuth login?"
+msgstr "Autoriser la connexion OAuth ?"
+
+#: src/pyams_security/interfaces/__init__.py:616
+msgid "Enable login via OAuth authentication providers"
+msgstr "Autoriser la connexion via les modules d'authentification OAuth"
+
+#: src/pyams_security/interfaces/__init__.py:620
+msgid "OAuth users folder"
 msgstr "Dossier des utilisateurs OAuth"
 
-#: src/pyams_security/interfaces/__init__.py:585
-msgid "Name of folder used to store social users properties"
+#: src/pyams_security/interfaces/__init__.py:621
+msgid ""
+"Name of folder used to store properties of users authenticated with OAuth"
 msgstr "Nom du dossier utilisé pour stocker le profil des utilisateurs OAuth"
 
-#: src/pyams_security/interfaces/__init__.py:596
+#: src/pyams_security/interfaces/__init__.py:633
 msgid "Authomatic secret"
 msgstr "Clé OAuth"
 
-#: src/pyams_security/interfaces/__init__.py:597
+#: src/pyams_security/interfaces/__init__.py:634
 msgid "This secret phrase is used to encrypt Authomatic cookie"
 msgstr ""
 "Cette phrase secrète est utilisée pour crypter le cookie d'authentification "
 "OAuth"
 
-#: src/pyams_security/interfaces/__init__.py:602
-msgid "Use social popup?"
-msgstr "Connection via une popup ?"
+#: src/pyams_security/interfaces/__init__.py:639
+msgid "Use OAuth popup?"
+msgstr "Connection OAuth via popup ?"
 
-#: src/pyams_security/interfaces/__init__.py:606
+#: src/pyams_security/interfaces/__init__.py:643
 msgid "Enable free registration?"
 msgstr "Autoriser l'inscription publique ?"
 
-#: src/pyams_security/interfaces/__init__.py:607
+#: src/pyams_security/interfaces/__init__.py:644
 msgid "If 'Yes', any use will be able to create a new user account"
 msgstr ""
 "Si 'oui', toute personne visitant le site sera à même de s'enregistrer et de "
-"faire une demande de création d'un compte utilisateur"
+"faire une demande de création de compte utilisateur"
 
-#: src/pyams_security/interfaces/__init__.py:612
+#: src/pyams_security/interfaces/__init__.py:649
 msgid "Users folder"
 msgstr "Dossier d'utilisateurs"
 
-#: src/pyams_security/interfaces/__init__.py:613
+#: src/pyams_security/interfaces/__init__.py:650
 msgid "Name of users folder used to store registered principals"
 msgstr "Nom des modules utilisés pour identifier les utilisateurs enregistrés"
 
-#: src/pyams_security/interfaces/__init__.py:623
+#: src/pyams_security/interfaces/__init__.py:660
 msgid "Credentials plug-ins"
 msgstr "Modules d'identification"
 
-#: src/pyams_security/interfaces/__init__.py:624
+#: src/pyams_security/interfaces/__init__.py:661
 msgid "These plug-ins can be used to extract request credentials"
 msgstr ""
 "Ces modules peuvent être utilisés pour extraire l'identité des utilisateurs"
 
-#: src/pyams_security/interfaces/__init__.py:630
+#: src/pyams_security/interfaces/__init__.py:667
 msgid "Authentication plug-ins"
 msgstr "Modules d'authentification"
 
-#: src/pyams_security/interfaces/__init__.py:631
+#: src/pyams_security/interfaces/__init__.py:668
 msgid ""
 "The plug-ins can be used to check extracted credentials against a local or "
 "remote users database"
@@ -339,49 +376,49 @@ msgstr ""
 "Ces modules peuvent être utilisés pour vérifier l'identité des utilisateurs "
 "vis à vis d'une base d'utilisateurs locale ou distante"
 
-#: src/pyams_security/interfaces/__init__.py:637
+#: src/pyams_security/interfaces/__init__.py:674
 msgid "Directory plug-ins"
 msgstr "Modules d'annuaires"
 
-#: src/pyams_security/interfaces/__init__.py:638
+#: src/pyams_security/interfaces/__init__.py:675
 msgid "The plug-in can be used to extract principals information"
 msgstr "Ces modules peuvent être utilisés pour rechercher des utilisateurs"
 
-#: src/pyams_security/interfaces/__init__.py:716
+#: src/pyams_security/interfaces/__init__.py:749
 msgid "Provider name"
 msgstr "Nom du fournisseur"
 
-#: src/pyams_security/interfaces/__init__.py:720
+#: src/pyams_security/interfaces/__init__.py:753
 msgid "Provider ID"
 msgstr "ID du fournisseur"
 
-#: src/pyams_security/interfaces/__init__.py:721
+#: src/pyams_security/interfaces/__init__.py:754
 msgid "This value should be unique between all providers"
 msgstr "Cette valeur numérique doit être unique parmi tous les fournisseurs"
 
-#: src/pyams_security/interfaces/__init__.py:725
+#: src/pyams_security/interfaces/__init__.py:758
 msgid "Provider consumer key"
 msgstr "Clé cliente"
 
-#: src/pyams_security/interfaces/__init__.py:728
+#: src/pyams_security/interfaces/__init__.py:761
 msgid "Provider secret"
 msgstr "Clé secrète"
 
-#: src/pyams_security/interfaces/__init__.py:746
+#: src/pyams_security/interfaces/__init__.py:779
 msgid "Inherit parent security?"
 msgstr "Héritage de la sécurité ?"
 
-#: src/pyams_security/interfaces/__init__.py:747
+#: src/pyams_security/interfaces/__init__.py:780
 msgid "Get access control entries (ACE) inherited from parent levels"
 msgstr ""
 "Combiner les règles de contrôle d'accès (ACE) définies localement avec "
 "celles héritées du parent"
 
-#: src/pyams_security/interfaces/__init__.py:752
+#: src/pyams_security/interfaces/__init__.py:785
 msgid "Public denied permissions"
 msgstr "Permissions publiques retirées"
 
-#: src/pyams_security/interfaces/__init__.py:753
+#: src/pyams_security/interfaces/__init__.py:786
 msgid ""
 "These permissions will be denied to all users. Denied permissions take "
 "precedence over granted ones."
@@ -389,19 +426,19 @@ msgstr ""
 "Ces permissions seront retirées à tous les utilisateurs ; les permissions "
 "retirées sont prioritaires par rapport aux permissions accordées"
 
-#: src/pyams_security/interfaces/__init__.py:758
+#: src/pyams_security/interfaces/__init__.py:791
 msgid "Public granted permissions"
 msgstr "Permissions publiques accordées"
 
-#: src/pyams_security/interfaces/__init__.py:759
+#: src/pyams_security/interfaces/__init__.py:792
 msgid "These permissions will be granted to all users"
 msgstr "Ces permissions seront accordées à tous les utilisateurs"
 
-#: src/pyams_security/interfaces/__init__.py:763
+#: src/pyams_security/interfaces/__init__.py:796
 msgid "Authenticated denied permissions"
 msgstr "Permissions authentifiées retirées"
 
-#: src/pyams_security/interfaces/__init__.py:764
+#: src/pyams_security/interfaces/__init__.py:797
 msgid ""
 "These permissions will be denied to authenticated users. Denied permissions "
 "take precedence over granted ones."
@@ -409,19 +446,19 @@ msgstr ""
 "Ces permissions seront retirées aux utilisateurs authentifiées ; les "
 "permissions retirées sont prioritaires par rapport aux permissions accordées"
 
-#: src/pyams_security/interfaces/__init__.py:770
+#: src/pyams_security/interfaces/__init__.py:803
 msgid "Authenticated granted permissions"
 msgstr "Permissions authentifiées accordées"
 
-#: src/pyams_security/interfaces/__init__.py:771
+#: src/pyams_security/interfaces/__init__.py:804
 msgid "These permissions will be granted to authenticated users"
 msgstr "Ces permissions seront accordées aux utilisateurs authentifiés"
 
-#: src/pyams_security/interfaces/__init__.py:775
+#: src/pyams_security/interfaces/__init__.py:808
 msgid "Inherit parent roles?"
 msgstr "Héritage des rôles ?"
 
-#: src/pyams_security/interfaces/__init__.py:776
+#: src/pyams_security/interfaces/__init__.py:809
 msgid "Get roles granted on parent levels"
 msgstr "Hériter des rôles affectés aux niveaux parents"
 
@@ -438,17 +475,30 @@ msgstr "Vous n'avez pas confirmé votre mot de passe correctement !"
 msgid "Given email address is not valid!"
 msgstr "L'adresse de messagerie indiquée est incorrecte !"
 
-#: src/pyams_security/interfaces/__init__.py:593
-msgid "You can't activate social login without selecting a social users folder"
+#: src/pyams_security/interfaces/__init__.py:630
+msgid "You can't activate OAuth login without selecting an OAuth users folder"
 msgstr ""
 "Vous devez créer puis sélectionner un dossier de stockage des profils "
 "utilisateurs pour pouvoir activer l'authentification OAuth"
 
-#: src/pyams_security/interfaces/__init__.py:620
+#: src/pyams_security/interfaces/__init__.py:657
 msgid "You can't activate open registration without selecting a users folder"
 msgstr ""
 "Vous ne pouvez pas activer les fonctions d'inscription libre sans "
 "sélectionner un dossier de stockage des utilisateurs concernés"
+
+#: src/pyams_security/interfaces/__init__.py:606
+msgid "You must choose an algorithm to enable JWT authentication"
+msgstr ""
+"Vous devez choisir un algorithme d'encryptage pour pouvoir activer l'authentification JWT"
+
+#: src/pyams_security/interfaces/__init__.py:609
+msgid "You must define JWT secret to use HS256 algorithm"
+msgstr "Vous devez définir le secret JWT pour utiliser l'algorithme HS256"
+
+#: src/pyams_security/interfaces/__init__.py:612
+msgid "You must define a private and a public key to use RS256 algorithm"
+msgstr "Vous devez définir une clé privée et une clé publique pour utiliser l'algorithme RS256"
 
 #: src/pyams_security/interfaces/notification.py:33
 msgid "Enable notifications?"
@@ -638,3 +688,6 @@ msgid ""
 msgstr ""
 "Vous avez enregistré un nouveau compte que vous devez confirmer avant de "
 "pouvoir utiliser ce service."
+
+#~ msgid "Social users folder"
+#~ msgstr "Dossier des utilisateurs OAuth"

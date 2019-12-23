@@ -12,7 +12,10 @@
 
 """PyAMS_security.plugin main module
 
+This module enables a "plugin_selector" subscriber predicate, which can be used to
+filter plugins events based on plug-in name or interface.
 """
+
 from zope.interface.interface import InterfaceClass
 
 
@@ -26,10 +29,11 @@ class PluginSelector:
     events based on the name of the plug-in which fired the event.
     """
 
-    def __init__(self, name, config):
+    def __init__(self, name, config):  # pylint: disable=unused-argument
         self.plugin = name
 
     def text(self):
+        """Predicate text output"""
         return 'plugin_selector = %s' % str(self.plugin)
 
     phash = text

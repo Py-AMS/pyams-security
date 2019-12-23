@@ -12,6 +12,7 @@
 
 """PyAMS_security.plugin.group module
 
+This module defines local groups of principals.
 """
 
 import logging
@@ -53,6 +54,7 @@ class Group(Persistent, Contained):
 
     @property
     def principals(self):
+        """Get principals list"""
         return self._principals or set()
 
     @principals.setter
@@ -78,15 +80,15 @@ class Group(Persistent, Contained):
 class LocalGroupsVocabulary(SimpleVocabulary):
     """'PyAMS local groups vocabulary"""
 
-    def __init__(self, context=None):
+    def __init__(self, context=None):  # pylint: disable=unused-argument
         terms = []
         manager = query_utility(ISecurityManager)
         if manager is not None:
             for plugin in manager.values():
                 if IGroupsFolderPlugin.providedBy(plugin):
                     for group in plugin.values():
-                        terms.append(SimpleTerm('{prefix}:{group_id}'.format(prefix=plugin.prefix,
-                                                                             group_id=group.group_id),
+                        terms.append(SimpleTerm('{prefix}:{group_id}'.format(
+                            prefix=plugin.prefix, group_id=group.group_id),
                                                 title=group.title))
         super(LocalGroupsVocabulary, self).__init__(terms)
 
@@ -101,7 +103,7 @@ class GroupsFolder(Folder):
 
     def __init__(self):
         super(GroupsFolder, self).__init__()
-        self.groups_by_principal = OOBTree.OOBTree()
+        self.groups_by_principal = OOBTree.OOBTree()  # pylint: disable=no-member
 
     def check_group_id(self, group_id):
         """Check for existence of given group ID"""
@@ -110,21 +112,23 @@ class GroupsFolder(Folder):
         return group_id not in self
 
     def get_principal(self, principal_id, info=True):
+        """Principal lookup for given principal ID"""
         if not self.enabled:
             return None
         if not principal_id.startswith(self.prefix + ':'):
             return None
-        prefix, group_id = principal_id.split(':', 1)
+        prefix, group_id = principal_id.split(':', 1)  # pylint: disable=unused-variable
         group = self.get(group_id)
         if group is not None:
             if info:
                 return PrincipalInfo(id='{prefix}:{group_id}'.format(prefix=self.prefix,
                                                                      group_id=group.group_id),
                                      title=group.title)
-            else:
-                return group
+            return group
+        return None
 
     def get_all_principals(self, principal_id, seen=None):
+        """Get all principals matching given principal ID"""
         if not self.enabled:
             return set()
         principals = self.groups_by_principal.get(principal_id) or set()
@@ -139,10 +143,11 @@ class GroupsFolder(Folder):
         return principals
 
     def find_principals(self, query):
+        """Find principals matching given query"""
         if not self.enabled:
-            raise StopIteration
+            return
         if not query:
-            return None
+            return
         query = query.lower()
         for group in self.values():
             if query in group.title.lower():

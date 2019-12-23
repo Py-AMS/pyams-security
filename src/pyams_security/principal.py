@@ -12,6 +12,7 @@
 
 """PyAMS_security.principal module
 
+This module provides principal related classes.
 """
 
 from zope.annotation.interfaces import IAnnotations
@@ -26,19 +27,19 @@ from pyams_utils.registry import query_utility
 
 __docformat__ = 'restructuredtext'
 
-from pyams_security import _
+from pyams_security import _  # pylint: disable=ungrouped-imports
 
 
 @implementer(IPrincipalInfo)
 class PrincipalInfo:
     """Generic principal info"""
 
-    id = FieldProperty(IPrincipalInfo['id'])
+    id = FieldProperty(IPrincipalInfo['id'])  # pylint: disable=invalid-name
     title = FieldProperty(IPrincipalInfo['title'])
     attributes = FieldProperty(IPrincipalInfo['attributes'])
 
     def __init__(self, **kwargs):
-        self.id = kwargs.pop('id')
+        self.id = kwargs.pop('id')  # pylint: disable=invalid-name
         self.title = kwargs.pop('title', '__unknown__')
         self.attributes = kwargs
 
@@ -53,11 +54,11 @@ class PrincipalInfo:
 class UnknownPrincipal:
     """Unknown principal info"""
 
-    id = '__none__'
+    id = '__none__'  # pylint: disable=invalid-name
     title = _("< unknown principal >")
 
 
-UnknownPrincipal = UnknownPrincipal()
+UnknownPrincipal = UnknownPrincipal()  # pylint: disable=invalid-name
 
 
 @implementer(IPrincipalInfo)
@@ -68,13 +69,14 @@ class MissingPrincipal:
     references a principal which can't be found anymore
     """
 
-    id = FieldProperty(IPrincipalInfo['id'])
+    id = FieldProperty(IPrincipalInfo['id'])  # pylint: disable=invalid-name
 
     def __init__(self, **kwargs):
-        self.id = kwargs.get('id')
+        self.id = kwargs.get('id')  # pylint: disable=invalid-name
 
     @property
     def title(self):
+        """Get principal title"""
         return 'MissingPrincipal: {id}'.format(id=self.id)
 
     def __eq__(self, other):
@@ -87,3 +89,4 @@ def get_principal_annotations(principal):
     annotations = query_utility(IPrincipalAnnotationUtility)
     if annotations is not None:
         return annotations.getAnnotations(principal)
+    return None

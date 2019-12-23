@@ -15,12 +15,16 @@
 This module is used for Pyramid integration.
 """
 
+import jwt
+from jwt.contrib.algorithms.py_ecdsa import ECAlgorithm
+from jwt.contrib.algorithms.pycrypto import RSAAlgorithm
 from zope.password.interfaces import IPasswordManager
 from zope.password.password import MD5PasswordManager, PlainTextPasswordManager, \
     SHA1PasswordManager, SSHAPasswordManager
 
 from pyams_security.permission import register_permission
 from pyams_security.plugin import PluginSelector
+from pyams_security.plugin.jwt import create_jwt_token, get_jwt_claims
 from pyams_security.role import RoleSelector, register_role
 from pyams_security.utility import get_principal
 
@@ -48,6 +52,9 @@ def include_package(config):
     config.add_directive('register_role', register_role)
     config.add_request_method(get_principal, 'principal', reify=True)
 
+    config.add_request_method(create_jwt_token, 'create_jwt_token')
+    config.add_request_method(get_jwt_claims, 'jwt_claims', reify=True)
+
     # add subscribers predicate
     config.add_subscriber_predicate('role_selector', RoleSelector)
     config.add_subscriber_predicate('plugin_selector', PluginSelector)
@@ -55,5 +62,17 @@ def include_package(config):
     # add login route
     config.add_route('oauth_login', '/login/oauth/{provider_name}')
     config.add_route('jwt_login', '/login/jwt')
+
+    # update JWT algorithms
+    try:
+        import pycrypto  # pylint: disable=import-outside-toplevel,unused-import
+        import ecdsa  # pylint: disable=import-outside-toplevel,unused-import
+    except ImportError:
+        pass
+    else:
+        jwt.unregister_algorithm('RS256')
+        jwt.unregister_algorithm('ES256')
+        jwt.register_algorithm('RS256', RSAAlgorithm(RSAAlgorithm.SHA256))
+        jwt.register_algorithm('ES256', ECAlgorithm(ECAlgorithm.SHA256))
 
     config.scan()
