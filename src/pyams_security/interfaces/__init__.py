@@ -595,19 +595,19 @@ class ISecurityManager(IContainer, IDirectoryPluginInfo, IAttributeAnnotatable):
     jwt_algorithm = Choice(title=_("JWT encoding algorithm"),
                            description=_(""),
                            required=False,
-                           values=('RS256', 'HS256'),
-                           default='RS256')
+                           values=('RS256', 'RS512', 'HS256', 'HS512'),
+                           default='RS512')
 
     jwt_secret = TextLine(title=_("JWT secret"),
-                          description=_("This secret is required when using HS256 encryption"),
+                          description=_("This secret is required when using HS* encryption"),
                           required=False)
 
     jwt_private_key = Text(title=_("JWT private key"),
-                           description=_("The secret key is required when using RS256 algorithm"),
+                           description=_("The secret key is required when using RS* algorithm"),
                            required=False)
 
     jwt_public_key = Text(title=_("JWT public key"),
-                          description=_("The public key is required when using RS256 algorithm"),
+                          description=_("The public key is required when using RS* algorithm"),
                           required=False)
 
     jwt_expiration = Int(title=_("Token lifetime"),
@@ -620,10 +620,10 @@ class ISecurityManager(IContainer, IDirectoryPluginInfo, IAttributeAnnotatable):
         if self.enable_jwt_login:
             if not self.jwt_algorithm:
                 raise Invalid(_("You must choose an algorithm to enable JWT authentication"))
-            if self.jwt_algorithm == 'HS256':
+            if self.jwt_algorithm.startswith('HS'):
                 if not self.jwt_secret:
                     raise Invalid(_("You must define JWT secret to use HS256 algorithm"))
-            elif self.jwt_algorithm == 'RS256':
+            elif self.jwt_algorithm.startswith('RS'):
                 if not (self.jwt_secret_key and self.jwt_public_key):
                     raise Invalid(_("You must define a private and a public key to use RS256 "
                                     "algorithm"))

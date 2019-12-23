@@ -70,6 +70,8 @@ class JWTAuthenticationPlugin:
 
     def create_token(self, principal, expiration=None, audience=None, **claims):
         """Create JWT token"""
+        if not self.is_enabled():
+            return None
         security_manager = self.security_manager
         payload = {}
         payload.update(claims)
@@ -84,7 +86,7 @@ class JWTAuthenticationPlugin:
         if audience:
             payload['aud'] = audience
         algorithm = security_manager.jwt_algorithm
-        if algorithm == 'HS256':
+        if algorithm.startswith('HS'):
             key = security_manager.jwt_secret
         else:  # RS256
             key = security_manager.jwt_private_key
@@ -95,6 +97,8 @@ class JWTAuthenticationPlugin:
 
     def get_claims(self, request):
         """Get JWT claims"""
+        if not self.is_enabled():
+            return {}
         if self.http_header == 'Authorization':
             try:
                 if request.authorization is None:
@@ -111,9 +115,9 @@ class JWTAuthenticationPlugin:
         try:
             security_manager = self.security_manager
             algorithm = security_manager.jwt_algorithm
-            if algorithm == 'HS256':
+            if algorithm.startswith('HS'):
                 key = security_manager.jwt_secret
-            else:  # RS256
+            else:  # RS256/RS512
                 key = security_manager.jwt_public_key
             claims = jwt.decode(token, key, algorithms=[algorithm],
                                 leeway=self.leeway, audience=self.audience)
@@ -126,25 +130,19 @@ class JWTAuthenticationPlugin:
     def extract_credentials(self, request, **kwargs):  # pylint: disable=unused-argument
         """Extract principal ID from given request"""
         claims = self.get_claims(request)
-        if claims:
-            return Credentials(self.prefix,
-                               claims.get('sub'),
-                               login=claims.get('login'))
-        return None
+        return Credentials(self.prefix,
+                           claims.get('sub'),
+                           login=claims.get('login')) if claims else None
 
     def authenticate(self, credentials, request):  # pylint: disable=unused-argument
         """Authenticate JWT token"""
         claims = self.get_claims(request)
-        if not claims:
-            return None
-        return claims.get('sub')
+        return claims.get('sub') if claims else None
 
     def unauthenticated_userid(self, request):
         """Get unauthenticated user ID"""
         claims = self.get_claims(request)
-        if not claims:
-            return None
-        return self.get_claims(request).get('sub')
+        return claims.get('sub') if claims else None
 
 
 def create_jwt_token(request, principal, expiration=None, audience=None, **claims):

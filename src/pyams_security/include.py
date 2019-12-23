@@ -71,6 +71,8 @@ def include_package(config):
         # pylint: disable=import-outside-toplevel
         jwt.unregister_algorithm('RS256')
         jwt.register_algorithm('RS256', RSAAlgorithm(RSAAlgorithm.SHA256))
+        jwt.unregister_algorithm('RS512')
+        jwt.register_algorithm('RS512', RSAAlgorithm(RSAAlgorithm.SHA512))
 
     try:
         import ecdsa  # pylint: disable=import-outside-toplevel,unused-import
@@ -81,5 +83,7 @@ def include_package(config):
         # pylint: disable=import-outside-toplevel
         jwt.unregister_algorithm('ES256')
         jwt.register_algorithm('ES256', ECAlgorithm(ECAlgorithm.SHA256))
+        jwt.unregister_algorithm('ES512')
+        jwt.register_algorithm('ES512', ECAlgorithm(ECAlgorithm.SHA512))
 
     config.scan()
