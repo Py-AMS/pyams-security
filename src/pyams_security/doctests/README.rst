@@ -548,6 +548,10 @@ You have to set several security manager properties to use JWT:
 
     >>> from pyams_security.plugin.jwt import create_jwt_token
     >>> from pyams_security.skin.jwt import login as jwt_login
+
+    >>> DummyRequest().unauthenticated_userid is None
+    True
+
     >>> jwt_request = DummyRequest(method='POST', path='/login/jwt',
     ...                            params={'login': 'user1', 'password': 'passwd'})
     >>> jwt_request.create_jwt_token = lambda *args, **kwargs: create_jwt_token(jwt_request, *args, **kwargs)
@@ -559,6 +563,8 @@ You have to set several security manager properties to use JWT:
 Let's now try to use this token:
 
     >>> jwt_request = DummyRequest(authorization=('JWT', jwt_result['token']))
+    >>> jwt_request.unauthenticated_userid
+    'users:user1'
     >>> jwt_principal_id = sm.authenticated_userid(jwt_request)
     >>> jwt_principal_id
     'users:user1'
