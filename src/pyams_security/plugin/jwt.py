@@ -19,6 +19,7 @@ import logging
 from datetime import datetime, timedelta
 
 import jwt
+from ZODB.POSException import ConnectionStateError
 from jwt import InvalidTokenError
 
 from pyams_security.credential import Credentials
@@ -56,12 +57,15 @@ class JWTAuthenticationPlugin:
     @property
     def security_manager(self):
         """Security manager getter"""
-        return query_utility(ISecurityManager)
+        try:
+            return query_utility(ISecurityManager)
+        except ConnectionStateError:
+            return None
 
     def is_enabled(self):
         """Check if JWT authentication is enabled in security manager"""
-        return self.security_manager.enable_jwt_login \
-            if (self.security_manager is not None) else False
+        manager = self.security_manager
+        return manager.enable_jwt_login if (manager is not None) else False
 
     @property
     def expiration(self):
