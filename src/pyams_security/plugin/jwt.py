@@ -99,7 +99,7 @@ class JWTAuthenticationPlugin:
             token = token.decode('ascii')
         return token
 
-    def get_claims(self, request):
+    def get_claims(self, request):  # pylint: disable=too-many-return-statements
         """Get JWT claims"""
         if not self.is_enabled():
             return {}

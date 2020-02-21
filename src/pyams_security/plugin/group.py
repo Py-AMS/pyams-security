@@ -41,6 +41,8 @@ __docformat__ = 'restructuredtext'
 
 LOGGER = logging.getLogger('PyAMS(security)')
 
+GROUP_ID_FORMATTER = '{prefix}:{group_id}'
+
 
 @implementer(ILocalGroup)
 class Group(Persistent, Contained):
@@ -121,8 +123,8 @@ class GroupsFolder(Folder):
         group = self.get(group_id)
         if group is not None:
             if info:
-                return PrincipalInfo(id='{prefix}:{group_id}'.format(prefix=self.prefix,
-                                                                     group_id=group.group_id),
+                return PrincipalInfo(id=GROUP_ID_FORMATTER.format(prefix=self.prefix,
+                                                                  group_id=group.group_id),
                                      title=group.title)
             return group
         return None
@@ -151,8 +153,8 @@ class GroupsFolder(Folder):
         query = query.lower()
         for group in self.values():
             if query in group.title.lower():
-                yield PrincipalInfo(id='{prefix}:{group_id}'.format(prefix=self.prefix,
-                                                                    group_id=group.group_id),
+                yield PrincipalInfo(id=GROUP_ID_FORMATTER.format(prefix=self.prefix,
+                                                                 group_id=group.group_id),
                                     title=group.title)
 
 
@@ -166,8 +168,8 @@ def handle_added_group(event):
         groups_set = principals_map.get(principal_id)
         if groups_set is None:
             groups_set = set()
-        group_id = '{prefix}:{group_id}'.format(prefix=folder.prefix,
-                                                group_id=group.group_id)
+        group_id = GROUP_ID_FORMATTER.format(prefix=folder.prefix,
+                                             group_id=group.group_id)
         groups_set.add(group_id)
         principals_map[principal_id] = groups_set
 
@@ -183,8 +185,8 @@ def handle_added_principals(event):
         groups_set = principals_map.get(principal_id)
         if groups_set is None:
             groups_set = set()
-        group_id = '{prefix}:{group_id}'.format(prefix=group.__parent__.prefix,
-                                                group_id=group.group_id)
+        group_id = GROUP_ID_FORMATTER.format(prefix=group.__parent__.prefix,
+                                             group_id=group.group_id)
         groups_set.add(group_id)
         principals_map[principal_id] = groups_set
 
@@ -197,8 +199,8 @@ def handle_removed_principals(event):
     for principal_id in event.principals:
         groups_set = principals_map.get(principal_id)
         if groups_set:
-            group_id = '{prefix}:{group_id}'.format(prefix=group.__parent__.prefix,
-                                                    group_id=group.group_id)
+            group_id = GROUP_ID_FORMATTER.format(prefix=group.__parent__.prefix,
+                                                 group_id=group.group_id)
             if group_id in groups_set:
                 groups_set.remove(group_id)
             if groups_set:

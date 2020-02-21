@@ -53,6 +53,8 @@ INTERNAL_USER_ID = '{0}:{1}'.format(SYSTEM_PREFIX, INTERNAL_USER_LOGIN)
 
 SYSTEM_ADMIN_ROLE = 'system.Manager'
 
+USER_LOGIN_TITLE = _("User login")
+
 
 #
 # Roles events interfaces
@@ -347,7 +349,7 @@ EMAIL_REGEX = re.compile(r"[^@]+@[^@]+\.[^@]+")
 class IUserRegistrationInfo(Interface):
     """User registration info"""
 
-    login = TextLine(title=_("User login"),
+    login = TextLine(title=USER_LOGIN_TITLE,
                      description=_("If you don't provide a custom login, your login will be your "
                                    "email address..."),
                      required=False)
@@ -403,7 +405,7 @@ class IUserRegistrationConfirmationInfo(Interface):
     activation_hash = TextLine(title=_("Activation hash"),
                                required=True)
 
-    login = TextLine(title=_("User login"),
+    login = TextLine(title=USER_LOGIN_TITLE,
                      required=True)
 
     password = EncodedPasswordField(title=_("Password"),
@@ -426,7 +428,7 @@ class ILocalUser(IAttributeAnnotatable):
 
     containers(IUsersFolderPlugin)
 
-    login = TextLine(title=_("User login"),
+    login = TextLine(title=USER_LOGIN_TITLE,
                      required=True,
                      readonly=True)
 
@@ -620,10 +622,10 @@ class ISecurityManager(IContainer, IDirectoryPluginInfo, IAttributeAnnotatable):
         if self.enable_jwt_login:
             if not self.jwt_algorithm:
                 raise Invalid(_("You must choose an algorithm to enable JWT authentication"))
-            if self.jwt_algorithm.startswith('HS'):
+            if self.jwt_algorithm.startswith('HS'):  # pylint: disable=no-member
                 if not self.jwt_secret:
                     raise Invalid(_("You must define JWT secret to use HS256 algorithm"))
-            elif self.jwt_algorithm.startswith('RS'):
+            elif self.jwt_algorithm.startswith('RS'):  # pylint: disable=no-member
                 if not (self.jwt_secret_key and self.jwt_public_key):
                     raise Invalid(_("You must define a private and a public key to use RS256 "
                                     "algorithm"))
