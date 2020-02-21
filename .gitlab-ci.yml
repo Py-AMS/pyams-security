@@ -46,6 +46,9 @@ dist:
     artifacts:
         paths:
             - ./dist
+    only:
+        refs:
+            - tags
 
 pylint:
     stage: quality

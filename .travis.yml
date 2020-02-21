@@ -7,7 +7,7 @@ python:
 install:
 - pip install coverage coveralls
 - python bootstrap.py
-- ./bin/buildout
+- "./bin/buildout"
 script:
 - coverage erase
 - coverage run ./bin/test
@@ -18,6 +18,6 @@ deploy:
     tags: true
   user: __token__
   password:
-    secure: Rcyaernnu8V0Ab2WDrAe3m+Qs68CKyHlYxa+GQYSWcYqcgiolu601qe2C96eHWSjiEMZIK5QNU+vB/FVC/Y9QZtrRWHDmgM/ANRN5TE4I9Ku49+OM38DphLISzSvj+eJx+8VED10gnnpJb10hsYn08JMT/1tfZu41ReEWw9bG+zJwfqSdNvisJMY84MhH2qhHzXVlP5YTUOSXZCuqqYad/CULQjk4ef4h6/kN264bLZspeWQ3mqXhL5MIxJCh3ciRAC+emO8TCMOXXPOMXBN6/Q9VKDq39/vCrVueJCZO6vP7oDbBVInKasxEnVJtgmOC79eucWBdcp+xg7bZId9v7Z+c+hqJ2EaqjtCOZ9fCU7HEBC7WZrvaadGC2mEe8Yu/aYm6BwNj4RU4r3F7Cg2FRSOiihrmfvp9oeDXy6BdHY/a6zlViFXOTrSbZUxP4g6MnwXH8NyRUtslSrTIoMYAL/bVm0WTPh2KT69bGh47dFS40DEnXIfBIA95R7WXp6a4zA4YsGAq4gVOi1VutD/hbNg9Acy+/mMeQ8ZXD1FCZPrLGHlhMsihqYqV1hoeQrDbNKidSBCkPeota3wvhiEycxYKY+DJ9ywRBsFKQrEnl5egG+k4/NexdLs1KehpUZh+m89BQIxV4acQP62ZAoshM5l69W/fRz5ydajojh/Sdk=
+    secure: iY1jlISfnqge1n/NSzoIRgcvzfnur2EDsALmhmebBg1A0HTAAahxBXfGbAt0hddD6gTD2xVUmN2uoE1qTF2xmBSKBPsXH6f5dzLXDIUvazbsoiJaV7IAdQn5KZwShql0Swd3SVwgeBT2T4eF8TkPwXTahzoC8Pa4kMaG2zSJVO8HXM6pgITkLP+c335Lf0g+WamD2eVHtZRAat9qNPzBp6Yb9cVOkwCPbgKffW7a+vvremy1Lh5+JUR38+PIa73/osbgYY7T8M2lAY/HHVZhWxrdRuq0hSSTMjVsPH/ejl/sW7aPOXl6zG9tJl+yRAflDZ3BpKBDBzhsrDctNyFpB+aRl6n/J3dqycuviUYISlzgOJCGZV0Ang98kEbblE6LEDpNZDyIRZatYdcVN4fcIqtivCafxlfn6B/lIY2DpTFZ3gTmQABtA6w64WqfpiwUteQsq+mwgqr8Xyoh6Qxm1nVBHWHqD9CQp7aexRKylUa6I7SwghoEJFOQ3R9ofuHJbxzdHpR7Dg6dyNc5hKK4e94sHm3Gm7pruxhAgxJWZB3YgJKcguW1n573FGD/utGpVdWGJ1NCFOShIzWSXmOYeNi4DFwtcQnNJFXrmjhzFkO9bIhpsTcowLxST+6/eqNVBvCe49jwtaJwgDIukcyl1YVh1zmKACrHS09Thi8o9sc=
   distributions: sdist bdist_egg bdist_wheel
   skip_existing: true

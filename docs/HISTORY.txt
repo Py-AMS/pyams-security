@@ -1,6 +1,11 @@
 Changelog
 =========
 
+1.0.3
+-----
+ - handle ConnectionStateError in JWT authentication plug-in
+ - updated doctests
+
 1.0.2
 -----
  - added support for HS512 and RS512 JWT encryption protocols
