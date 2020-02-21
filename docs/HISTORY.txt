@@ -1,6 +1,10 @@
 Changelog
 =========
 
+1.0.5
+-----
+ - simple version switch to avoid mismatch in Buildout configuration file...  :(
+
 1.0.4
 -----
  - code cleanup
