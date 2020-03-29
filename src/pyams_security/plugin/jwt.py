@@ -23,7 +23,8 @@ from ZODB.POSException import ConnectionStateError
 from jwt import InvalidTokenError
 
 from pyams_security.credential import Credentials
-from pyams_security.interfaces import ICredentialsPlugin, IJWTAuthenticationPlugin, ISecurityManager
+from pyams_security.interfaces import ICredentialsPlugin, IJWTAuthenticationPlugin, \
+    ISecurityManager
 from pyams_utils.registry import query_utility, utility_config
 from pyams_utils.wsgi import wsgi_environ_cache
 
