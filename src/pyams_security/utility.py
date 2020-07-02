@@ -18,6 +18,7 @@ This module defines the SecurityManager utility and custom Pyramid authenticatio
 import logging
 from functools import lru_cache
 
+from ZODB.POSException import ConnectionStateError
 from beaker.cache import cache_region
 from pyramid.authentication import AuthTktCookieHelper
 from pyramid.decorator import reify
@@ -313,7 +314,10 @@ class PyAMSAuthenticationPolicy:
             return principal_id
         manager = self._get_security_manager(request)
         if manager is not None:
-            return manager.authenticated_userid(request)
+            try:
+                return manager.authenticated_userid(request)
+            except ConnectionStateError:
+                pass
         return None
 
     @request_property(key=None)
