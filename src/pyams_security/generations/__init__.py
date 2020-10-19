@@ -32,25 +32,25 @@ __docformat__ = 'restructuredtext'
 
 RENAMED_CLASSES = {
     'pyams_security.interfaces ISocialUsersFolderPlugin':
-        'pyams_security.interfaces IOAuthUsersFolderPlugin',
+        'pyams_auth_oauth.interfaces IOAuthUsersFolderPlugin',
     'pyams_security.interfaces ISocialUser':
-        'pyams_security.interfaces IOAuthUser',
+        'pyams_auth_oauth.interfaces IOAuthUser',
     'pyams_security.interfaces ISocialLoginProviderInfo':
-        'pyams_security.interfaces IOAuthLoginProviderInfo',
+        'pyams_auth_oauth.interfaces IOAuthLoginProviderInfo',
     'pyams_security.interfaces ISocialLoginConfiguration':
-        'pyams_security.interfaces IOAuthLoginConfiguration',
+        'pyams_auth_oauth.interfaces IOAuthLoginConfiguration',
     'pyams_security.interfaces ISocialLoginProviderConnection':
-        'pyams_security.interfaces IOAuthLoginProviderConnection',
+        'pyams_auth_oauth.interfaces IOAuthLoginProviderConnection',
     'pyams_security.plugin.social SocialUser':
-        'pyams_security.plugin.oauth OAuthUser',
+        'pyams_auth_oauth.plugin OAuthUser',
     'pyams_security.plugin.social SocialUsersFolder':
-        'pyams_security.plugin.oauth OAuthUsersFolder',
+        'pyams_auth_oauth.plugin OAuthUsersFolder',
     'pyams_security.plugin.social SocialLoginProviderInfo':
-        'pyams_security.plugin.social OAuthLoginProviderInfo',
+        'pyams_auth_oauth.plugin OAuthLoginProviderInfo',
     'pyams_security.plugin.social SocialLoginConfiguration':
-        'pyams_security.plugin.oauth OAuthLoginConfiguration',
+        'pyams_auth_oauth.plugin OAuthLoginConfiguration',
     'pyams_security.plugin.social SocialLoginProviderConnection':
-        'pyams_security.plugin.oauth OAuthLoginProviderConnection'
+        'pyams_auth_oauth.plugin OAuthLoginProviderConnection'
 }
 
 
