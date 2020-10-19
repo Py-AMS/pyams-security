@@ -9,7 +9,7 @@
 </head>
 <body>
 	${structure:message}
-	<p i18n:translate="">The login what was given to your account is: <tal:var content="user.login" i18n:name="login" />.</p>
+	<p i18n:translate="">The login that was given to your account is: <tal:var content="user.login" i18n:name="login" />.</p>
 	<p><span i18n:translate="">To confirm your registration, please click on the following link and re-enter your login credentials:</span><br />
 		<a tal:define="url tales:absolute_url(site);
 					   href string:${url}/@@user-confirmation.html?hash=${user.activation_hash};"
