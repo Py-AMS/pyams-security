@@ -66,6 +66,12 @@ token which will be used in every request after authentication.
     ...                                    secure=False)
     >>> config.set_authentication_policy(policy)
 
+Some tests will require a configured cache:
+
+    >>> from beaker.cache import CacheManager, cache_regions
+    >>> cache = CacheManager(**{'cache.type': 'memory'})
+    >>> cache_regions.update({'short': {'type': 'memory', 'expire': 0}})
+
 Let's start with a simple local user:
 
     >>> from pyams_security.interfaces import ISecurityManager

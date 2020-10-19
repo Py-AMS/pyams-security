@@ -47,6 +47,12 @@ This includes classes to grant roles to principal, using dedicated schema fields
     >>> from pyams_utils.registry import get_utility
     >>> sm = get_utility(ISecurityManager)
 
+Some tests will require a configured cache:
+
+    >>> from beaker.cache import CacheManager, cache_regions
+    >>> cache = CacheManager(**{'cache.type': 'memory'})
+    >>> cache_regions.update({'short': {'type': 'memory', 'expire': 0}})
+
 
 Security schemas fields
 -----------------------
