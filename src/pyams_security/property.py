@@ -28,7 +28,7 @@ __docformat__ = 'restructuredtext'
 class RolePrincipalsFieldProperty:
     """Custom field property used to handle role principals"""
 
-    def __init__(self, field, role_id=None, name=None, **args):
+    def __init__(self, field, role_id=None, name=None, **args):  # pylint: disable=unused-argument
         if not IField.providedBy(field):
             raise ValueError("Provided field must implement IField interface")
         if role_id is None:
