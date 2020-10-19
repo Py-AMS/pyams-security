@@ -52,7 +52,7 @@ def register_permission(config, permission):
     ZMI features
     """
     if not IPermission.providedBy(permission):
-        permission = Permission(permission)
+        permission = Permission(id=permission, title=permission)
     config.registry.registerUtility(permission, IPermission, name=permission.id)
 
 
