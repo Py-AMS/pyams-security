@@ -23,10 +23,11 @@ DOCS = os.path.join(os.path.dirname(__file__),
 README = os.path.join(DOCS, 'README.txt')
 HISTORY = os.path.join(DOCS, 'HISTORY.txt')
 
-version = '1.0.5'
+version = '1.1.0'
 long_description = open(README).read() + '\n\n' + open(HISTORY).read()
 
 tests_require = [
+    'pyams_auth_http',
     'pyams_catalog',
 ]
 
@@ -62,7 +63,7 @@ setup(name='pyams_security',
           'setuptools',
           # -*- Extra requirements: -*-
           'BTrees',
-          'authomatic',
+          'ZODB',
           'beaker',
           'chameleon',
           'hypatia',
@@ -72,7 +73,6 @@ setup(name='pyams_security',
           'pyams_mail',
           'pyams_site',
           'pyams_utils',
-          'pyjwt[crypto]',
           'pyramid',
           'pyramid_chameleon',
           'pyramid_mailer',

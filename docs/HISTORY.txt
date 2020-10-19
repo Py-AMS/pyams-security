@@ -1,6 +1,13 @@
 Changelog
 =========
 
+1.1.0
+-----
+ - moved authentication plug-ins to dedicated packages (see pyams_auth_http, pyams_auth_jwt...)
+ - moved PyAMS authentication policy to dedicated module
+ - handle ConnectionStateError in authentication policy
+ - updated doctests
+
 1.0.5
 -----
  - simple version switch to avoid mismatch in Buildout configuration file...  :(
