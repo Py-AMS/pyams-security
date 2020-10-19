@@ -1,6 +1,10 @@
 Changelog
 =========
 
+1.1.2
+-----
+ - updated doctests with configured cache
+
 1.1.1
 -----
  - removed dependency on *pyams_auth_http* package
