@@ -1,6 +1,10 @@
 Changelog
 =========
 
+1.1.1
+-----
+ - removed dependency on *pyams_auth_http* package
+
 1.1.0
 -----
  - moved authentication plug-ins to dedicated packages (see pyams_auth_http, pyams_auth_jwt...)
