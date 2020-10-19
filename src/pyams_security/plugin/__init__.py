@@ -41,6 +41,10 @@ class PluginSelector:
     def __call__(self, event):
         if isinstance(self.plugin, str):
             return event.plugin == self.plugin
-        if isinstance(self.plugin, InterfaceClass):
-            return self.plugin.providedBy(event.plugin)
+        try:
+            if self.plugin.providedBy(event.plugin):
+                return True
+        except (AttributeError, TypeError):
+            if isinstance(event.plugin, self.plugin):
+                return True
         return False
