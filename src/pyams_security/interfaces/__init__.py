@@ -23,10 +23,9 @@ from zope.container.interfaces import IContainer
 from zope.interface import Attribute, Interface, implementer, invariant
 from zope.interface.interfaces import IObjectEvent, Invalid, ObjectEvent
 from zope.location.interfaces import IContained
-from zope.schema import Bool, Choice, Datetime, Dict, Int, List, Set, Text, TextLine, Tuple
+from zope.schema import Bool, Choice, Datetime, Dict, Set, Text, TextLine, Tuple
 
-from pyams_security.interfaces.names import OAUTH_PROVIDERS_VOCABULARY_NAME, \
-    OAUTH_USERS_FOLDERS_VOCABULARY_NAME, PASSWORD_MANAGERS_VOCABULARY_NAME, \
+from pyams_security.interfaces.names import PASSWORD_MANAGERS_VOCABULARY_NAME, \
     USERS_FOLDERS_VOCABULARY_NAME
 from pyams_security.schema import PermissionsSetField, PrincipalsSetField
 from pyams_utils.schema import EncodedPasswordField
@@ -242,67 +241,6 @@ class IDirectorySearchPlugin(IDirectoryPlugin):
 
 class IGroupsAwareDirectoryPlugin(Interface):
     """Marker interface for plug-ins handling groups"""
-
-
-#
-# OAuth users interfaces
-#
-
-class IOAuthUsersFolderPlugin(IDirectorySearchPlugin):
-    """OAuth users folder interface"""
-
-    contains('pyams_security.interfaces.IOAuthUser')
-
-
-class IOAuthUser(IAttributeAnnotatable):
-    """OAuth user interface"""
-
-    containers(IOAuthUsersFolderPlugin)
-
-    user_id = TextLine(title=_("Internal provider ID"))
-
-    provider_name = TextLine(title=_("OAuth provider name"))
-
-    username = TextLine(title=_("User name"),
-                        required=False)
-
-    name = TextLine(title=_("Name"))
-
-    first_name = TextLine(title=_('First name'),
-                          required=False)
-
-    last_name = TextLine(title=_('Last name'),
-                         required=False)
-
-    nickname = TextLine(title=_('Nickname'),
-                        required=False)
-
-    email = TextLine(title=_("E-mail address"),
-                     required=False)
-
-    timezone = TextLine(title=_('Timezone'),
-                        required=False)
-
-    country = TextLine(title=_('Country'),
-                       required=False)
-
-    city = TextLine(title=_('City'),
-                    required=False)
-
-    postal_code = TextLine(title=_("Postal code"),
-                           required=False)
-
-    locale = TextLine(title=_('Locale code'),
-                      required=False)
-
-    picture = TextLine(title=_('Picture URL'),
-                       required=False)
-
-    birth_date = Datetime(title=_('Birth date'),
-                          required=False)
-
-    registration_date = Datetime(title=_("Registration date"),
-                                 readonly=True)
 
 
 #
@@ -589,75 +527,6 @@ class ISecurityManager(IContainer, IDirectoryPluginInfo, IAttributeAnnotatable):
 
     contains(IPlugin)
 
-    enable_jwt_login = Bool(title=_("Enable JWT login?"),
-                            description=_("Enable login via JWT authentication"),
-                            required=False,
-                            default=False)
-
-    jwt_algorithm = Choice(title=_("JWT encoding algorithm"),
-                           description=_(""),
-                           required=False,
-                           values=('RS256', 'RS512', 'HS256', 'HS512'),
-                           default='RS512')
-
-    jwt_secret = TextLine(title=_("JWT secret"),
-                          description=_("This secret is required when using HS* encryption"),
-                          required=False)
-
-    jwt_private_key = Text(title=_("JWT private key"),
-                           description=_("The secret key is required when using RS* algorithm"),
-                           required=False)
-
-    jwt_public_key = Text(title=_("JWT public key"),
-                          description=_("The public key is required when using RS* algorithm"),
-                          required=False)
-
-    jwt_expiration = Int(title=_("Token lifetime"),
-                         description=_("JWT token lifetime, in seconds"),
-                         required=False)
-
-    @invariant
-    def check_jwt(self):
-        """Check for JWT configuration"""
-        if self.enable_jwt_login:
-            if not self.jwt_algorithm:
-                raise Invalid(_("You must choose an algorithm to enable JWT authentication"))
-            if self.jwt_algorithm.startswith('HS'):  # pylint: disable=no-member
-                if not self.jwt_secret:
-                    raise Invalid(_("You must define JWT secret to use HS256 algorithm"))
-            elif self.jwt_algorithm.startswith('RS'):  # pylint: disable=no-member
-                if not (self.jwt_secret_key and self.jwt_public_key):
-                    raise Invalid(_("You must define a private and a public key to use RS256 "
-                                    "algorithm"))
-
-    enable_oauth_login = Bool(title=_("Enable OAuth login?"),
-                              description=_("Enable login via OAuth authentication providers"),
-                              required=False,
-                              default=False)
-
-    oauth_users_folder = Choice(title=_("OAuth users folder"),
-                                description=_("Name of folder used to store properties of users "
-                                              "authenticated with OAuth"),
-                                required=False,
-                                vocabulary=OAUTH_USERS_FOLDERS_VOCABULARY_NAME)
-
-    @invariant
-    def check_oauth_users_folder(self):
-        """Check for OAuth configuration"""
-        if self.enable_oauth_login and not self.oauth_users_folder:
-            raise Invalid(_("You can't activate OAuth login without selecting an OAuth users "
-                            "folder"))
-
-    authomatic_secret = TextLine(title=_("Authomatic secret"),
-                                 description=_("This secret phrase is used to encrypt Authomatic "
-                                               "cookie"),
-                                 default='this is not a secret',
-                                 required=True)
-
-    oauth_login_use_popup = Bool(title=_("Use OAuth popup?"),
-                                 required=True,
-                                 default=False)
-
     open_registration = Bool(title=_("Enable free registration?"),
                              description=_("If 'Yes', any use will be able to create a new user "
                                            "account"),
@@ -676,13 +545,6 @@ class ISecurityManager(IContainer, IDirectoryPluginInfo, IAttributeAnnotatable):
             raise Invalid(_("You can't activate open registration without selecting a users "
                             "folder"))
 
-    credentials_plugins_names = Tuple(title=_("Credentials plug-ins"),
-                                      description=_("These plug-ins can be used to extract request "
-                                                    "credentials"),
-                                      value_type=TextLine(),
-                                      readonly=True,
-                                      default=())
-
     authentication_plugins_names = Tuple(title=_("Authentication plug-ins"),
                                          description=_("The plug-ins can be used to check "
                                                        "extracted credentials against a local or "
@@ -696,119 +558,32 @@ class ISecurityManager(IContainer, IDirectoryPluginInfo, IAttributeAnnotatable):
                                     value_type=TextLine(),
                                     default=())
 
-    def effective_principals(self, principal_id, request=None, context=None):
-        """Get effective principals of given principal for context"""
-
     def get_plugin(self, name):
         """Get plug-in matching given name"""
 
-    def get_credentials_plugins(self):
-        """Extract list of credentials plug-ins"""
+    credentials_plugin = Attribute("Iterator on registered credentials plug-ins")
 
-    def order_credentials_plugins(self, names):
-        """Define credentials plug-ins order"""
+    authentication_plugins = Attribute("Iterator on registered and local authentication plug-ins")
 
-    def get_authentication_plugins(self):
-        """Extract list of authentication plug-ins"""
+    directory_plugins = Attribute("Iterator on registered and local directory plug-ins")
 
-    def order_authentication_plugins(self, names):
-        """Define authentication plug-ins order"""
+    groups_directory_plugins = Attribute("Iterator on registered and local groups plug-ins")
 
-    def get_directory_plugins(self):
-        """Extract list of directory plug-ins"""
+    def effective_principals(self, principal_id, request=None, context=None):
+        """Get effective principals of provided principal ID"""
 
-    def order_directory_plugins(self, names):
-        """Define directory plug-ins order"""
+    def get_principal(self, principal_id, info=True):
+        """Principal lookup for provided principal ID"""
+
+    def get_all_principals(self, principal_id):
+        """Get all principals of given principal ID"""
+
+    def find_principals(self, query):
+        """Find principals matching given query"""
 
 
 LOGIN_REFERER_KEY = 'pyams_security.login.referer'
-
-
-#
-# OAuth login providers configuration
-#
-
-class IOAuthLoginProviderInfo(Interface):
-    """OAuth login provider info
-
-    This interface is used to adapt providers to
-    get minimum information like icon class, URLs
-    required to get consumer elements...
-    """
-
-    name = TextLine(title="Provider name")
-
-    provider = Attribute("Provider class")
-
-    icon_class = TextLine(title="Icon class",
-                          description="Fontawesome icon class",
-                          required=True)
-
-    icon_filename = TextLine(title="Color icon filename",
-                             required=True)
-
-    scope = List(title="User info scope",
-                 value_type=TextLine())
-
-
-class IOAuthLoginConfiguration(Interface):
-    """OAuth login configuration interface"""
-
-    contains('pyams_securiy.interfaces.IOAuthLoginProviderConnection')
-
-    def get_oauth_configuration(self):
-        """Get Authomatic configuration"""
-
-
-class IOAuthLoginProviderConnection(Interface):
-    """OAuth login provider info"""
-
-    containers(IOAuthLoginConfiguration)
-
-    provider_name = Choice(title=_("Provider name"),
-                           vocabulary=OAUTH_PROVIDERS_VOCABULARY_NAME,
-                           required=True)
-
-    provider_id = Int(title=_("Provider ID"),
-                      description=_("This value should be unique between all providers"),
-                      required=True,
-                      min=0)
-
-    consumer_key = TextLine(title=_("Provider consumer key"),
-                            required=True)
-
-    consumer_secret = TextLine(title=_("Provider secret"),
-                               required=True)
-
-    def get_configuration(self):
-        """Get provider configuration"""
-
-
-#
-# JWT authentication utility interface
-#
-
-class IJWTAuthenticationPlugin(IAuthenticationPlugin):
-    """JWT authentication policy"""
-
-    audience = Attribute("Token audience")
-    leeway = Attribute("Token leeway")
-    http_header = Attribute("HTTP header used for JWT token")
-    auth_type = Attribute("JWT authentication type")
-    callback = Attribute("JWT authentication callback")
-    json_encoder = Attribute("JSON encoder used to encode token claims")
-
-    def is_enabled(self):
-        """Boolean value used to specify if plugin is enabled"""
-
-    def create_token(self, principal, expiration=None, audience=None, **claims):
-        """Create JWT token"""
-
-    def get_claims(self, request):
-        """Extract claims from JWT token"""
-
-    def unauthenticated_userid(self, request):
-        """User ID claimed by request credentials, if any"""
+"""Key of request annotation used to store referer"""
 
 
 #

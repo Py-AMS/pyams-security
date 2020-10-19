@@ -25,5 +25,3 @@ PASSWORD_MANAGERS_VOCABULARY_NAME = 'pyams_security.password.managers'
 
 USERS_FOLDERS_VOCABULARY_NAME = 'pyams_security.plugin.users-folders'
 LOCAL_GROUPS_VOCABULARY_NAME = 'pyams_security.plugin.local-groups'
-OAUTH_USERS_FOLDERS_VOCABULARY_NAME = 'pyams_security.plugin.social-folders'
-OAUTH_PROVIDERS_VOCABULARY_NAME = 'pyams_security.plugin.oauth.providers'
