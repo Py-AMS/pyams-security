@@ -48,9 +48,8 @@ def get_package_dir(value):
 
 def setup_tests_registry():
     """Initialize required adapters and utilities for testing"""
-    config = setUp()
+    config = setUp(hook_zca=True)
     registry = config.registry
-    set_local_registry(registry)
     # register adapters
     registry.registerAdapter(I18nAttributeAdapter, (Interface, ), II18n)
     # register security factory
