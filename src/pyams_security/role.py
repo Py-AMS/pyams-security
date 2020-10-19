@@ -93,19 +93,17 @@ def register_role(config, role):
     """
     registry = config.registry
     if not IRole.providedBy(role):
-        role_utility = registry.queryUtility(IRole, name=role.get('id'))
-        if role_utility is None:
-            # registering a new role
-            role_utility = Role(role)
-            registry.registerUtility(role_utility, IRole, name=role_utility.id)
-        else:
-            # new registration of a given role to add permissions
-            role_utility.permissions = (role_utility.permissions or set()) | \
-                                       (role.get('permissions') or set())
-            role_utility.managers = (role_utility.managers or set()) | \
-                                    (role.get('managers') or set())
-    else:
+        role = Role(id=role, title=role)
+    role_utility = registry.queryUtility(IRole, name=role.id)
+    if role_utility is None:
+        # registering a new role
         registry.registerUtility(role, IRole, name=role.id)
+    else:
+        # new registration of a given role to add permissions
+        role_utility.permissions = (role_utility.permissions or set()) | \
+                                   (role.permissions or set())
+        role_utility.managers = (role_utility.managers or set()) | \
+                                (role.managers or set())
 
 
 @vocabulary_config(name=ROLES_VOCABULARY_NAME)
