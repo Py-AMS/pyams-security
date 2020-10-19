@@ -17,7 +17,7 @@ This module defines local groups of principals.
 
 import logging
 
-from BTrees import OOBTree
+from BTrees import OOBTree  # pylint: disable=no-name-in-module
 from persistent import Persistent
 from pyramid.events import subscriber
 from zope.container.contained import Contained
