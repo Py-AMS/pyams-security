@@ -1,6 +1,10 @@
 Changelog
 =========
 
+1.1.3
+-----
+ - small updates in policy management of *authenticated_user_id*
+
 1.1.2
 -----
  - updated doctests with configured cache

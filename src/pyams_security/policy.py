@@ -96,6 +96,9 @@ class PyAMSAuthenticationPolicy:
     @wsgi_environ_cache('pyams_security.authenticated_userid')
     def authenticated_userid(self, request):
         """Get authenticated user ID from given request"""
+        principal_id = self.unauthenticated_userid(request)
+        if principal_id is None:
+            return None
         try:
             manager = self.security_manager
             if manager is not None:
