@@ -36,7 +36,7 @@ This includes classes to grant roles to principal, using dedicated schema fields
     Upgrading PyAMS timezone to generation 1...
     Upgrading PyAMS catalog to generation 1...
     Upgrading PyAMS file to generation 3...
-    Upgrading PyAMS security to generation 1...
+    Upgrading PyAMS security to generation 2...
 
     >>> from zope.traversing.interfaces import BeforeTraverseEvent
     >>> from pyramid.threadlocal import manager
@@ -160,31 +160,64 @@ You can grant roles to principals directly on an object to define ACLs; this req
 work; the first step is to create an interface with principals schema fields setting roles, and
 to inherit from ProtectecObjectMixin:
 
+    >>> from pyams_security.interfaces import IContentRoles, IRolesPolicy
+    >>> from pyams_security.security import ProtectedObjectMixin
+
     >>> class IMyProtectedClass(Interface):
+    ...     """Base content interface"""
+
+    >>> @implementer(IMyProtectedClass)
+    ... class ProtectedObject(ProtectedObjectMixin):
+    ...     """Protected object class"""
+
+We are now going to create a little set of interfaces and adapters; the goal is to be able to
+add roles to a given class just by adding adapters:
+
+    >>> class IMyClassRoles(IContentRoles):
     ...     manager = PrincipalField(title="Main manager", role_id=manager_role)
     ...     managers = PrincipalsSetField(title="Managers list", role_id=manager_role)
     ...     designer = PrincipalField(title="Main designer")
     ...     designers = PrincipalsSetField(title="Designers list")
 
-    >>> from pyams_security.security import ProtectedObjectMixin
     >>> from pyams_security.property import RolePrincipalsFieldProperty
 
     >>> @implementer(IMyProtectedClass)
-    ... class ProtectedObject(ProtectedObjectMixin):
-    ...     manager = RolePrincipalsFieldProperty(IMyProtectedClass['manager'])
-    ...     managers = RolePrincipalsFieldProperty(IMyProtectedClass['managers'])
-    ...     designer = RolePrincipalsFieldProperty(IMyProtectedClass['designer'],
+    ... class MyRolesClass:
+    ...
+    ...     def __init__(self, context):
+    ...         self.__parent__ = context
+    ...
+    ...     manager = RolePrincipalsFieldProperty(IMyClassRoles['manager'])
+    ...     managers = RolePrincipalsFieldProperty(IMyClassRoles['managers'])
+    ...     designer = RolePrincipalsFieldProperty(IMyClassRoles['designer'],
     ...                                            role_id=designer_role)
-    ...     designers = RolePrincipalsFieldProperty(IMyProtectedClass['designers'],
+    ...     designers = RolePrincipalsFieldProperty(IMyClassRoles['designers'],
     ...                                             role_id=designer_role)
+
+    >>> from pyams_utils.adapter import adapter_config, ContextAdapter
+    >>> from pyams_utils.testing import call_decorator
+
+    >>> def protected_class_roles_adapter(context):
+    ...     return MyRolesClass(context)
+
+    >>> call_decorator(config, adapter_config, protected_class_roles_adapter,
+    ...                required=IMyProtectedClass, provides=IMyClassRoles)
+
+    >>> class MyProtectedClassRolesPolicy(ContextAdapter):
+    ...     roles_interface = IMyClassRoles
+    ...     weight = 1  # just used for ordering
+
+    >>> call_decorator(config, adapter_config, MyProtectedClassRolesPolicy,
+    ...                name='MyRoles', required=IMyProtectedClass, provides=IRolesPolicy)
 
     >>> protected = ProtectedObject()
     >>> protected.__acl__()
     []
 
-    >>> protected.managers
+    >>> roles = IMyClassRoles(protected)
+    >>> roles.managers
     set()
-    >>> protected.managers = {'system:admin'}
+    >>> roles.managers = {'system:admin'}
     Traceback (most recent call last):
     ...
     ValueError: Can't use role properties on object not providing IRoleProtectedObject interface!
@@ -195,17 +228,17 @@ You have to implement the IDefaultProtectionPolicy to be able to support roles:
     >>> from pyams_security.interfaces import IDefaultProtectionPolicy
     >>> alsoProvides(protected, IDefaultProtectionPolicy)
 
-    >>> protected.manager = 'system:admin'
-    >>> protected.manager
+    >>> roles.manager = 'system:admin'
+    >>> roles.manager
     {'system:admin'}
-    >>> protected.managers = {'system:admin'}
-    >>> protected.managers
+    >>> roles.managers = {'system:admin'}
+    >>> roles.managers
     {'system:admin'}
 
 Principals can be set using a set or strings:
 
-    >>> protected.designers = None
-    >>> protected.designers = 'users:unknown'
+    >>> roles.designers = None
+    >>> roles.designers = 'users:unknown'
     >>> pprint.pprint(protected.__acl__())
     [('Allow',
       'system:admin',
@@ -292,11 +325,11 @@ You can also get the list of permissions:
 This interface can also be used to grant or revoke roles:
 
     >>> protection.grant_role(designer_role, {principal})
-    >>> sorted(protected.designers)
+    >>> sorted(roles.designers)
     ['system:admin', 'users:unknown']
 
     >>> protection.revoke_role(designer_role, {principal})
-    >>> sorted(protected.designers)
+    >>> sorted(roles.designers)
     ['users:unknown']
 
 

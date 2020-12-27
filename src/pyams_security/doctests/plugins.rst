@@ -29,12 +29,19 @@ You can add a predicate on plugins events to filter events based on their origin
     >>> selector(event)
     True
 
-You can also define a subscriber predicate using a class or an interface:
+You can also define a subscriber predicate using a class or an interface; we just have to
+call the "factory_config" decorator for testing:
 
+    >>> from pyams_utils.testing import call_decorator
+    >>> from pyams_utils.factory import factory_config
+    >>> from pyams_security.interfaces import IAdminAuthenticationPlugin
     >>> from pyams_security.plugin.admin import AdminAuthenticationPlugin
+
+    >>> call_decorator(config, factory_config, AdminAuthenticationPlugin,
+    ...                IAdminAuthenticationPlugin)
+
     >>> plugin = AdminAuthenticationPlugin()
 
-    >>> from pyams_security.interfaces import IAdminAuthenticationPlugin
     >>> selector = PluginSelector(IAdminAuthenticationPlugin, config)
     >>> event = AuthenticatedPrincipalEvent(plugin, 'admin')
     >>> selector(event)

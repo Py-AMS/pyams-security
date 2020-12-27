@@ -32,7 +32,7 @@ Managing users with PyAMS security package
     Upgrading PyAMS timezone to generation 1...
     Upgrading PyAMS catalog to generation 1...
     Upgrading PyAMS file to generation 3...
-    Upgrading PyAMS security to generation 1...
+    Upgrading PyAMS security to generation 2...
 
     >>> from zope.traversing.interfaces import BeforeTraverseEvent
     >>> from pyramid.threadlocal import manager
@@ -70,8 +70,8 @@ another protocol like OAuth or OAuth2.
 We can now create a local user and store it into this users folder; but we must register password
 managers first:
 
-    >>> from pyams_security.plugin.userfolder import User
-    >>> user1 = User()
+    >>> from pyams_security.plugin.userfolder import LocalUser
+    >>> user1 = LocalUser()
     >>> user1.self_registered = False
     >>> user1.login = 'user1'
     >>> user1.email = 'user@example.com'
@@ -116,7 +116,7 @@ which will allow the principal to activate is account and provide a new password
 Let's now add this user to our locals users folder and try to authenticate:
 
     >>> from zope.lifecycleevent import ObjectAddedEvent
-    >>> from pyams_security.plugin.userfolder import handle_new_local_user
+    >>> from pyams_security.plugin.userfolder import notify_user_activation
     >>> folder.check_login('')
     False
     >>> folder.check_login(user1.login)
@@ -138,7 +138,10 @@ and activate he's account:
     >>> mailer
     <pyramid_mailer.mailer.DummyMailer object at 0x...>
 
-    >>> handle_new_local_user(ObjectAddedEvent(user1, folder))
+    >>> from pyramid_chameleon.zpt import renderer_factory
+    >>> config.add_renderer('.pt', renderer_factory)
+
+    >>> notify_user_activation(user1)
     >>> mailer.outbox
     [<...Message object at 0x...>]
     >>> mailer.outbox[0].recipients
@@ -150,7 +153,7 @@ and activate he's account:
     >>> user1.activation_hash in mailer.outbox[0].body.data
     True
 
-Let's start to activate our accound with an invalid hash:
+Let's start to activate our account with an invalid hash:
 
     >>> bad_hash = 'THIS_IS_A_BAD_HASH'
     >>> user1.check_activation(bad_hash, 'user1', 'passwd')
@@ -179,21 +182,21 @@ In some contexts, you can also let users register themselves on a web site using
 provided credentials; in this case, a notification message is also sent to their email address
 to provide an activation link:
 
-    >>> user2 = User()
+    >>> user2 = LocalUser()
     >>> user2.self_registered = True
     >>> user2.login = 'user2@example.com'
     >>> user2.email = 'user2@example.com'
     >>> user2.firstname = 'Richard'
     >>> user2.lastname = 'Roe'
     >>> user2.password = 'passwd'
-    >>> user2.generate_secret()
+    >>> user2.generate_secret(notify=False)
     >>> user2.check_activation(user2.activation_hash, user2.login, user2.password)
     Traceback (most recent call last):
     ...
     zope.interface.exceptions.Invalid: Can't activate profile with given params!
 
     >>> folder[user2.login] = user2
-    >>> handle_new_local_user(ObjectAddedEvent(user2, folder))
+    >>> notify_user_activation(user2)
     >>> len(mailer.outbox)
     2
     >>> mailer.outbox[-1].recipients
@@ -214,12 +217,31 @@ to provide an activation link:
     >>> user2.check_password('')
     False
 
+If needed, it's possible to generate a new secret code for a user; this will disable it's profile
+and send a new notification message; this will not modify the initial registration mode of a
+user:
+
+    >>> user2.refresh_secret()
+    >>> user2.activated
+    False
+    >>> user2.password is None
+    True
+    >>> user2.self_registered
+    True
+    >>> user2.wait_confirmation
+    True
+    >>> user2.password is None
+    True
+    >>> 'You have registered a new account' in mailer.outbox[-1].body.data
+    True
+
+
 Notification settings also allows to o set a custom notification message; please note that you can
 also change password manager (plain text storage can be required, for example, if you have to get
 access to a user passord, but it's a huge security issue if your database is compromized!!!):
 
     >>> settings.registration_template = {'en': '<p>This is a custom registration message.</p>'}
-    >>> user3 = User()
+    >>> user3 = LocalUser()
     >>> user3.login = 'user3@example.com'
     >>> user3.email = 'user3@example.com'
     >>> user3.firstname = 'Jane'
@@ -231,15 +253,14 @@ access to a user passord, but it's a huge security issue if your database is com
     >>> user3.generate_secret()
 
     >>> folder[user3.login] = user3
-    >>> handle_new_local_user(ObjectAddedEvent(user3, folder))
     >>> len(mailer.outbox)
-    3
+    4
     >>> 'This is a custom registration message' in mailer.outbox[-1].body.data
     True
 
 Let's also try to validate a few attributes:
 
-    >>> user4 = User()
+    >>> user4 = LocalUser()
     >>> user4.email = 'bob'
     >>> user4.password = 'none'
 
@@ -247,7 +268,7 @@ Let's also try to validate a few attributes:
     >>> ILocalUser.validateInvariants(user4)
     Traceback (most recent call last):
     ...
-    zope.interface.interfaces.Invalid: Given email address is not valid!
+    zope.interface.exceptions.Invalid: Given email address is not valid!
 
 
 Let's now try to authenticate:
@@ -275,7 +296,7 @@ Let's now try to authenticate:
     'John Doe'
 
     >>> folder.get_principal(user1_id, info=False)
-    <pyams_security.plugin.userfolder.User object at 0x...>
+    <pyams_security.plugin.userfolder.LocalUser object at 0x...>
 
     >>> folder.get_all_principals(user1_id)
     {'users:user1'}
@@ -295,7 +316,7 @@ Let's now try to authenticate:
 There is another API concerning searching, which will return users instead of principals:
 
     >>> list(folder.get_search_results({'query': 'john'}))
-    [<...User object at ...>]
+    [<...LocalUser object at ...>]
     >>> list(folder.get_search_results({'query': ''}))
     []
 
@@ -373,7 +394,7 @@ You have to enable the group to get it's principals:
     >>> groups_folder.get_all_principals(user1_id)
     {'groups:group1'}
 
-If a group is initialy empty, we can add principals to it:
+If a group is initially empty, we can add principals to it:
 
     >>> groups_folder.groups_by_principal.get(user1_id)
     {'groups:group1'}
@@ -488,19 +509,19 @@ principals will be stored:
     >>> IUserRegistrationInfo.validateInvariants(info)
     Traceback (most recent call last):
     ...
-    zope.interface.interfaces.Invalid: Your email address is not valid!
+    zope.interface.exceptions.Invalid: Your email address is not valid!
 
     >>> info.email = 'bob@pyams.fr'
     >>> IUserRegistrationInfo.validateInvariants(info)
     Traceback (most recent call last):
     ...
-    zope.interface.interfaces.Invalid: You didn't confirmed your password correctly!
+    zope.interface.exceptions.Invalid: You didn't confirmed your password correctly!
 
     >>> info.confirmed_password = info.password
     >>> IUserRegistrationInfo.validateInvariants(info)
     Traceback (most recent call last):
     ...
-    zope.interface.interfaces.Invalid: Your password must contain at least three of these kinds of characters: lowercase letters, uppercase letters, numbers and special characters
+    zope.interface.exceptions.Invalid: Your password must contain at least three of these kinds of characters: lowercase letters, uppercase letters, numbers and special characters
 
     >>> info.password = info.confirmed_password = 'ABC1234ert_'
     >>> IUserRegistrationInfo.validateInvariants(info)

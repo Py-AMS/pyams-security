@@ -37,7 +37,7 @@ Associated utilities also provides support for role-based authorizations.
     Upgrading PyAMS timezone to generation 1...
     Upgrading PyAMS catalog to generation 1...
     Upgrading PyAMS file to generation 3...
-    Upgrading PyAMS security to generation 1...
+    Upgrading PyAMS security to generation 2...
 
     >>> from zope.traversing.interfaces import BeforeTraverseEvent
     >>> from pyams_utils.registry import handle_site_before_traverse
@@ -88,6 +88,7 @@ to extract credentials from requests and authenticate requests principals.
     >>> from beaker.cache import CacheManager, cache_regions
     >>> cache = CacheManager(**{'cache.type': 'memory'})
     >>> cache_regions.update({'short': {'type': 'memory', 'expire': 0}})
+    >>> cache_regions.update({'long': {'type': 'memory', 'expire': 0}})
 
     >>> sm is policy.security_manager
     True
@@ -128,10 +129,10 @@ environment:
     True
 
     >>> request = DummyRequest()
-    >>> request.environ.update({'login': 'admin', 'passwd': 'admin'})
+    >>> request.environ.update({'login': 'system:admin', 'passwd': 'admin'})
 
     >>> policy.unauthenticated_userid(request)
-    'admin'
+    'system:admin'
     >>> policy.authenticated_userid(request)
     'system:admin'
     >>> sorted(policy.effective_principals(request))

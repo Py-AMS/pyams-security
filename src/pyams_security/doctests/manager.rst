@@ -43,7 +43,7 @@ An ISecurityManager instance is created automatically on instance upgrade:
     Upgrading PyAMS timezone to generation 1...
     Upgrading PyAMS catalog to generation 1...
     Upgrading PyAMS file to generation 3...
-    Upgrading PyAMS security to generation 1...
+    Upgrading PyAMS security to generation 2...
 
     >>> from zope.traversing.interfaces import BeforeTraverseEvent
     >>> from pyams_utils.registry import handle_site_before_traverse
@@ -110,11 +110,12 @@ Getting effective principals require a Beaker cache:
     >>> from beaker.cache import CacheManager, cache_regions
     >>> cache = CacheManager(**{'cache.type': 'memory'})
     >>> cache_regions.update({'short': {'type': 'memory', 'expire': 0}})
+    >>> cache_regions.update({'long': {'type': 'memory', 'expire': 0}})
 
 The "effective_principals" method returns the list of principals associated with a given context,
 which will be the request context is none is provided:
 
-    >>> sm.get_principal.cache_clear()
+    # >>> sm.get_principal.cache_clear()
 
     >>> from pyams_security.credential import Credentials
 
@@ -126,8 +127,8 @@ which will be the request context is none is provided:
 
 Let's create a new local user:
 
-    >>> from pyams_security.plugin.userfolder import User
-    >>> user1 = User()
+    >>> from pyams_security.plugin.userfolder import LocalUser
+    >>> user1 = LocalUser()
     >>> user1.self_registered = False
     >>> user1.login = 'user1'
     >>> user1.email = 'user@example.com'

@@ -49,7 +49,7 @@ token which will be used in every request after authentication.
     >>> request = DummyRequest()
     >>> app = upgrade_site(request)
     Upgrading PyAMS timezone to generation 1...
-    Upgrading PyAMS security to generation 1...
+    Upgrading PyAMS security to generation 2...
 
     >>> from zope.traversing.interfaces import BeforeTraverseEvent
     >>> from pyramid.threadlocal import manager
@@ -71,6 +71,7 @@ Some tests will require a configured cache:
     >>> from beaker.cache import CacheManager, cache_regions
     >>> cache = CacheManager(**{'cache.type': 'memory'})
     >>> cache_regions.update({'short': {'type': 'memory', 'expire': 0}})
+    >>> cache_regions.update({'long': {'type': 'memory', 'expire': 0}})
 
 Let's start with a simple local user:
 
@@ -135,7 +136,7 @@ information was extraced:
     Upgrading PyAMS timezone to generation 1...
     Upgrading PyAMS catalog to generation 1...
     Upgrading PyAMS file to generation 3...
-    Upgrading PyAMS security to generation 1...
+    Upgrading PyAMS security to generation 2...
 
     >>> from zope.traversing.interfaces import BeforeTraverseEvent
     >>> from pyramid.threadlocal import manager
@@ -282,20 +283,26 @@ principals associated with a given request:
 
     >>> plugin = FakeCredentialsPlugin()
     >>> config.registry.registerUtility(plugin, ICredentialsPlugin, name='fake')
-
-    >>> request = DummyRequest()
-    >>> request.environ.update({'login': 'admin', 'passwd': 'bad'})
-    >>> policy.authenticated_userid(request) is None
+    >>> plugin in sm.credentials_plugins
     True
-    >>> sorted(policy.effective_principals(request))
-    ['system.Everyone']
 
     >>> request = DummyRequest()
-    >>> request.environ.update({'login': 'admin', 'passwd': 'admin'})
+    >>> request.environ.update({'login': 'system:admin', 'passwd': 'bad'})
+    >>> request.environ.update({'doctest': True})
     >>> policy.authenticated_userid(request)
     'system:admin'
     >>> sorted(policy.effective_principals(request))
     ['system.Authenticated', 'system.Everyone', 'system:admin']
+
+    >>> request = DummyRequest()
+    >>> request.environ.update({'login': 'system:admin', 'passwd': 'admin'})
+    >>> policy.authenticated_userid(request)
+    'system:admin'
+    >>> sorted(policy.effective_principals(request))
+    ['system.Authenticated', 'system.Everyone', 'system:admin']
+
+As you can see here, the policy "authenticated_userid" doesn't means that the request was
+correctly authenticated, but only that the given credentials are matching an existing principal.
 
 Administration principals are also directory plug-ins, so they can provide results
 when looking for principals:
@@ -347,7 +354,7 @@ A generic utility function is available to get principal of a given request:
     >>> from pyams_security.utility import get_principal
 
     >>> request = DummyRequest()
-    >>> request.environ.update({'login': 'admin', 'passwd': 'admin'})
+    >>> request.environ.update({'login': 'system:admin', 'passwd': 'admin'})
     >>> principal = get_principal(request)
     >>> principal
     <pyams_security.principal.PrincipalInfo object at 0x...>
@@ -392,12 +399,12 @@ Other principal features
 Principals can be compared by their ID, and used as mapping keys:
 
     >>> request = DummyRequest()
-    >>> request.environ.update({'login': 'admin', 'passwd': 'admin'})
+    >>> request.environ.update({'login': 'system:admin', 'passwd': 'admin'})
     >>> principal = get_principal(request)
     >>> principal3 = get_principal(request)
 
     >>> principal is principal3
-    True
+    False
     >>> principal == principal3
     True
 
