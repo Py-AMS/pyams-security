@@ -21,18 +21,17 @@ from persistent import Persistent
 from persistent.dict import PersistentDict
 from pyramid.location import lineage
 from pyramid.security import ALL_PERMISSIONS, Allow, Authenticated, DENY_ALL, Deny, Everyone
-from pyramid.threadlocal import get_current_registry
 from zope.annotation import IAttributeAnnotatable
 from zope.container.contained import Contained
 from zope.interface import implementer
 from zope.schema.fieldproperty import FieldProperty
 
-from pyams_security.interfaces import ADMIN_USER_ID, GrantedRoleEvent, IDefaultProtectionPolicy, \
-    IProtectedObject, IRoleProtectedObject, RevokedRoleEvent
+from pyams_security.interfaces import ADMIN_USER_ID, GrantedRoleEvent, IContentRoles, \
+    IDefaultProtectionPolicy, IProtectedObject, IRoleProtectedObject, RevokedRoleEvent
 from pyams_security.interfaces.base import IPrincipalInfo, IRole, PUBLIC_PERMISSION
 from pyams_utils.adapter import adapter_config, get_annotation_adapter
 from pyams_utils.factory import factory_config
-from pyams_utils.registry import query_utility
+from pyams_utils.registry import get_pyramid_registry, query_utility
 from pyams_utils.request import request_property
 
 
@@ -106,7 +105,7 @@ class RoleProtectedObject(Persistent, Contained):
 
     def grant_role(self, role_id, principal_ids):
         """Grant role to selected principals"""
-        registry = get_current_registry()
+        registry = get_pyramid_registry()
         if IRole.providedBy(role_id):
             role_id = role_id.id
         if isinstance(principal_ids, str):
@@ -125,7 +124,7 @@ class RoleProtectedObject(Persistent, Contained):
 
     def revoke_role(self, role_id, principal_ids):
         """Revoke role to selected principals"""
-        registry = get_current_registry()
+        registry = get_pyramid_registry()
         if IRole.providedBy(role_id):
             role_id = role_id.id
         if isinstance(principal_ids, str):
@@ -164,7 +163,7 @@ class RoleProtectedObject(Persistent, Contained):
 
     def get_permissions(self, principal_id):
         """Get permissions for given principal"""
-        registry = get_current_registry()
+        registry = get_pyramid_registry()
         result = set()
         for role_id in self.get_roles(principal_id):
             role = registry.queryUtility(IRole, role_id)
@@ -220,13 +219,14 @@ class RoleProtectedObject(Persistent, Contained):
         return result
 
 
-ROLES_ANNOTATIONS_KEY = 'pyams_security.roles'
+POLICY_ANNOTATIONS_KEY = 'pyams_security.policy'
 
 
-@adapter_config(context=IDefaultProtectionPolicy, provides=IRoleProtectedObject)
+@adapter_config(required=IDefaultProtectionPolicy,
+                provides=IRoleProtectedObject)
 def protected_object_factory(context):
     """Default protected object factory"""
-    return get_annotation_adapter(context, ROLES_ANNOTATIONS_KEY, IRoleProtectedObject)
+    return get_annotation_adapter(context, POLICY_ANNOTATIONS_KEY, IRoleProtectedObject)
 
 
 @implementer(IAttributeAnnotatable)
@@ -245,3 +245,11 @@ class ProtectedObjectMixin:
                 acl = acl(protected)
             return acl
         return []
+
+
+@implementer(IContentRoles)
+class ProtectedObjectRoles:
+    """Protected object roles base class"""
+
+    def __init__(self, context):
+        self.__parent__ = context
