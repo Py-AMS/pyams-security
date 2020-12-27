@@ -14,6 +14,9 @@
 
 """
 
+import sys
+from importlib import import_module
+
 from zope.lifecycleevent import ObjectCreatedEvent
 from zope.principalannotation.interfaces import IPrincipalAnnotationUtility
 from zope.principalannotation.utility import PrincipalAnnotationUtility
@@ -85,7 +88,7 @@ class SecurityGenerationsChecker:
     """I18n generations checker"""
 
     order = 50
-    generation = 1
+    generation = 2
 
     def evolve(self, site, current=None):  # pylint: disable=no-self-use,unused-argument
         """Check for required utilities"""
@@ -100,3 +103,11 @@ class SecurityGenerationsChecker:
                 service_auth = get_service_user()
                 get_current_registry().notify(ObjectCreatedEvent(service_auth))
                 manager[INTERNAL_USER_NAME] = service_auth
+        if not current:
+            current = 1
+        for generation in range(current, self.generation):
+            module_name = 'pyams_security.generations.evolve{}'.format(generation)
+            module = sys.modules.get(module_name)
+            if module is None:
+                module = import_module(module_name)
+            module.evolve(site)

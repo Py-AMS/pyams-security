@@ -49,7 +49,7 @@ class RolePrincipalsFieldProperty:
     def __get__(self, instance, klass):
         if instance is None:
             return self
-        protection = IProtectedObject(instance, None)
+        protection = IProtectedObject(instance.__parent__, None)
         if protection is None:
             return set()
         return protection.get_principals(self.__role_id)
@@ -67,7 +67,7 @@ class RolePrincipalsFieldProperty:
         field.validate(value)
         if field.readonly:
             raise ValueError("Field {0} is readonly!".format(self.__name))
-        protection = IProtectedObject(instance, None)
+        protection = IProtectedObject(instance.__parent__, None)
         if not IRoleProtectedObject.providedBy(protection):
             raise ValueError("Can't use role properties on object not providing "
                              "IRoleProtectedObject interface!")
