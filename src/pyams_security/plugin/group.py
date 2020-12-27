@@ -22,7 +22,6 @@ from persistent import Persistent
 from pyramid.events import subscriber
 from zope.container.contained import Contained
 from zope.container.folder import Folder
-from zope.interface import implementer
 from zope.lifecycleevent.interfaces import IObjectAddedEvent
 from zope.schema.fieldproperty import FieldProperty
 from zope.schema.vocabulary import SimpleTerm, SimpleVocabulary
@@ -32,6 +31,7 @@ from pyams_security.interfaces import IGroupsFolderPlugin, ILocalGroup, \
     PrincipalsAddedToGroupEvent, PrincipalsRemovedFromGroupEvent
 from pyams_security.interfaces.names import LOCAL_GROUPS_VOCABULARY_NAME
 from pyams_security.principal import PrincipalInfo
+from pyams_utils.factory import factory_config
 from pyams_utils.registry import query_utility
 from pyams_utils.request import check_request
 from pyams_utils.vocabulary import vocabulary_config
@@ -44,7 +44,7 @@ LOGGER = logging.getLogger('PyAMS(security)')
 GROUP_ID_FORMATTER = '{prefix}:{group_id}'
 
 
-@implementer(ILocalGroup)
+@factory_config(ILocalGroup)
 class Group(Persistent, Contained):
     """Local group persistent class"""
 
@@ -95,7 +95,7 @@ class LocalGroupsVocabulary(SimpleVocabulary):
         super(LocalGroupsVocabulary, self).__init__(terms)
 
 
-@implementer(IGroupsFolderPlugin)
+@factory_config(IGroupsFolderPlugin)
 class GroupsFolder(Folder):
     """Principals groups folder"""
 

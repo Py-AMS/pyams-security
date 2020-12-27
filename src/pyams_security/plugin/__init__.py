@@ -16,9 +16,6 @@ This module enables a "plugin_selector" subscriber predicate, which can be used 
 filter plugins events based on plug-in name or interface.
 """
 
-from zope.interface.interface import InterfaceClass
-
-
 __docformat__ = 'restructuredtext'
 
 

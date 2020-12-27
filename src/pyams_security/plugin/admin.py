@@ -16,6 +16,8 @@ This module defines system principals which are used for system management tasks
 internal services.
 """
 
+from os import urandom
+
 from persistent import Persistent
 from zope.container.contained import Contained
 from zope.interface import implementer
@@ -24,13 +26,15 @@ from zope.schema.fieldproperty import FieldProperty
 
 from pyams_security.interfaces import IAdminAuthenticationPlugin, IDirectoryPlugin
 from pyams_security.principal import PrincipalInfo
+from pyams_utils.factory import factory_config
 from pyams_utils.registry import get_utility
 
 
 __docformat__ = 'restructuredtext'
 
 
-@implementer(IAdminAuthenticationPlugin, IDirectoryPlugin)
+@factory_config(IAdminAuthenticationPlugin)
+@implementer(IDirectoryPlugin)
 class AdminAuthenticationPlugin(Persistent, Contained):
     """Hard-coded administrator authenticator plug-in
 
@@ -43,6 +47,7 @@ class AdminAuthenticationPlugin(Persistent, Contained):
 
     login = FieldProperty(IAdminAuthenticationPlugin['login'])
     _password = FieldProperty(IAdminAuthenticationPlugin['password'])
+    _password_salt = None
 
     @property
     def password(self):
@@ -51,10 +56,13 @@ class AdminAuthenticationPlugin(Persistent, Contained):
 
     @password.setter
     def password(self, value):
-        """Encode passsword before storing new value"""
+        """Encode password before storing new value"""
         if value:
+            if value == '*****':
+                return
+            self._password_salt = urandom(4)
             manager = get_utility(IPasswordManager, name='SSHA')
-            self._password = manager.encodePassword(value)
+            self._password = manager.encodePassword(value, salt=self._password_salt)
         else:
             self._password = None
 
@@ -66,7 +74,7 @@ class AdminAuthenticationPlugin(Persistent, Contained):
         login = attrs.get('login')
         password = attrs.get('password')
         manager = get_utility(IPasswordManager, name='SSHA')
-        if login == self.login and manager.checkPassword(self._password, password):
+        if login == self.login and manager.checkPassword(self.password, password):
             return "{0}:{1}".format(self.prefix, login)
         return None
 
