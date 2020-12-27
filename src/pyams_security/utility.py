@@ -16,7 +16,6 @@ This module defines the SecurityManager utility and custom Pyramid authenticatio
 """
 
 import logging
-from functools import lru_cache
 
 from beaker.cache import cache_region
 from pyramid.location import lineage
@@ -123,12 +122,13 @@ class SecurityManager(Folder):
                     return principal_id
         return None
 
-    def authenticated_userid(self, request):
+    def authenticated_userid(self, request, principal_id=None):
         """Extract authenticated user ID from request"""
-        credentials = self.extract_credentials(request)
-        if credentials is None:
-            return None
-        principal_id = self.authenticate(credentials, request)
+        if principal_id is None:
+            credentials = self.extract_credentials(request)
+            if credentials is None:
+                return None
+            principal_id = self.authenticate(credentials, request)
         if principal_id is not None:
             principal = self.get_principal(principal_id)
             if principal is not None:
@@ -169,7 +169,7 @@ class SecurityManager(Folder):
         return principals
 
     # IDirectoryPlugin interface methods
-    @lru_cache(maxsize=100)
+    @cache_region('long', 'security_plugins_principal')
     def get_principal(self, principal_id, info=True):
         """Principal lookup for given principal ID"""
         if not principal_id:

@@ -1,6 +1,17 @@
 Changelog
 =========
 
+1.2.0
+-----
+ - updated roles management; this will allow to extend supported roles of a given class just
+   by adding adapters, without modifying the original class
+ - moved PyAMS security policy to dedicated module
+ - added registration of standard roles and security policy
+ - add factories registration in default security plug-ins
+ - updated users registration process
+ - updated adapter_config decorator arguments
+ - updated doctests
+
 1.1.3
 -----
  - small updates in policy management of *authenticated_user_id*

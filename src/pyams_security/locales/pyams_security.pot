@@ -1,12 +1,12 @@
 #
 # SOME DESCRIPTIVE TITLE
 # This file is distributed under the same license as the PACKAGE package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, 2019.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2020.
 #, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE 1.0\n"
-"POT-Creation-Date: 2019-12-23 14:30+0100\n"
+"POT-Creation-Date: 2020-12-25 23:52+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -16,8 +16,44 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Lingua 3.10.dev0\n"
 
+#: ./src/pyams_security/include.py:67
+msgid "View public contents"
+msgstr ""
+
+#: ./src/pyams_security/include.py:71
+msgid "View protected contents"
+msgstr ""
+
+#: ./src/pyams_security/include.py:75
+msgid "Manage contents properties"
+msgstr ""
+
+#: ./src/pyams_security/include.py:79
+msgid "View management screens"
+msgstr ""
+
+#: ./src/pyams_security/include.py:83
+msgid "Manage system properties"
+msgstr ""
+
+#: ./src/pyams_security/include.py:88
+msgid "Manage security"
+msgstr ""
+
+#: ./src/pyams_security/include.py:92
+msgid "Manage roles"
+msgstr ""
+
+#: ./src/pyams_security/include.py:98
+msgid "System manager (role)"
+msgstr ""
+
 #: ./src/pyams_security/principal.py:58
 msgid "< unknown principal >"
+msgstr ""
+
+#: ./src/pyams_security/interfaces/site.py:29
+msgid "Site managers"
 msgstr ""
 
 #: ./src/pyams_security/interfaces/profile.py:33
@@ -28,442 +64,280 @@ msgstr ""
 msgid "This picture will be associated to your user profile"
 msgstr ""
 
-#: ./src/pyams_security/interfaces/__init__.py:106
-msgid "Plug-in prefix"
+#: ./src/pyams_security/interfaces/__init__.py:55
+msgid "User login"
 msgstr ""
 
 #: ./src/pyams_security/interfaces/__init__.py:107
+msgid "Plug-in prefix"
+msgstr ""
+
+#: ./src/pyams_security/interfaces/__init__.py:108
 msgid ""
 "This prefix is mainly used by authentication plug-ins to mark principals"
 msgstr ""
 
-#: ./src/pyams_security/interfaces/__init__.py:110
+#: ./src/pyams_security/interfaces/__init__.py:111
 msgid "Plug-in title"
 msgstr ""
 
-#: ./src/pyams_security/interfaces/__init__.py:113
+#: ./src/pyams_security/interfaces/__init__.py:114
 msgid "Enabled plug-in?"
 msgstr ""
 
-#: ./src/pyams_security/interfaces/__init__.py:114
+#: ./src/pyams_security/interfaces/__init__.py:115
 msgid "You can choose to disable any plug-in..."
 msgstr ""
 
-#: ./src/pyams_security/interfaces/__init__.py:177
+#: ./src/pyams_security/interfaces/__init__.py:178
 msgid "Admin. login"
 msgstr ""
 
-#: ./src/pyams_security/interfaces/__init__.py:179
+#: ./src/pyams_security/interfaces/__init__.py:180
 msgid "Admin. password"
 msgstr ""
 
-#: ./src/pyams_security/interfaces/__init__.py:260
-msgid "Internal provider ID"
-msgstr ""
-
-#: ./src/pyams_security/interfaces/__init__.py:262
-msgid "OAuth provider name"
-msgstr ""
-
-#: ./src/pyams_security/interfaces/__init__.py:264
-msgid "User name"
-msgstr ""
-
-#: ./src/pyams_security/interfaces/__init__.py:267
-msgid "Name"
-msgstr ""
-
-#: ./src/pyams_security/interfaces/__init__.py:269
-#: ./src/pyams_security/interfaces/__init__.py:372
-#: ./src/pyams_security/interfaces/__init__.py:448
-msgid "First name"
-msgstr ""
-
-#: ./src/pyams_security/interfaces/__init__.py:272
-#: ./src/pyams_security/interfaces/__init__.py:375
-#: ./src/pyams_security/interfaces/__init__.py:451
-msgid "Last name"
-msgstr ""
-
-#: ./src/pyams_security/interfaces/__init__.py:275
-msgid "Nickname"
-msgstr ""
-
-#: ./src/pyams_security/interfaces/__init__.py:278
-#: ./src/pyams_security/interfaces/__init__.py:361
-msgid "E-mail address"
-msgstr ""
-
-#: ./src/pyams_security/interfaces/__init__.py:281
-msgid "Timezone"
-msgstr ""
-
-#: ./src/pyams_security/interfaces/__init__.py:284
-msgid "Country"
-msgstr ""
-
-#: ./src/pyams_security/interfaces/__init__.py:287
-msgid "City"
-msgstr ""
-
-#: ./src/pyams_security/interfaces/__init__.py:290
-msgid "Postal code"
-msgstr ""
-
-#: ./src/pyams_security/interfaces/__init__.py:293
-msgid "Locale code"
-msgstr ""
-
-#: ./src/pyams_security/interfaces/__init__.py:296
-msgid "Picture URL"
-msgstr ""
-
-#: ./src/pyams_security/interfaces/__init__.py:299
-msgid "Birth date"
-msgstr ""
-
-#: ./src/pyams_security/interfaces/__init__.py:302
-msgid "Registration date"
-msgstr ""
-
-#: ./src/pyams_security/interfaces/__init__.py:340
+#: ./src/pyams_security/interfaces/__init__.py:280
 msgid ""
 "Your password must contain at least three of these kinds of characters: "
 "lowercase letters, uppercase letters, numbers and special characters"
 msgstr ""
 
-#: ./src/pyams_security/interfaces/__init__.py:350
-#: ./src/pyams_security/interfaces/__init__.py:406
-#: ./src/pyams_security/interfaces/__init__.py:429
-msgid "User login"
-msgstr ""
-
-#: ./src/pyams_security/interfaces/__init__.py:351
+#: ./src/pyams_security/interfaces/__init__.py:291
 msgid ""
 "If you don't provide a custom login, your login will be your email address..."
 msgstr ""
 
-#: ./src/pyams_security/interfaces/__init__.py:362
+#: ./src/pyams_security/interfaces/__init__.py:301
+msgid "E-mail address"
+msgstr ""
+
+#: ./src/pyams_security/interfaces/__init__.py:302
 msgid ""
 "An email will be sent to this address to validate account activation; it will"
 " be used as your future user login"
 msgstr ""
 
-#: ./src/pyams_security/interfaces/__init__.py:378
-#: ./src/pyams_security/interfaces/__init__.py:456
+#: ./src/pyams_security/interfaces/__init__.py:312
+#: ./src/pyams_security/interfaces/__init__.py:388
+msgid "First name"
+msgstr ""
+
+#: ./src/pyams_security/interfaces/__init__.py:315
+#: ./src/pyams_security/interfaces/__init__.py:391
+msgid "Last name"
+msgstr ""
+
+#: ./src/pyams_security/interfaces/__init__.py:318
+#: ./src/pyams_security/interfaces/__init__.py:396
 msgid "Company name"
 msgstr ""
 
-#: ./src/pyams_security/interfaces/__init__.py:381
-#: ./src/pyams_security/interfaces/__init__.py:409
-#: ./src/pyams_security/interfaces/__init__.py:464
+#: ./src/pyams_security/interfaces/__init__.py:321
+#: ./src/pyams_security/interfaces/__init__.py:349
+#: ./src/pyams_security/interfaces/__init__.py:405
 msgid "Password"
 msgstr ""
 
-#: ./src/pyams_security/interfaces/__init__.py:382
+#: ./src/pyams_security/interfaces/__init__.py:322
 msgid ""
 "Password must be at least 8 characters long, and contain at least three kinds"
 " of characters between lowercase letters, uppercase letters, numbers and "
 "special characters"
 msgstr ""
 
-#: ./src/pyams_security/interfaces/__init__.py:389
-#: ./src/pyams_security/interfaces/__init__.py:413
+#: ./src/pyams_security/interfaces/__init__.py:329
+#: ./src/pyams_security/interfaces/__init__.py:353
+#: ./src/pyams_security/interfaces/__init__.py:409
 msgid "Confirmed password"
 msgstr ""
 
-#: ./src/pyams_security/interfaces/__init__.py:403
-#: ./src/pyams_security/interfaces/__init__.py:484
+#: ./src/pyams_security/interfaces/__init__.py:343
+#: ./src/pyams_security/interfaces/__init__.py:434
 msgid "Activation hash"
 msgstr ""
 
-#: ./src/pyams_security/interfaces/__init__.py:439
+#: ./src/pyams_security/interfaces/__init__.py:379
 msgid "User email address"
 msgstr ""
 
-#: ./src/pyams_security/interfaces/__init__.py:459
+#: ./src/pyams_security/interfaces/__init__.py:399
 msgid "Password manager name"
 msgstr ""
 
-#: ./src/pyams_security/interfaces/__init__.py:468
+#: ./src/pyams_security/interfaces/__init__.py:400
+msgid "Utility used to encrypt user password"
+msgstr ""
+
+#: ./src/pyams_security/interfaces/__init__.py:413
 msgid "Wait confirmation?"
 msgstr ""
 
-#: ./src/pyams_security/interfaces/__init__.py:469
+#: ./src/pyams_security/interfaces/__init__.py:414
 msgid ""
 "If 'no', user will be activated immediately without waiting email "
 "confirmation"
 msgstr ""
 
-#: ./src/pyams_security/interfaces/__init__.py:474
+#: ./src/pyams_security/interfaces/__init__.py:425
 msgid "Self-registered profile?"
 msgstr ""
 
-#: ./src/pyams_security/interfaces/__init__.py:479
+#: ./src/pyams_security/interfaces/__init__.py:430
 msgid "Activation secret key"
 msgstr ""
 
-#: ./src/pyams_security/interfaces/__init__.py:480
+#: ./src/pyams_security/interfaces/__init__.py:431
 msgid "This private secret is used to create and check activation hash"
 msgstr ""
 
-#: ./src/pyams_security/interfaces/__init__.py:485
+#: ./src/pyams_security/interfaces/__init__.py:435
 msgid ""
 "This hash is provided into activation message URL. Activation hash is missing"
 " for local users which were registered without waiting their confirmation."
 msgstr ""
 
-#: ./src/pyams_security/interfaces/__init__.py:490
-#: ./src/pyams_security/interfaces/__init__.py:493
+#: ./src/pyams_security/interfaces/__init__.py:440
+msgid "Activated"
+msgstr ""
+
+#: ./src/pyams_security/interfaces/__init__.py:444
 msgid "Activation date"
 msgstr ""
 
-#: ./src/pyams_security/interfaces/__init__.py:528
+#: ./src/pyams_security/interfaces/__init__.py:481
 msgid "Group ID"
 msgstr ""
 
-#: ./src/pyams_security/interfaces/__init__.py:529
+#: ./src/pyams_security/interfaces/__init__.py:482
 msgid "This ID should be unique between all groups"
 msgstr ""
 
-#: ./src/pyams_security/interfaces/__init__.py:533
+#: ./src/pyams_security/interfaces/__init__.py:486
 msgid "Title"
 msgstr ""
 
-#: ./src/pyams_security/interfaces/__init__.py:534
+#: ./src/pyams_security/interfaces/__init__.py:487
 msgid "Public label of this group"
 msgstr ""
 
-#: ./src/pyams_security/interfaces/__init__.py:537
+#: ./src/pyams_security/interfaces/__init__.py:490
 msgid "Description"
 msgstr ""
 
-#: ./src/pyams_security/interfaces/__init__.py:540
+#: ./src/pyams_security/interfaces/__init__.py:493
 msgid "Group principals"
 msgstr ""
 
-#: ./src/pyams_security/interfaces/__init__.py:541
+#: ./src/pyams_security/interfaces/__init__.py:494
 msgid "IDs of principals contained in this group"
 msgstr ""
 
-#: ./src/pyams_security/interfaces/__init__.py:590
-msgid "Enable JWT login?"
-msgstr ""
-
-#: ./src/pyams_security/interfaces/__init__.py:591
-msgid "Enable login via JWT authentication"
-msgstr ""
-
-#: ./src/pyams_security/interfaces/__init__.py:595
-msgid "JWT encoding algorithm"
-msgstr ""
-
-#: ./src/pyams_security/interfaces/__init__.py:601
-msgid "JWT secret"
-msgstr ""
-
-#: ./src/pyams_security/interfaces/__init__.py:602
-msgid "This secret is required when using HS* encryption"
-msgstr ""
-
-#: ./src/pyams_security/interfaces/__init__.py:605
-msgid "JWT private key"
-msgstr ""
-
-#: ./src/pyams_security/interfaces/__init__.py:606
-msgid "The secret key is required when using RS* algorithm"
-msgstr ""
-
-#: ./src/pyams_security/interfaces/__init__.py:609
-msgid "JWT public key"
-msgstr ""
-
-#: ./src/pyams_security/interfaces/__init__.py:610
-msgid "The public key is required when using RS* algorithm"
-msgstr ""
-
-#: ./src/pyams_security/interfaces/__init__.py:613
-msgid "Token lifetime"
-msgstr ""
-
-#: ./src/pyams_security/interfaces/__init__.py:614
-msgid "JWT token lifetime, in seconds"
-msgstr ""
-
-#: ./src/pyams_security/interfaces/__init__.py:631
-msgid "Enable OAuth login?"
-msgstr ""
-
-#: ./src/pyams_security/interfaces/__init__.py:632
-msgid "Enable login via OAuth authentication providers"
-msgstr ""
-
-#: ./src/pyams_security/interfaces/__init__.py:636
-msgid "OAuth users folder"
-msgstr ""
-
-#: ./src/pyams_security/interfaces/__init__.py:637
-msgid ""
-"Name of folder used to store properties of users authenticated with OAuth"
-msgstr ""
-
-#: ./src/pyams_security/interfaces/__init__.py:649
-msgid "Authomatic secret"
-msgstr ""
-
-#: ./src/pyams_security/interfaces/__init__.py:650
-msgid "This secret phrase is used to encrypt Authomatic cookie"
-msgstr ""
-
-#: ./src/pyams_security/interfaces/__init__.py:655
-msgid "Use OAuth popup?"
-msgstr ""
-
-#: ./src/pyams_security/interfaces/__init__.py:659
+#: ./src/pyams_security/interfaces/__init__.py:543
 msgid "Enable free registration?"
 msgstr ""
 
-#: ./src/pyams_security/interfaces/__init__.py:660
+#: ./src/pyams_security/interfaces/__init__.py:544
 msgid "If 'Yes', any use will be able to create a new user account"
 msgstr ""
 
-#: ./src/pyams_security/interfaces/__init__.py:665
+#: ./src/pyams_security/interfaces/__init__.py:549
 msgid "Users folder"
 msgstr ""
 
-#: ./src/pyams_security/interfaces/__init__.py:666
+#: ./src/pyams_security/interfaces/__init__.py:550
 msgid "Name of users folder used to store registered principals"
 msgstr ""
 
-#: ./src/pyams_security/interfaces/__init__.py:677
-msgid "Credentials plug-ins"
-msgstr ""
-
-#: ./src/pyams_security/interfaces/__init__.py:678
-msgid "These plug-ins can be used to extract request credentials"
-msgstr ""
-
-#: ./src/pyams_security/interfaces/__init__.py:684
+#: ./src/pyams_security/interfaces/__init__.py:561
 msgid "Authentication plug-ins"
 msgstr ""
 
-#: ./src/pyams_security/interfaces/__init__.py:685
+#: ./src/pyams_security/interfaces/__init__.py:562
 msgid ""
 "The plug-ins can be used to check extracted credentials against a local or "
 "remote users database"
 msgstr ""
 
-#: ./src/pyams_security/interfaces/__init__.py:691
+#: ./src/pyams_security/interfaces/__init__.py:568
 msgid "Directory plug-ins"
 msgstr ""
 
-#: ./src/pyams_security/interfaces/__init__.py:692
+#: ./src/pyams_security/interfaces/__init__.py:569
 msgid "The plug-in can be used to extract principals information"
 msgstr ""
 
-#: ./src/pyams_security/interfaces/__init__.py:766
-msgid "Provider name"
-msgstr ""
-
-#: ./src/pyams_security/interfaces/__init__.py:770
-msgid "Provider ID"
-msgstr ""
-
-#: ./src/pyams_security/interfaces/__init__.py:771
-msgid "This value should be unique between all providers"
-msgstr ""
-
-#: ./src/pyams_security/interfaces/__init__.py:775
-msgid "Provider consumer key"
-msgstr ""
-
-#: ./src/pyams_security/interfaces/__init__.py:778
-msgid "Provider secret"
-msgstr ""
-
-#: ./src/pyams_security/interfaces/__init__.py:823
+#: ./src/pyams_security/interfaces/__init__.py:613
 msgid "Inherit parent security?"
 msgstr ""
 
-#: ./src/pyams_security/interfaces/__init__.py:824
+#: ./src/pyams_security/interfaces/__init__.py:614
 msgid "Get access control entries (ACE) inherited from parent levels"
 msgstr ""
 
-#: ./src/pyams_security/interfaces/__init__.py:829
+#: ./src/pyams_security/interfaces/__init__.py:619
 msgid "Public denied permissions"
 msgstr ""
 
-#: ./src/pyams_security/interfaces/__init__.py:830
+#: ./src/pyams_security/interfaces/__init__.py:620
 msgid ""
 "These permissions will be denied to all users. Denied permissions take "
 "precedence over granted ones."
 msgstr ""
 
-#: ./src/pyams_security/interfaces/__init__.py:835
+#: ./src/pyams_security/interfaces/__init__.py:625
 msgid "Public granted permissions"
 msgstr ""
 
-#: ./src/pyams_security/interfaces/__init__.py:836
+#: ./src/pyams_security/interfaces/__init__.py:626
 msgid "These permissions will be granted to all users"
 msgstr ""
 
-#: ./src/pyams_security/interfaces/__init__.py:840
+#: ./src/pyams_security/interfaces/__init__.py:630
 msgid "Authenticated denied permissions"
 msgstr ""
 
-#: ./src/pyams_security/interfaces/__init__.py:841
+#: ./src/pyams_security/interfaces/__init__.py:631
 msgid ""
 "These permissions will be denied to authenticated users. Denied permissions "
 "take precedence over granted ones."
 msgstr ""
 
-#: ./src/pyams_security/interfaces/__init__.py:847
+#: ./src/pyams_security/interfaces/__init__.py:637
 msgid "Authenticated granted permissions"
 msgstr ""
 
-#: ./src/pyams_security/interfaces/__init__.py:848
+#: ./src/pyams_security/interfaces/__init__.py:638
 msgid "These permissions will be granted to authenticated users"
 msgstr ""
 
-#: ./src/pyams_security/interfaces/__init__.py:852
+#: ./src/pyams_security/interfaces/__init__.py:642
 msgid "Inherit parent roles?"
 msgstr ""
 
-#: ./src/pyams_security/interfaces/__init__.py:853
+#: ./src/pyams_security/interfaces/__init__.py:643
 msgid "Get roles granted on parent levels"
 msgstr ""
 
-#: ./src/pyams_security/interfaces/__init__.py:370
+#: ./src/pyams_security/interfaces/__init__.py:310
 msgid "Your email address is not valid!"
 msgstr ""
 
-#: ./src/pyams_security/interfaces/__init__.py:396
-#: ./src/pyams_security/interfaces/__init__.py:420
+#: ./src/pyams_security/interfaces/__init__.py:336
+#: ./src/pyams_security/interfaces/__init__.py:360
 msgid "You didn't confirmed your password correctly!"
 msgstr ""
 
-#: ./src/pyams_security/interfaces/__init__.py:446
+#: ./src/pyams_security/interfaces/__init__.py:386
 msgid "Given email address is not valid!"
 msgstr ""
 
-#: ./src/pyams_security/interfaces/__init__.py:646
-msgid "You can't activate OAuth login without selecting an OAuth users folder"
+#: ./src/pyams_security/interfaces/__init__.py:423
+msgid "You can't activate an account without setting a password!"
 msgstr ""
 
-#: ./src/pyams_security/interfaces/__init__.py:674
+#: ./src/pyams_security/interfaces/__init__.py:558
 msgid "You can't activate open registration without selecting a users folder"
-msgstr ""
-
-#: ./src/pyams_security/interfaces/__init__.py:622
-msgid "You must choose an algorithm to enable JWT authentication"
-msgstr ""
-
-#: ./src/pyams_security/interfaces/__init__.py:625
-msgid "You must define JWT secret to use HS256 algorithm"
-msgstr ""
-
-#: ./src/pyams_security/interfaces/__init__.py:628
-msgid "You must define a private and a public key to use RS256 algorithm"
 msgstr ""
 
 #: ./src/pyams_security/interfaces/notification.py:34
@@ -552,11 +426,11 @@ msgid ""
 "{company_name}; message activation link and footer are added automatically"
 msgstr ""
 
-#: ./src/pyams_security/interfaces/notification.py:93
+#: ./src/pyams_security/interfaces/notification.py:94
 msgid "Email signature"
 msgstr ""
 
-#: ./src/pyams_security/interfaces/notification.py:94
+#: ./src/pyams_security/interfaces/notification.py:95
 msgid "Text displayed in email footer"
 msgstr ""
 
@@ -564,24 +438,12 @@ msgstr ""
 msgid "Notifications can't be enabled without mailer utility"
 msgstr ""
 
-#: ./src/pyams_security/skin/jwt.py:48
-msgid "Invalid credentials!"
-msgstr ""
-
-#: ./src/pyams_security/plugin/jwt.py:46
-msgid "JWT authentication credentials"
-msgstr ""
-
-#: ./src/pyams_security/plugin/http.py:48
-msgid "HTTP Basic credentials"
-msgstr ""
-
-#: ./src/pyams_security/plugin/userfolder.py:129
-#: ./src/pyams_security/plugin/userfolder.py:134
+#: ./src/pyams_security/plugin/userfolder.py:308
+#: ./src/pyams_security/plugin/userfolder.py:313
 msgid "Can't activate profile with given params!"
 msgstr ""
 
-#: ./src/pyams_security/plugin/userfolder.py:308
+#: ./src/pyams_security/plugin/userfolder.py:205
 #, python-format
 msgid "{prefix}Please confirm registration"
 msgstr ""
@@ -604,7 +466,7 @@ msgstr ""
 
 #: ./src/pyams_security/plugin/templates/register-info.pt:7
 #: ./src/pyams_security/plugin/templates/register-body.pt:12
-msgid "The login what was given to your account is: ${login}."
+msgid "The login that was given to your account is: ${login}."
 msgstr ""
 
 #: ./src/pyams_security/plugin/templates/register-body.pt:7

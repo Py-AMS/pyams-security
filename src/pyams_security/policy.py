@@ -102,7 +102,7 @@ class PyAMSAuthenticationPolicy:
         try:
             manager = self.security_manager
             if manager is not None:
-                return manager.authenticated_userid(request)
+                return manager.authenticated_userid(request, principal_id)
         except ConnectionStateError:
             pass
         return None

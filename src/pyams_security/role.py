@@ -93,7 +93,10 @@ def register_role(config, role):
     """
     registry = config.registry
     if not IRole.providedBy(role):
-        role = Role(id=role, title=role)
+        if isinstance(role, dict):
+            role = Role(**role)
+        else:
+            role = Role(id=role, title=role)
     role_utility = registry.queryUtility(IRole, name=role.id)
     if role_utility is None:
         # registering a new role

@@ -83,7 +83,7 @@ class MissingPrincipal:
         return isinstance(other, PrincipalInfo) and (self.id == other.id)
 
 
-@adapter_config(context=IPrincipalInfo, provides=IAnnotations)
+@adapter_config(required=IPrincipalInfo, provides=IAnnotations)
 def get_principal_annotations(principal):
     """Principal annotations adapter"""
     annotations = query_utility(IPrincipalAnnotationUtility)

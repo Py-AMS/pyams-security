@@ -19,6 +19,7 @@ from zope.interface import implementer
 from zope.schema.fieldproperty import FieldProperty
 from zope.schema.vocabulary import SimpleTerm, SimpleVocabulary
 
+from pyams_security.interfaces import IViewContextPermissionChecker
 from pyams_security.interfaces.base import IPermission
 from pyams_security.interfaces.names import PERMISSIONS_VOCABULARY_NAME
 from pyams_utils.request import check_request
@@ -52,7 +53,11 @@ def register_permission(config, permission):
     ZMI features
     """
     if not IPermission.providedBy(permission):
-        permission = Permission(id=permission, title=permission)
+        if isinstance(permission, dict):
+            permission = Permission(id=permission.get('id'),
+                                    title=permission.get('title'))
+        else:
+            permission = Permission(id=permission, title=permission)
     config.registry.registerUtility(permission, IPermission, name=permission.id)
 
 
@@ -70,3 +75,16 @@ class PermissionsVocabulary(SimpleVocabulary):
                  for n, p in registry.getUtilitiesFor(self.interface)]
         terms.sort(key=lambda x: x.title)
         super(PermissionsVocabulary, self).__init__(terms)
+
+
+def get_edit_permission(request, context=None, view=None):
+    """Get required edit permission"""
+    if context is None:
+        context = request.context
+    registry = request.registry
+    checker = registry.queryMultiAdapter((context, request, view), IViewContextPermissionChecker)
+    if checker is None:
+        checker = registry.queryAdapter(context, IViewContextPermissionChecker)
+    if checker is not None:
+        return checker.edit_permission
+    return None

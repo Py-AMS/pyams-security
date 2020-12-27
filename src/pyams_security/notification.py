@@ -54,7 +54,7 @@ class NotificationSettings(Persistent):
 NOTIFICATIONS_KEY = 'pyams_security.notifications'
 
 
-@adapter_config(context=ISecurityManager, provides=INotificationSettings)
+@adapter_config(required=ISecurityManager, provides=INotificationSettings)
 def security_notification_factory(context):
     """Security manager notifications factory adapter"""
     return get_annotation_adapter(context, NOTIFICATIONS_KEY, INotificationSettings, locate=False)
