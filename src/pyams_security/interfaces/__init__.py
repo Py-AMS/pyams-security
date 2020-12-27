@@ -20,8 +20,8 @@ import re
 from zope.annotation import IAttributeAnnotatable
 from zope.container.constraints import containers, contains
 from zope.container.interfaces import IContainer
-from zope.interface import Attribute, Interface, implementer, invariant
-from zope.interface.interfaces import IObjectEvent, Invalid, ObjectEvent
+from zope.interface import Attribute, Interface, Invalid, implementer, invariant
+from zope.interface.interfaces import IObjectEvent, ObjectEvent
 from zope.location.interfaces import IContained
 from zope.schema import Bool, Choice, Datetime, Dict, Set, Text, TextLine, Tuple
 
@@ -397,6 +397,7 @@ class ILocalUser(IAttributeAnnotatable):
                             required=False)
 
     password_manager = Choice(title=_("Password manager name"),
+                              description=_("Utility used to encrypt user password"),
                               required=True,
                               vocabulary=PASSWORD_MANAGERS_VOCABULARY_NAME,
                               default='SSHA')
@@ -405,11 +406,21 @@ class ILocalUser(IAttributeAnnotatable):
                                     min_length=8,
                                     required=False)
 
+    confirmed_password = EncodedPasswordField(title=_("Confirmed password"),
+                                              min_length=8,
+                                              required=False)
+
     wait_confirmation = Bool(title=_("Wait confirmation?"),
                              description=_("If 'no', user will be activated immediately without "
                                            "waiting email confirmation"),
                              required=True,
                              default=True)
+
+    @invariant
+    def check_activated_user(self):
+        """Check for missing password of activated user"""
+        if not self.password and not self.wait_confirmation:
+            raise Invalid(_("You can't activate an account without setting a password!"))
 
     self_registered = Bool(title=_("Self-registered profile?"),
                            required=True,
@@ -418,27 +429,29 @@ class ILocalUser(IAttributeAnnotatable):
 
     activation_secret = TextLine(title=_("Activation secret key"),
                                  description=_("This private secret is used to create and check "
-                                               "activation hash"),
-                                 readonly=True)
+                                               "activation hash"))
 
     activation_hash = TextLine(title=_("Activation hash"),
                                description=_("This hash is provided into activation message URL. "
                                              "Activation hash is missing for local users which "
-                                             "were registered without waiting their confirmation."),
-                               readonly=True)
+                                             "were registered without waiting their "
+                                             "confirmation."))
+
+    activated = Bool(title=_("Activated"),
+                     required=True,
+                     default=False)
 
     activation_date = Datetime(title=_("Activation date"),
                                required=False)
 
-    activated = Bool(title=_("Activation date"),
-                     required=True,
-                     default=False)
-
     def check_password(self, password):
         """Check user password against provided one"""
 
-    def generate_secret(self, login, password):
+    def generate_secret(self, notify=True, request=None):
         """Generate secret key of this profile"""
+
+    def refresh_secret(self, notify=True, request=None):
+        """Refresh secret key of this profile"""
 
     def check_activation(self, hash, login, password):  # pylint: disable=redefined-builtin
         """Check activation for given settings"""
@@ -605,18 +618,18 @@ class IProtectedObject(IAttributeAnnotatable):
 
     everyone_denied = PermissionsSetField(title=_("Public denied permissions"),
                                           description=_("These permissions will be denied to all "
-                                                        "users. Denied permissions take precedence "
-                                                        "over granted ones."),
+                                                        "users. Denied permissions take "
+                                                        "precedence over granted ones."),
                                           required=False)
 
     everyone_granted = PermissionsSetField(title=_("Public granted permissions"),
-                                           description=_("These permissions will be granted to all "
-                                                         "users"),
+                                           description=_("These permissions will be granted to "
+                                                         "all users"),
                                            required=False)
 
     authenticated_denied = PermissionsSetField(title=_("Authenticated denied permissions"),
-                                               description=_("These permissions will be denied to "
-                                                             "authenticated users. Denied "
+                                               description=_("These permissions will be denied "
+                                                             "to authenticated users. Denied "
                                                              "permissions take precedence over "
                                                              "granted ones."),
                                                required=False)
@@ -672,7 +685,7 @@ class IRoleProtectedObject(IProtectedObject):
     """Roles protected object interface"""
 
     def grant_role(self, role, principal_ids):
-        """Grant given role to ptincipals"""
+        """Grant given role to principals"""
 
     def revoke_role(self, role, principal_ids):
         """Revoke given role from principals"""
@@ -681,9 +694,24 @@ class IRoleProtectedObject(IProtectedObject):
 class IDefaultProtectionPolicy(Interface):
     """Marker interface for objects using default protection policy"""
 
-    __roles__ = Tuple(title="Content roles",
-                      description="List of roles handles by this object",
-                      value_type=PrincipalsSetField(),
-                      required=True)
+
+class IContentRoles(Interface):
+    """Base content roles interface"""
+
+
+class IRolesPolicy(Interface):
+    """Roles policy interface"""
 
     roles_interface = Attribute("Name of interface containing roles fields")
+
+    weight = Attribute("Weight ordering attribute")
+
+
+class IViewContextPermissionChecker(Interface):
+    """Interface used to check access permissions on view context
+
+    May be implemented as a context adapter, or as a (context, request, view)
+    multi-adapter.
+    """
+
+    edit_permission = Attribute("Permission required to update form's content")

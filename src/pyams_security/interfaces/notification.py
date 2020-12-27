@@ -75,19 +75,20 @@ class INotificationSettings(IAttributeAnnotatable):
 
     confirmation_template = I18nHTMLField(
         title=_("Confirmation template"),
-        description=_("This template will be used instead of default template to send notification "
-                      "when a user is registered by a system administrator; you can use some user "
-                      "properties into the message body, like: {login}, {email}, {firstname}, "
-                      "{lastname}, {title} or {company_name}; message activation link and footer "
-                      "are added automatically"),
+        description=_("This template will be used instead of default template to send "
+                      "notification when a user is registered by a system administrator; you can "
+                      "use some user properties into the message body, like: {login}, {email}, "
+                      "{firstname}, {lastname}, {title} or {company_name}; message activation "
+                      "link and footer are added automatically"),
         required=False)
 
     registration_template = I18nHTMLField(
         title=_("Registration template"),
-        description=_("This template will be used instead of default template to send notificaiton "
-                      "when a user is auto-registered; you can use some user properties into the "
-                      "message body, like: {login}, {email}, {firstname}, {lastname}, {title} or "
-                      "{company_name}; message activation link and footer are added automatically"),
+        description=_("This template will be used instead of default template to send "
+                      "notificaiton when a user is auto-registered; you can use some user "
+                      "properties into the message body, like: {login}, {email}, {firstname}, "
+                      "{lastname}, {title} or {company_name}; message activation link and footer "
+                      "are added automatically"),
         required=False)
 
     signature = Text(title=_("Email signature"),
