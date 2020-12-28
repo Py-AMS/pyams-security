@@ -1,6 +1,10 @@
 Changelog
 =========
 
+1.2.1
+-----
+ - use updated WSGI decorator to prevent storage of null values into request environment
+
 1.2.0
 -----
  - updated roles management; this will allow to extend supported roles of a given class just
