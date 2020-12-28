@@ -81,7 +81,7 @@ class PyAMSAuthenticationPolicy:
         """Get current security manager"""
         return query_utility(ISecurityManager)
 
-    @wsgi_environ_cache('pyams_security.unauthenticated_userid')
+    @wsgi_environ_cache('pyams_security.unauthenticated_userid', store_none=False)
     def unauthenticated_userid(self, request):
         """Get unauthenticated user ID from given request"""
         result = self.cookie.identify(request)
@@ -93,7 +93,7 @@ class PyAMSAuthenticationPolicy:
                 return credentials.id
         return None
 
-    @wsgi_environ_cache('pyams_security.authenticated_userid')
+    @wsgi_environ_cache('pyams_security.authenticated_userid', store_none=False)
     def authenticated_userid(self, request):
         """Get authenticated user ID from given request"""
         principal_id = self.unauthenticated_userid(request)
