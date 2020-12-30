@@ -1,6 +1,10 @@
 Changelog
 =========
 
+1.3.0
+-----
+ - added argument in "find_principals" methods to only allow exact match
+
 1.2.1
 -----
  - use updated WSGI decorator to prevent storage of null values into request environment
