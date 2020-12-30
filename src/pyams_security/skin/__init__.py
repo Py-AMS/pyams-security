@@ -36,4 +36,4 @@ def find_principals(request):
     return [{
         'id': principal.id,
         'text': principal.title
-    } for principal in manager.find_principals(query)]
+    } for principal in manager.find_principals(query, exact_match=False)]

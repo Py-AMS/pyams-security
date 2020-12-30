@@ -310,7 +310,16 @@ Let's now try to authenticate:
 
     >>> [principal.id for principal in folder.find_principals('')]
     []
-    >>> [principal.id for principal in folder.find_principals('john')]
+    >>> [principal.id for principal in folder.find_principals('joh')]
+    ['users:user1']
+
+Exact match is only successful when searching on user login:
+
+    >>> [principal.id for principal in folder.find_principals('joh', exact_match=True)]
+    []
+    >>> [principal.id for principal in folder.find_principals('john', exact_match=True)]
+    []
+    >>> [principal.id for principal in folder.find_principals('user1', exact_match=True)]
     ['users:user1']
 
 There is another API concerning searching, which will return users instead of principals:

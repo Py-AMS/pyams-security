@@ -148,10 +148,19 @@ Let's create a new local user:
     >>> sm.get_all_principals(user1_id)
     {'users:user1'}
 
-    >>> sm.find_principals('john')
+    >>> sm.find_principals('joh')
     [<...PrincipalInfo object at 0x...>]
     >>> sm.find_principals('john')[0].id
     'users:user1'
+    >>> sm.find_principals('joh', exact_match=True)
+    []
+
+Exact match is only successful on user's login:
+
+    >>> sm.find_principals('john', exact_match=True)
+    []
+    >>> sm.find_principals('admin', exact_match=True)
+    [<...PrincipalInfo object at 0x...>]
 
     >>> request = new_test_request('{users}.user1', 'passwd', registry=config.registry)
 

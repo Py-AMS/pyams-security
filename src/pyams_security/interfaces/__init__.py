@@ -216,7 +216,7 @@ class IDirectoryPluginInfo(Interface):
     def get_all_principals(self, principal_id):
         """Returns all principals matching given principal ID"""
 
-    def find_principals(self, query):
+    def find_principals(self, query, exact_match=False):
         """Find principals matching given query
 
         Method may return an iterator
@@ -320,9 +320,10 @@ class IUserRegistrationInfo(Interface):
 
     password = EncodedPasswordField(title=_("Password"),
                                     description=_("Password must be at least 8 characters long, "
-                                                  "and contain at least three kinds of characters "
-                                                  "between lowercase letters, uppercase letters, "
-                                                  "numbers and special characters"),
+                                                  "and contain at least three kinds of "
+                                                  "characters between lowercase letters, "
+                                                  "uppercase letters, numbers and special "
+                                                  "characters"),
                                     min_length=8,
                                     required=True)
 
@@ -590,9 +591,6 @@ class ISecurityManager(IContainer, IDirectoryPluginInfo, IAttributeAnnotatable):
 
     def get_all_principals(self, principal_id):
         """Get all principals of given principal ID"""
-
-    def find_principals(self, query):
-        """Find principals matching given query"""
 
 
 LOGIN_REFERER_KEY = 'pyams_security.login.referer'

@@ -100,12 +100,12 @@ class AdminAuthenticationPlugin(Persistent, Contained):
             return {principal_id}
         return set()
 
-    def find_principals(self, query):
+    def find_principals(self, query, exact_match=False):
         """Search principals matching given query"""
         if not query:
             return
         query = query.lower()
-        if (query == self.login or
-                query in self.title.lower()):
+        title = self.title.lower()
+        if (query == self.login) or (not exact_match and query in title):
             yield PrincipalInfo(id='{0}:{1}'.format(self.prefix, self.login),
                                 title=self.title)

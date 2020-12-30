@@ -144,7 +144,7 @@ class GroupsFolder(Folder):
                     principals.update(self.get_all_principals(principal, seen))
         return principals
 
-    def find_principals(self, query):
+    def find_principals(self, query, exact_match=False):
         """Find principals matching given query"""
         if not self.enabled:
             return
@@ -152,7 +152,11 @@ class GroupsFolder(Folder):
             return
         query = query.lower()
         for group in self.values():
-            if query in group.title.lower():
+            title = group.title
+            if not title:
+                continue
+            title = title.lower()
+            if (query == title) or (not exact_match and query in title):
                 yield PrincipalInfo(id=GROUP_ID_FORMATTER.format(prefix=self.prefix,
                                                                  group_id=group.group_id),
                                     title=group.title)

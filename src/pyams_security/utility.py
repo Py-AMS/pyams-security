@@ -193,12 +193,12 @@ class SecurityManager(Folder):
                 principals.update(plugin.get_all_principals(principal_id))
         return principals
 
-    def find_principals(self, query):
+    def find_principals(self, query, exact_match=False):
         """Find principals matching given query"""
         principals = set()
         for plugin in self.directory_plugins:
             try:
-                principals |= set(plugin.find_principals(query))
+                principals |= set(plugin.find_principals(query, exact_match))
             except:  # pylint: disable=bare-except
                 LOGGER.debug("Can't find principals!", exc_info=True)
                 continue

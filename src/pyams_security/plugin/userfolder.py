@@ -54,6 +54,7 @@ __docformat__ = 'restructuredtext'
 
 from pyams_security import _  # pylint: disable=ungrouped-imports
 
+
 LOGGER = logging.getLogger('PyAMS (security)')
 
 
@@ -112,7 +113,7 @@ class UsersFolder(Folder):
             return {principal_id}
         return set()
 
-    def find_principals(self, query):
+    def find_principals(self, query, exact_match=False):
         """Get iterator of principals matching given query"""
         if not self.enabled:
             return
@@ -120,14 +121,20 @@ class UsersFolder(Folder):
             return
         query = query.lower()
         for user in self.values():
-            if (query == user.login or
-                    query in user.firstname.lower() or
-                    query in user.lastname.lower() or
-                    query in user.email.lower()):
-                yield PrincipalInfo(id='{prefix}:{login}'.format(prefix=self.prefix,
-                                                                 login=user.login),
-                                    title='{title} <{email}>'.format(title=user.title,
-                                                                     email=user.email))
+            if exact_match:
+                attrs = (user.login,)
+            else:
+                attrs = (user.login, user.firstname, user.lastname, user.email)
+            for attr in attrs:
+                if not attr:
+                    continue
+                if (exact_match and query == attr.lower()) or \
+                        (not exact_match and query in attr.lower()):
+                    yield PrincipalInfo(id='{prefix}:{login}'.format(prefix=self.prefix,
+                                                                     login=user.login),
+                                        title='{title} <{email}>'.format(title=user.title,
+                                                                         email=user.email))
+                    break
 
     def get_search_results(self, data):
         """Search iterator of principals matching given data"""

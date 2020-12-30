@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PyAMS_security 1.0\n"
-"POT-Creation-Date: 2020-12-25 23:52+0100\n"
+"POT-Creation-Date: 2020-12-29 10:29+0100\n"
 "PO-Revision-Date: 2019-12-21 22:19+0100\n"
 "Last-Translator: Thierry Florac <tflorac@ulthar.net>\n"
 "Language-Team: French\n"
@@ -16,35 +16,35 @@ msgstr ""
 "Generated-By: Lingua 3.8\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
-#: src/pyams_security/include.py:67
+#: src/pyams_security/include.py:68
 msgid "View public contents"
 msgstr "Voir les contenus publics"
 
-#: src/pyams_security/include.py:71
+#: src/pyams_security/include.py:72
 msgid "View protected contents"
 msgstr "Voir les contenus protégés"
 
-#: src/pyams_security/include.py:75
+#: src/pyams_security/include.py:76
 msgid "Manage contents properties"
 msgstr "Gérer les contenus"
 
-#: src/pyams_security/include.py:79
+#: src/pyams_security/include.py:80
 msgid "View management screens"
 msgstr "Accéder à l'interface d'administration"
 
-#: src/pyams_security/include.py:83
+#: src/pyams_security/include.py:84
 msgid "Manage system properties"
 msgstr "Gérer le système"
 
-#: src/pyams_security/include.py:88
+#: src/pyams_security/include.py:89
 msgid "Manage security"
 msgstr "Gérer la sécurité"
 
-#: src/pyams_security/include.py:92
+#: src/pyams_security/include.py:93
 msgid "Manage roles"
 msgstr "Gérer les rôles"
 
-#: src/pyams_security/include.py:98
+#: src/pyams_security/include.py:99
 msgid "System manager (role)"
 msgstr "Administrateur (rôle)"
 

@@ -318,6 +318,8 @@ when looking for principals:
     []
     >>> list(admin.find_principals('admin'))
     [<pyams_security.principal.PrincipalInfo object at 0x...>]
+    >>> list(admin.find_principals('admin', exact_match=True))
+    [<pyams_security.principal.PrincipalInfo object at 0x...>]
 
 
 Searching principals
