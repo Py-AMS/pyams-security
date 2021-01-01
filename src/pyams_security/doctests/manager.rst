@@ -85,6 +85,8 @@ use them:
     >>> config.set_authentication_policy(policy)
 
     >>> request = new_test_request('user1', 'passwd', registry=config.registry)
+    >>> list(sm.credentials_plugins_names)
+    []
     >>> list(sm.credentials_plugins)
     []
     >>> list(sm.authentication_plugins)

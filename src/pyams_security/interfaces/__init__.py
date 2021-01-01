@@ -559,6 +559,16 @@ class ISecurityManager(IContainer, IDirectoryPluginInfo, IAttributeAnnotatable):
             raise Invalid(_("You can't activate open registration without selecting a users "
                             "folder"))
 
+    credentials_plugins_names = Tuple(title=_("Credentials plug-ins"),
+                                      description=_("These plug-ins are used to extract "
+                                                    "credentials from an incoming request (the "
+                                                    "Pyramid session plug-in is built-in!). "
+                                                    "They can rely on authentication plug-ins "
+                                                    "to ensure that provided credentials are "
+                                                    "valid..."),
+                                      value_type=TextLine(),
+                                      readonly=True)
+
     authentication_plugins_names = Tuple(title=_("Authentication plug-ins"),
                                          description=_("The plug-ins can be used to check "
                                                        "extracted credentials against a local or "
@@ -575,7 +585,7 @@ class ISecurityManager(IContainer, IDirectoryPluginInfo, IAttributeAnnotatable):
     def get_plugin(self, name):
         """Get plug-in matching given name"""
 
-    credentials_plugin = Attribute("Iterator on registered credentials plug-ins")
+    credentials_plugins = Attribute("Iterator on registered credentials plug-ins")
 
     authentication_plugins = Attribute("Iterator on registered and local authentication plug-ins")
 

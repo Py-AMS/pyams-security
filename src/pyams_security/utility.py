@@ -27,7 +27,8 @@ from pyams_security.interfaces import AuthenticatedPrincipalEvent, IAuthenticati
     ICredentialsPlugin, IDirectoryPlugin, IGroupsAwareDirectoryPlugin, \
     IProtectedObject, ISecurityManager
 from pyams_security.principal import MissingPrincipal, UnknownPrincipal
-from pyams_utils.registry import get_all_utilities_registered_for, query_utility
+from pyams_utils.registry import get_all_utilities_registered_for, get_utilities_for, \
+    query_utility
 from pyams_utils.request import check_request
 
 
@@ -65,6 +66,10 @@ class SecurityManager(Folder):
     def get_plugin(self, name):
         """Lookup plugin for given name"""
         return query_utility(ICredentialsPlugin, name=name) or self.get(name)
+
+    @property
+    def credentials_plugins_names(self):
+        yield from [name for name, plugin in get_utilities_for(ICredentialsPlugin) if name]
 
     @property
     def credentials_plugins(self):
