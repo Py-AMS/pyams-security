@@ -378,6 +378,33 @@ to any authenticated principal:
       <pyramid.security.AllPermissionsList object at 0x...>)]
 
 
+Getting context edit permission
+-------------------------------
+
+The "edit" permission is a permissions which is frequently required to be able to update
+a "content" properties. The "get_edit_permission", which is actually used for example by
+PyAMS forms management package, relies on a multi-adapter:
+
+    >>> from pyams_security.permission import get_edit_permission
+
+    >>> get_edit_permission(request) is None
+    True
+
+    >>> class CustomPermissionChecker:
+    ...     def __init__(self, context):
+    ...         pass
+    ...     @property
+    ...     def edit_permission(self):
+    ...         return 'My permission'
+
+    >>> from pyams_security.interfaces import IViewContextPermissionChecker
+    >>> call_decorator(config, adapter_config, CustomPermissionChecker,
+    ...                required=object, provides=IViewContextPermissionChecker)
+
+    >>> get_edit_permission(request)
+    'My permission'
+
+
 Indexing granted roles
 ----------------------
 

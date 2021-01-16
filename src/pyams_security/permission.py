@@ -82,7 +82,8 @@ def get_edit_permission(request, context=None, view=None):
     if context is None:
         context = request.context
     registry = request.registry
-    checker = registry.queryMultiAdapter((context, request, view), IViewContextPermissionChecker)
+    checker = registry.queryMultiAdapter((context, request, view),
+                                         IViewContextPermissionChecker)
     if checker is None:
         checker = registry.queryAdapter(context, IViewContextPermissionChecker)
     if checker is not None:

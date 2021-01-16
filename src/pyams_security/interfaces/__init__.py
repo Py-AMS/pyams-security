@@ -51,6 +51,7 @@ INTERNAL_USER_LOGIN = 'internal'
 INTERNAL_USER_ID = '{0}:{1}'.format(SYSTEM_PREFIX, INTERNAL_USER_LOGIN)
 
 SYSTEM_ADMIN_ROLE = 'system.Manager'
+SYSTEM_VIEWER_ROLE = 'system.Viewer'
 
 USER_LOGIN_TITLE = _("User login")
 

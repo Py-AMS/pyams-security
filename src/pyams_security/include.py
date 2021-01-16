@@ -21,13 +21,14 @@ from zope.password.interfaces import IPasswordManager
 from zope.password.password import MD5PasswordManager, PlainTextPasswordManager, \
     SHA1PasswordManager, SSHAPasswordManager
 
-from pyams_security.interfaces import ADMIN_USER_ID, IDefaultProtectionPolicy, SYSTEM_ADMIN_ROLE
+from pyams_security.interfaces import ADMIN_USER_ID, IDefaultProtectionPolicy, \
+    SYSTEM_ADMIN_ROLE, SYSTEM_VIEWER_ROLE
 from pyams_security.interfaces.base import MANAGE_PERMISSION, MANAGE_ROLES_PERMISSION, \
     MANAGE_SECURITY_PERMISSION, MANAGE_SYSTEM_PERMISSION, PUBLIC_PERMISSION, \
     VIEW_PERMISSION, VIEW_SYSTEM_PERMISSION
 from pyams_security.permission import register_permission
 from pyams_security.plugin import PluginSelector
-from pyams_security.role import RoleSelector, register_role
+from pyams_security.role import RoleSelector, register_role, upgrade_role
 from pyams_security.security import ProtectedObjectMixin
 from pyams_security.utility import get_principal
 from pyams_site.site import BaseSiteRoot
@@ -56,6 +57,9 @@ def include_package(config):
     # add configuration directives
     config.add_directive('register_permission', register_permission)
     config.add_directive('register_role', register_role)
+    config.add_directive('upgrade_role', upgrade_role)
+
+    # add request methods
     config.add_request_method(get_principal, 'principal', reify=True)
 
     # add subscribers predicate
@@ -83,7 +87,6 @@ def include_package(config):
         'id': MANAGE_SYSTEM_PERMISSION,
         'title': _("Manage system properties")
     })
-
     config.register_permission({
         'id': MANAGE_SECURITY_PERMISSION,
         'title': _("Manage security")
@@ -105,6 +108,17 @@ def include_package(config):
         'managers': {
             ADMIN_USER_ID,
             'role:{0}'.format(SYSTEM_ADMIN_ROLE)
+        }
+    })
+    config.register_role({
+        'id': SYSTEM_VIEWER_ROLE,
+        'title': _("System viewer (role)"),
+        'permissions': {
+            PUBLIC_PERMISSION, VIEW_PERMISSION, VIEW_SYSTEM_PERMISSION
+        },
+        'managers': {
+            ADMIN_USER_ID,
+            'role:{}'.format(SYSTEM_ADMIN_ROLE)
         }
     })
 

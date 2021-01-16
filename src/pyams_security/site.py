@@ -32,6 +32,7 @@ class SiteRootRoles(ProtectedObjectRoles):
     """Site root roles"""
 
     managers = RolePrincipalsFieldProperty(ISiteRootRoles['managers'])
+    viewers = RolePrincipalsFieldProperty(ISiteRootRoles['viewers'])
 
 
 @adapter_config(required=ISiteRoot,
