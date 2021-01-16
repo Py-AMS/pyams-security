@@ -14,7 +14,7 @@
 
 This module provides classes related to roles definition and registration.
 """
-
+from pyramid.exceptions import ConfigurationError
 from zope.interface import implementer
 from zope.schema.fieldproperty import FieldProperty
 from zope.schema.vocabulary import SimpleTerm, SimpleVocabulary
@@ -107,6 +107,25 @@ def register_role(config, role):
                                    (role.permissions or set())
         role_utility.managers = (role_utility.managers or set()) | \
                                 (role.managers or set())
+
+
+def upgrade_role(config, role, required=True, **kwargs):
+    """Upgrade an existing role with new permissions or managers
+
+    If *required* argument is True, an exception is raised if provided
+    role doesn't exist.
+    """
+    registry = config.registry
+    if not IRole.providedBy(role):
+        role = registry.queryUtility(IRole, name=role)
+    if role is None:
+        if required:
+            raise ConfigurationError("Provided role isn't registered!")
+        return
+    if 'permissions' in kwargs:
+        role.permissions = (role.permissions or set()) | set(kwargs['permissions'])
+    if 'managers' in kwargs:
+        role.managers = (role.managers or set()) | set(kwargs['managers'])
 
 
 @vocabulary_config(name=ROLES_VOCABULARY_NAME)

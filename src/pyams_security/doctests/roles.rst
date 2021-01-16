@@ -113,9 +113,29 @@ managers sets, but will not update it's other properties:
     >>> sorted(queryUtility(IRole, name='pyams.manager').managers)
     []
 
-You cna also register a role by name:
+You can also register a role by name:
 
     >>> register_role(config, 'pyams.system_manager')
+    >>> queryUtility(IRole, name='pyams.system_manager')
+    <pyams_security.role.Role object at 0x...>
+
+You can also upgrade an existing role:
+
+    >>> from pyams_security.role import upgrade_role
+    >>> upgrade_role(config, 'pyams.system_manager',
+    ...              permissions={'newPermission'}, managers={})
+    >>> sorted(queryUtility(IRole, name='pyams.system_manager').permissions)
+    ['newPermission']
+
+Upgrading a non-existing role may raise an exception, except if the *required* argument is False:
+
+    >>> upgrade_role(config, 'missing role name')
+    Traceback (most recent call last):
+    ...
+    pyramid.exceptions.ConfigurationError: Provided role isn't registered!
+
+    >>> upgrade_role(config, 'missing role name', required=False)
+
 
 A vocabulary is used to provide all registered roles:
 
