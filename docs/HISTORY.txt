@@ -1,6 +1,11 @@
 Changelog
 =========
 
+1.5.0
+-----
+ - added ISecurityManager factory configuration
+ - removed Travis-CI configuration
+
 1.4.0
 -----
  - added config.upgrade_role function, to be able to add permissions to an existing role
