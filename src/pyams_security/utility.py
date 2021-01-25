@@ -20,13 +20,13 @@ import logging
 from beaker.cache import cache_region
 from pyramid.location import lineage
 from zope.container.folder import Folder
-from zope.interface import implementer
 from zope.schema.fieldproperty import FieldProperty
 
 from pyams_security.interfaces import AuthenticatedPrincipalEvent, IAuthenticationPlugin, \
     ICredentialsPlugin, IDirectoryPlugin, IGroupsAwareDirectoryPlugin, \
     IProtectedObject, ISecurityManager
 from pyams_security.principal import MissingPrincipal, UnknownPrincipal
+from pyams_utils.factory import factory_config
 from pyams_utils.registry import get_all_utilities_registered_for, get_utilities_for, \
     query_utility
 from pyams_utils.request import check_request
@@ -37,7 +37,7 @@ __docformat__ = 'restructuredtext'
 LOGGER = logging.getLogger('PyAMS (security)')
 
 
-@implementer(ISecurityManager)
+@factory_config(ISecurityManager)
 class SecurityManager(Folder):
     """Security manager utility"""
 

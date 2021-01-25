@@ -58,7 +58,7 @@ RENAMED_CLASSES = {
 
 
 REQUIRED_UTILITIES = (
-    (ISecurityManager, '', SecurityManager, 'Security manager'),
+    (ISecurityManager, '', None, 'Security manager'),
     (IPrincipalAnnotationUtility, '', PrincipalAnnotationUtility, 'User profiles')
 )
 
