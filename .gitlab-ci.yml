@@ -1,4 +1,4 @@
-image: python:3.7
+image: python:3.5
 
 stages:
     - test
@@ -21,11 +21,10 @@ before_script:
 bootstrap:
     stage: .pre
     script:
-        - pip --version
-        - pip install setuptools==50.3.2 zc.buildout zc.recipe.egg
+        - pip install pip==20.3.4 setuptools==50.3.2 zc.buildout zc.recipe.egg
         - buildout
 
-test-3.7:
+test-3.5:
     stage: test
     script:
         - pip install anybadge coverage
@@ -73,7 +72,7 @@ coverage:
         variables:
             - $CODE_COVERAGE_DISABLED
 
-build-3.7:
+build-3.5:
     stage: build
     script:
         - ./bin/buildout setup setup.py clean --all sdist bdist_egg bdist_wheel
@@ -84,11 +83,46 @@ build-3.7:
         refs:
             - tags
 
+dist-3.5:
+    stage: dist
+    script:
+        - pip install twine
+        - twine upload dist/*
+    variables:
+        TWINE_USERNAME: $PYPI_USERNAME
+        TWINE_PASSWORD: $PYPI_PASSWORD
+    only:
+        refs:
+            - tags
+    except:
+        variables:
+            - $PYPI_UPLOAD_DISABLED
+
+dist-3.6:
+    stage: dist
+    image: python:3.6
+    script:
+        - pip install pip==20.3.4 setuptools==50.3.2 zc.buildout zc.recipe.egg
+        - buildout
+        - ./bin/test
+        - buildout setup setup.py bdist_egg
+        - pip install twine
+        - twine upload dist/*
+    variables:
+        TWINE_USERNAME: $PYPI_USERNAME
+        TWINE_PASSWORD: $PYPI_PASSWORD
+    only:
+        refs:
+            - tags
+    except:
+        variables:
+            - $PYPI_UPLOAD_DISABLED
+
 dist-3.7:
     stage: dist
     image: python:3.7
     script:
-        - pip install zc.buildout zc.recipe.egg
+        - pip install pip==20.3.4 setuptools==50.3.2 zc.buildout zc.recipe.egg
         - buildout
         - ./bin/test
         - buildout setup setup.py bdist_egg
@@ -108,7 +142,7 @@ dist-3.8:
     stage: dist
     image: python:3.8
     script:
-        - pip install zc.buildout zc.recipe.egg
+        - pip install pip==20.3.4 setuptools==50.3.2 zc.buildout zc.recipe.egg
         - buildout
         - ./bin/test
         - buildout setup setup.py bdist_egg
@@ -128,7 +162,7 @@ dist-3.9:
     stage: dist
     image: python:3.9
     script:
-        - pip install zc.buildout zc.recipe.egg
+        - pip install pip==20.3.4 setuptools==50.3.2 zc.buildout zc.recipe.egg
         - buildout
         - ./bin/test
         - buildout setup setup.py bdist_egg
