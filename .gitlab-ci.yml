@@ -21,6 +21,7 @@ before_script:
 bootstrap:
     stage: .pre
     script:
+        - pip --version
         - pip install zc.buildout zc.recipe.egg
         - buildout
 
