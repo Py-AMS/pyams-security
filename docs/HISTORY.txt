@@ -1,6 +1,10 @@
 Changelog
 =========
 
+1.5.1
+-----
+ - updated doctests
+
 1.5.0
 -----
  - added ISecurityManager factory configuration
