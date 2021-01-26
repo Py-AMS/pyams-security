@@ -21,7 +21,7 @@ before_script:
 bootstrap:
     stage: .pre
     script:
-        - pip install zc.buildout buildout.wheel
+        - pip install zc.buildout zc.recipe.egg
         - buildout
 
 test-3.7:
@@ -87,7 +87,7 @@ dist-3.7:
     stage: dist
     image: python:3.7
     script:
-        - pip install zc.buildout buildout.wheel
+        - pip install zc.buildout zc.recipe.egg
         - buildout
         - ./bin/test
         - buildout setup setup.py bdist_egg
@@ -107,7 +107,7 @@ dist-3.8:
     stage: dist
     image: python:3.8
     script:
-        - pip install zc.buildout buildout.wheel
+        - pip install zc.buildout zc.recipe.egg
         - buildout
         - ./bin/test
         - buildout setup setup.py bdist_egg
@@ -127,7 +127,7 @@ dist-3.9:
     stage: dist
     image: python:3.9
     script:
-        - pip install zc.buildout buildout.wheel
+        - pip install zc.buildout zc.recipe.egg
         - buildout
         - ./bin/test
         - buildout setup setup.py bdist_egg
