@@ -1,6 +1,10 @@
 Changelog
 =========
 
+1.5.4
+-----
+ - removed support for Python 3.5 and 3.6
+
 1.5.3
 -----
  - added wheels to Buildout configuration
