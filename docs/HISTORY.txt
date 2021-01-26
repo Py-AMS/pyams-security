@@ -1,6 +1,10 @@
 Changelog
 =========
 
+1.5.3
+-----
+ - added wheels to Buildout configuration
+
 1.5.2
 -----
  - updated Gitlab-CI configuration for last Python versions
