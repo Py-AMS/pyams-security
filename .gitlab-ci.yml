@@ -75,7 +75,8 @@ coverage:
 build-3.5:
     stage: build
     script:
-        - ./bin/buildout setup setup.py clean --all sdist bdist_egg bdist_wheel
+        - pip install pip==20.3.4 setuptools==50.3.2 zc.buildout zc.recipe.egg
+        - buildout setup setup.py clean --all sdist bdist_egg bdist_wheel
     artifacts:
         paths:
             - ./dist
