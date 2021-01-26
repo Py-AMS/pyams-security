@@ -43,6 +43,13 @@ Managing users with PyAMS security package
     >>> from pyams_utils.registry import get_utility
     >>> sm = get_utility(ISecurityManager)
 
+Some tests will require a configured cache:
+
+    >>> from beaker.cache import CacheManager, cache_regions
+    >>> cache = CacheManager(**{'cache.type': 'memory'})
+    >>> cache_regions.update({'short': {'type': 'memory', 'expire': 0}})
+    >>> cache_regions.update({'long': {'type': 'memory', 'expire': 0}})
+
 
 Local users
 -----------
