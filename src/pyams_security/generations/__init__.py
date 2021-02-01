@@ -24,9 +24,8 @@ from zope.principalannotation.utility import PrincipalAnnotationUtility
 from pyams_security.interfaces import ADMIN_USER_LOGIN, ADMIN_USER_NAME, INTERNAL_USER_LOGIN, \
     INTERNAL_USER_NAME, ISecurityManager, SYSTEM_PREFIX
 from pyams_security.plugin.admin import AdminAuthenticationPlugin
-from pyams_security.utility import SecurityManager
-from pyams_site.interfaces import ISiteGenerations
 from pyams_site.generations import check_required_utilities
+from pyams_site.interfaces import ISiteGenerations
 from pyams_utils.registry import get_current_registry, utility_config
 
 
