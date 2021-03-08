@@ -248,6 +248,12 @@ class IGroupsAwareDirectoryPlugin(Interface):
 # User local registration
 #
 
+SALT_SIZE = {
+    'SSHA512': 32,
+    'PBKDF2': 32
+}
+
+
 class IUsersFolderPlugin(IAuthenticationPlugin, IDirectorySearchPlugin):
     """Local users folder interface"""
 
@@ -402,7 +408,7 @@ class ILocalUser(IAttributeAnnotatable):
                               description=_("Utility used to encrypt user password"),
                               required=True,
                               vocabulary=PASSWORD_MANAGERS_VOCABULARY_NAME,
-                              default='SSHA')
+                              default='PBKDF2')
 
     password = EncodedPasswordField(title=_("Password"),
                                     min_length=8,
