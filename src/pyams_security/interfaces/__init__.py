@@ -73,7 +73,7 @@ class RoleEvent(ObjectEvent):
     """Base role event"""
 
     def __init__(self, object, role_id, principal_id):  # pylint: disable=redefined-builtin
-        super(RoleEvent, self).__init__(object)
+        super().__init__(object)
         self.role_id = role_id
         self.principal_id = principal_id
 

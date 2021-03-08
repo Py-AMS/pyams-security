@@ -25,6 +25,7 @@ from zope.schema.fieldproperty import FieldProperty
 from pyams_security.interfaces import AuthenticatedPrincipalEvent, IAuthenticationPlugin, \
     ICredentialsPlugin, IDirectoryPlugin, IGroupsAwareDirectoryPlugin, \
     IProtectedObject, ISecurityManager
+from pyams_security.interfaces.base import ROLE_ID
 from pyams_security.principal import MissingPrincipal, UnknownPrincipal
 from pyams_utils.factory import factory_config
 from pyams_utils.registry import get_all_utilities_registered_for, get_utilities_for, \
@@ -48,14 +49,14 @@ class SecurityManager(Folder):
     directory_plugins_names = FieldProperty(ISecurityManager['directory_plugins_names'])
 
     def __setitem__(self, key, value):
-        super(SecurityManager, self).__setitem__(key, value)
+        super().__setitem__(key, value)
         if IAuthenticationPlugin.providedBy(value):
             self.authentication_plugins_names += (key,)
         if IDirectoryPlugin.providedBy(value):
             self.directory_plugins_names += (key,)
 
     def __delitem__(self, key):
-        super(SecurityManager, self).__delitem__(key)
+        super().__delitem__(key)
         if key in self.authentication_plugins_names:
             self.authentication_plugins_names = tuple(
                 filter(lambda x: x != key, self.authentication_plugins_names))
@@ -69,6 +70,7 @@ class SecurityManager(Folder):
 
     @property
     def credentials_plugins_names(self):
+        """Get list of credentials plugins names"""
         yield from [name for name, plugin in get_utilities_for(ICredentialsPlugin) if name]
 
     @property
@@ -167,7 +169,7 @@ class SecurityManager(Folder):
                 protection = IProtectedObject(parent, None)
                 if protection is not None:
                     for principal in principals.copy():
-                        principals |= set(map('role:{}'.format,
+                        principals |= set(map(ROLE_ID.format,
                                               protection.get_roles(principal)))
                     if not protection.inherit_parent_roles:
                         break

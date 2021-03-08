@@ -56,7 +56,7 @@ class RolePrincipalsFieldProperty:
 
     def __set__(self, instance, value):
         field = self.__field.bind(instance)
-        if ISet.providedBy(field):
+        if ISet.providedBy(field):  # pylint: disable=no-value-for-parameter
             if value is None:
                 value = set()
             elif isinstance(value, str):

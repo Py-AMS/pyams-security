@@ -37,14 +37,14 @@ class SSHA512PasswordManager(_PrefixedPasswordManager):
 
     _prefix = b'{SSHA512}'
 
-    def encodePassword(self, password, salt=None):
+    def encodePassword(self, password, salt=None):  # pylint: disable=arguments-differ
         if salt is None:
             salt = urandom(SALT_SIZE.get('SSHA512', 32))
         elif not isinstance(salt, bytes):
             salt = _encoder(salt)
-        hash = sha512(_encoder(password))
-        hash.update(salt)
-        return self._prefix + standard_b64encode(hash.digest() + salt)
+        hashcode = sha512(_encoder(password))
+        hashcode.update(salt)
+        return self._prefix + standard_b64encode(hashcode.digest() + salt)
 
     def checkPassword(self, encoded_password, password):
         # standard_b64decode() cannot handle unicode input string.
@@ -62,13 +62,13 @@ class PBKDF2PasswordManager(_PrefixedPasswordManager):
 
     _prefix = b'{PBKDF2}'
 
-    def encodePassword(self, password, salt=None):
+    def encodePassword(self, password, salt=None):  # pylint: disable=arguments-differ
         if salt is None:
             salt = urandom(SALT_SIZE.get('PBKDF2', 32))
         elif not isinstance(salt, bytes):
             salt = _encoder(salt)
-        hash = pbkdf2_hmac('sha512', _encoder(password), salt, 100000)
-        return self._prefix + standard_b64encode(hash + salt)
+        hashcode = pbkdf2_hmac('sha512', _encoder(password), salt, 100000)
+        return self._prefix + standard_b64encode(hashcode + salt)
 
     def checkPassword(self, encoded_password, password):
         # standard_b64decode() cannot handle unicode input string.

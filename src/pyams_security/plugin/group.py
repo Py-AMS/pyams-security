@@ -92,7 +92,7 @@ class LocalGroupsVocabulary(SimpleVocabulary):
                         terms.append(SimpleTerm('{prefix}:{group_id}'.format(
                             prefix=plugin.prefix, group_id=group.group_id),
                                                 title=group.title))
-        super(LocalGroupsVocabulary, self).__init__(terms)
+        super().__init__(terms)
 
 
 @factory_config(IGroupsFolderPlugin)
@@ -104,7 +104,7 @@ class GroupsFolder(Folder):
     enabled = FieldProperty(IGroupsFolderPlugin['enabled'])
 
     def __init__(self):
-        super(GroupsFolder, self).__init__()
+        super().__init__()
         self.groups_by_principal = OOBTree.OOBTree()  # pylint: disable=no-member
 
     def check_group_id(self, group_id):

@@ -1,6 +1,12 @@
 Changelog
 =========
 
+1.6.0
+-----
+ - removed support for Python < 3.7
+ - added custom password encoders
+ - updated doctests
+
 1.5.5
 -----
  - updated Gitlab-CI configuration

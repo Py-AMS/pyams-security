@@ -37,17 +37,17 @@ class PermissionField(Choice):
     def __init__(self, **kwargs):
         if 'vocabulary' in kwargs:
             del kwargs['vocabulary']
-        super(PermissionField, self).__init__(vocabulary=PERMISSIONS_VOCABULARY_NAME, **kwargs)
+        super().__init__(vocabulary=PERMISSIONS_VOCABULARY_NAME, **kwargs)
 
     def validate(self, value):
         if IPermission.providedBy(value):
             value = value.id
-        super(PermissionField, self).validate(value)
+        super().validate(value)
 
     def set(self, object, value):  # pylint: disable=redefined-builtin
         if IPermission.providedBy(value):
             value = value.id
-        super(PermissionField, self).set(object, value)
+        super().set(object, value)
 
 
 class IPermissionsSetField(ISet):
@@ -68,12 +68,12 @@ class PermissionsSetField(Set):
     def __init__(self, **kwargs):
         if 'value_type' in kwargs:
             del kwargs['value_type']
-        super(PermissionsSetField, self).__init__(value_type=PermissionField(), **kwargs)
+        super().__init__(value_type=PermissionField(), **kwargs)
 
     def set(self, object, value):  # pylint: disable=redefined-builtin
         if value:
             value = set(map(get_permission_id, value))
-        super(PermissionsSetField, self).set(object, value)
+        super().set(object, value)
 
 
 class IRoleField(IChoice):
@@ -87,17 +87,17 @@ class RoleField(Choice):
     def __init__(self, **kwargs):
         if 'vocabulary' in kwargs:
             del kwargs['vocabulary']
-        super(RoleField, self).__init__(vocabulary=ROLES_VOCABULARY_NAME, **kwargs)
+        super().__init__(vocabulary=ROLES_VOCABULARY_NAME, **kwargs)
 
     def validate(self, value):
         if IRole.providedBy(value):
             value = value.id
-        super(RoleField, self).validate(value)
+        super().validate(value)
 
     def set(self, object, value):  # pylint: disable=redefined-builtin
         if IRole.providedBy(value):
             value = value.id
-        super(RoleField, self).set(object, value)
+        super().set(object, value)
 
 
 class IRolesSetField(ISet):
@@ -118,12 +118,12 @@ class RolesSetField(Set):
     def __init__(self, **kwargs):
         if 'value_type' in kwargs:
             del kwargs['value_type']
-        super(RolesSetField, self).__init__(value_type=RoleField(), **kwargs)
+        super().__init__(value_type=RoleField(), **kwargs)
 
     def set(self, object, value):  # pylint: disable=redefined-builtin
         if value:
             value = set(map(get_role_id, value))
-        super(RolesSetField, self).set(object, value)
+        super().set(object, value)
 
 
 class IPrincipalBaseField(Interface):
@@ -146,17 +146,17 @@ class PrincipalField(TextLine):
     def __init__(self, **kwargs):
         if 'role_id' in kwargs:
             self.role_id = kwargs.pop('role_id')
-        super(PrincipalField, self).__init__(**kwargs)
+        super().__init__(**kwargs)
 
     def validate(self, value):
         if IPrincipalInfo.providedBy(value):
             value = value.id
-        super(PrincipalField, self).validate(value)
+        super().validate(value)
 
     def set(self, object, value):  # pylint: disable=redefined-builtin
         if IPrincipalInfo.providedBy(value):
             value = value.id
-        super(PrincipalField, self).set(object, value)
+        super().set(object, value)
 
 
 class IPrincipalsSetField(ISet, IPrincipalBaseField):
@@ -178,9 +178,9 @@ class PrincipalsSetField(Set):
     def __init__(self, **kwargs):
         if 'role_id' in kwargs:
             self.role_id = kwargs.pop('role_id')
-        super(PrincipalsSetField, self).__init__(**kwargs)
+        super().__init__(**kwargs)
 
     def set(self, object, value):  # pylint: disable=redefined-builtin
         if value:
             value = set(map(get_principal_id, value))
-        super(PrincipalsSetField, self).set(object, value)
+        super().set(object, value)

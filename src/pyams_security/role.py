@@ -141,4 +141,4 @@ class RolesVocabulary(SimpleVocabulary):
         terms = [SimpleTerm(r.id, title=translate(r.title))
                  for n, r in registry.getUtilitiesFor(self.interface)]
         terms.sort(key=lambda x: x.title)
-        super(RolesVocabulary, self).__init__(terms)
+        super().__init__(terms)

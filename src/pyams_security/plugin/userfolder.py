@@ -36,7 +36,7 @@ from zope.schema.fieldproperty import FieldProperty
 from zope.schema.vocabulary import SimpleTerm, SimpleVocabulary
 
 from pyams_i18n.interfaces import II18n
-from pyams_security.interfaces import ILocalUser, ISecurityManager, IUsersFolderPlugin
+from pyams_security.interfaces import ILocalUser, ISecurityManager, IUsersFolderPlugin, SALT_SIZE
 from pyams_security.interfaces.base import IPrincipalInfo
 from pyams_security.interfaces.names import USERS_FOLDERS_VOCABULARY_NAME
 from pyams_security.interfaces.notification import INotificationSettings
@@ -160,7 +160,7 @@ class UsersFolderVocabulary(SimpleVocabulary):
             for name, plugin in manager.items():
                 if IUsersFolderPlugin.providedBy(plugin):
                     terms.append(SimpleTerm(name, title=plugin.title))
-        super(UsersFolderVocabulary, self).__init__(terms)
+        super().__init__(terms)
 
 
 #
@@ -238,9 +238,9 @@ class LocalUser(Persistent, Contained):
     firstname = FieldProperty(ILocalUser['firstname'])
     lastname = FieldProperty(ILocalUser['lastname'])
     company_name = FieldProperty(ILocalUser['company_name'])
+    password_manager = FieldProperty(ILocalUser['password_manager'])
     _password = FieldProperty(ILocalUser['password'])
     _password_salt = None
-    password_manager = FieldProperty(ILocalUser['password_manager'])
     wait_confirmation = FieldProperty(ILocalUser['wait_confirmation'])
     self_registered = FieldProperty(ILocalUser['self_registered'])
     activation_secret = FieldProperty(ILocalUser['activation_secret'])
@@ -265,7 +265,7 @@ class LocalUser(Persistent, Contained):
         if value:
             if value == '*****':
                 return
-            self._password_salt = urandom(4)
+            self._password_salt = urandom(SALT_SIZE.get(self.password_manager, 4))
             manager = get_utility(IPasswordManager, name=self.password_manager)
             if self.password_manager == 'Plain Text':
                 self._password = manager.encodePassword(value)

@@ -25,7 +25,7 @@ from pyams_security.interfaces import ADMIN_USER_ID, IDefaultProtectionPolicy, \
     SYSTEM_ADMIN_ROLE, SYSTEM_VIEWER_ROLE
 from pyams_security.interfaces.base import MANAGE_PERMISSION, MANAGE_ROLES_PERMISSION, \
     MANAGE_SECURITY_PERMISSION, MANAGE_SYSTEM_PERMISSION, PUBLIC_PERMISSION, \
-    VIEW_PERMISSION, VIEW_SYSTEM_PERMISSION
+    ROLE_ID, VIEW_PERMISSION, VIEW_SYSTEM_PERMISSION
 from pyams_security.permission import register_permission
 from pyams_security.plugin import PluginSelector
 from pyams_security.role import RoleSelector, register_role, upgrade_role
@@ -107,7 +107,7 @@ def include_package(config):
         },
         'managers': {
             ADMIN_USER_ID,
-            'role:{0}'.format(SYSTEM_ADMIN_ROLE)
+            ROLE_ID.format(SYSTEM_ADMIN_ROLE)
         }
     })
     config.register_role({
@@ -118,7 +118,7 @@ def include_package(config):
         },
         'managers': {
             ADMIN_USER_ID,
-            'role:{}'.format(SYSTEM_ADMIN_ROLE)
+            ROLE_ID.format(SYSTEM_ADMIN_ROLE)
         }
     })
 

@@ -74,7 +74,7 @@ class PermissionsVocabulary(SimpleVocabulary):
         terms = [SimpleTerm(p.id, title=translate(p.title))
                  for n, p in registry.getUtilitiesFor(self.interface)]
         terms.sort(key=lambda x: x.title)
-        super(PermissionsVocabulary, self).__init__(terms)
+        super().__init__(terms)
 
 
 def get_edit_permission(request, context=None, view=None):

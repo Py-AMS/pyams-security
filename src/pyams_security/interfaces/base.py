@@ -62,6 +62,10 @@ class IPermission(Interface):
                        required=False)
 
 
+ROLE_ID = 'role:{}'
+'''Role ID formatter string'''
+
+
 class IRole(Interface):
     """Role interface
 

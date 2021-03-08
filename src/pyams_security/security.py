@@ -28,7 +28,7 @@ from zope.schema.fieldproperty import FieldProperty
 
 from pyams_security.interfaces import ADMIN_USER_ID, GrantedRoleEvent, IContentRoles, \
     IDefaultProtectionPolicy, IProtectedObject, IRoleProtectedObject, RevokedRoleEvent
-from pyams_security.interfaces.base import IPrincipalInfo, IRole, PUBLIC_PERMISSION
+from pyams_security.interfaces.base import IPrincipalInfo, IRole, PUBLIC_PERMISSION, ROLE_ID
 from pyams_utils.adapter import adapter_config, get_annotation_adapter
 from pyams_utils.factory import factory_config
 from pyams_utils.registry import get_pyramid_registry, query_utility
@@ -197,7 +197,7 @@ class RoleProtectedObject(Persistent, Contained):
         for role_id in self.get_granted_roles():
             role = query_utility(IRole, role_id)
             if role is not None:
-                result.append((Allow, 'role:{0}'.format(role_id), role.permissions))
+                result.append((Allow, ROLE_ID.format(role_id), role.permissions))
         # add denied permissions to everyone and authenticated
         permissions = self.get_everyone_denied()
         if permissions:
