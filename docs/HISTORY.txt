@@ -1,6 +1,10 @@
 Changelog
 =========
 
+1.6.2
+-----
+ - renamed 'skin' module to 'api'
+
 1.6.1
 -----
  - correction in Gitlab-CI Pylint task
