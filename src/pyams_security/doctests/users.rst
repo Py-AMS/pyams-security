@@ -483,7 +483,7 @@ Principals searching view
 A small AJAX view is provided to find principals; this view is typically used by input widgets
 used to select principals, and returns results as JSON:
 
-    >>> from pyams_security.skin import find_principals
+    >>> from pyams_security.api import find_principals
 
     >>> search_request = DummyRequest(params={'query': ''})
     >>> pprint.pprint(find_principals(search_request))
