@@ -722,6 +722,14 @@ class IRolesPolicy(Interface):
     weight = Attribute("Weight ordering attribute")
 
 
+class ISecurityContext(Interface):
+    """Security context getter interface
+
+    This interface may be used as a simple context adapter to get object from
+    which security permissions should be extracted.
+    """
+
+
 class IViewContextPermissionChecker(Interface):
     """Interface used to check access permissions on view context
 
