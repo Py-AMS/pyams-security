@@ -51,7 +51,10 @@ def register_permission(config, permission):
 
     Permissions registry is not required.
     But only registered permissions can be applied via default
-    ZMI features
+    ZMI features.
+
+    :param config: Pyramid configuration
+    :param permission: permission attributes mapping
     """
     if not IPermission.providedBy(permission):
         if isinstance(permission, dict):
