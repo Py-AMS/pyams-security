@@ -12,13 +12,17 @@
 
 """PyAMS_security.security module
 
-This module provides role-based security policy.
+This module provides role-based security policy and ACL management.
+
+A few utility classes are also available to help using permissions on objects and
+views objects.
 """
 
 import logging
 
 from persistent import Persistent
 from persistent.dict import PersistentDict
+from pyramid.decorator import reify
 from pyramid.location import lineage
 from pyramid.security import ALL_PERMISSIONS, Allow, Authenticated, DENY_ALL, Deny, Everyone
 from zope.annotation import IAttributeAnnotatable
@@ -27,12 +31,14 @@ from zope.interface import implementer
 from zope.schema.fieldproperty import FieldProperty
 
 from pyams_security.interfaces import ADMIN_USER_ID, GrantedRoleEvent, IContentRoles, \
-    IDefaultProtectionPolicy, IProtectedObject, IRoleProtectedObject, RevokedRoleEvent
+    IDefaultProtectionPolicy, IProtectedObject, IRoleProtectedObject, ISecurityContext, \
+    RevokedRoleEvent
 from pyams_security.interfaces.base import IPrincipalInfo, IRole, PUBLIC_PERMISSION, ROLE_ID
+from pyams_security.permission import get_edit_permission
 from pyams_utils.adapter import adapter_config, get_annotation_adapter
 from pyams_utils.factory import factory_config
 from pyams_utils.registry import get_pyramid_registry, query_utility
-from pyams_utils.request import request_property
+from pyams_utils.request import check_request, request_property
 
 
 __docformat__ = 'restructuredtext'
@@ -229,6 +235,14 @@ def protected_object_factory(context):
     return get_annotation_adapter(context, POLICY_ANNOTATIONS_KEY, IRoleProtectedObject)
 
 
+@implementer(IContentRoles)
+class ProtectedObjectRoles:
+    """Protected object roles base class"""
+
+    def __init__(self, context):
+        self.__parent__ = context
+
+
 @implementer(IAttributeAnnotatable)
 class ProtectedObjectMixin:
     """Base protected object class mixin
@@ -247,9 +261,30 @@ class ProtectedObjectMixin:
         return []
 
 
-@implementer(IContentRoles)
-class ProtectedObjectRoles:
-    """Protected object roles base class"""
+class ProtectedViewObjectMixin:
+    """Base protected view object mixin
 
-    def __init__(self, context):
-        self.__parent__ = context
+    This mixin class can be used to create view objects which will use an adapter to get
+    the permission required to render the component (which can be a viewlet, a table column
+    or anything else using a *permission* property).
+
+    Context is extracted using an adapter of current object to :py:class:`ISecurityContext
+    <pyams_security.interfaces.ISecurityContext>`, if available.
+
+    The class then relies on an adapter to :py:class:`IViewContextPermissionChecker
+    <pyams_security.interfaces.IViewContextPermissionChecker>` to get this permission. If
+    defined, the *action_type* property can be used to get a custom adapter registered with
+    this name; if not adapter is registered with this name, the default one is used.
+    """
+
+    action_type = ''
+
+    @reify
+    def permission(self):
+        """Object permission getter"""
+        request = getattr(self, 'request', None) or check_request()
+        context = ISecurityContext(self, None)
+        if context is None:
+            context = getattr(self, 'context', request.context)
+        view = getattr(self, 'view', None) or getattr(self, 'table', None)
+        return get_edit_permission(request, context, view, self.action_type)

@@ -419,6 +419,90 @@ list of objects on which a principal was granted roles:
     {'system:admin'}
 
 
+Protecting view elements
+------------------------
+
+Many view elements (like content providers or table columns) relies on a *permission* property,
+which can be used to hide or disable a component if the given permission is not granted to the
+current request. This permission can be static, or based on adapters.
+
+PyAMS provides a mixin class which can be used to dynamically extract this permission from
+registered adapters:
+
+    >>> from pyams_security.security import ProtectedViewObjectMixin
+
+We are going to create a custom content provider; it's *action_name* is set to 'render', which
+may be the name of a registered adapter to IViewContextPermissionChecker:
+
+    >>> class MyContentProvider(ProtectedViewObjectMixin):
+    ...     """Custom content provider"""
+    ...
+    ...     action_type = 'render'
+    ...
+    ...     def __init__(self, context, request, view):
+    ...         self.context = context
+    ...         self.request = request
+    ...         self.view = view
+
+    >>> context = object()
+    >>> request = DummyRequest()
+    >>> request.context = context
+    >>> view = object()
+
+    >>> provider = MyContentProvider(context, request, view)
+    >>> provider.permission
+    'My permission'
+
+We get this permission because we are using the default adapter we provided before.
+Let's try to register a custom adapter:
+
+    >>> class AnotherPermissionChecker:
+    ...     def __init__(self, context):
+    ...         pass
+    ...     @property
+    ...     def edit_permission(self):
+    ...         return 'Another permission'
+
+    >>> call_decorator(config, adapter_config, AnotherPermissionChecker,
+    ...                required=object, provides=IViewContextPermissionChecker,
+    ...                name='render')
+
+    >>> provider = MyContentProvider(context, request, view)
+    >>> provider.permission
+    'Another permission'
+
+Please note that you can also provide a custom adapter to get the security context of the
+view component:
+
+    >>> class CustomSecurityContext:
+    ...     """Custom security context"""
+    ...     def __init__(self, provider):
+    ...         self.context = provider
+
+    >>> def content_provider_security_context(provider):
+    ...     return CustomSecurityContext(provider)
+
+    >>> from pyams_security.interfaces import ISecurityContext
+
+    >>> call_decorator(config, adapter_config, content_provider_security_context,
+    ...                required=MyContentProvider, provides=ISecurityContext)
+
+    >>> class NewProviderPermissionChecker:
+    ...     def __init__(self, context):
+    ...         pass
+    ...     @property
+    ...     def edit_permission(self):
+    ...         return 'New permission'
+
+    >>> call_decorator(config, adapter_config, NewProviderPermissionChecker,
+    ...                required=CustomSecurityContext, provides=IViewContextPermissionChecker,
+    ...                name='render')
+
+    >>> provider = MyContentProvider(context, request, view)
+    >>> provider.permission
+    'New permission'
+
+
 Tests cleanup:
 
     >>> tearDown()
