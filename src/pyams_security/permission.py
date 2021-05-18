@@ -22,6 +22,7 @@ from zope.schema.vocabulary import SimpleTerm, SimpleVocabulary
 from pyams_security.interfaces import IViewContextPermissionChecker
 from pyams_security.interfaces.base import IPermission
 from pyams_security.interfaces.names import PERMISSIONS_VOCABULARY_NAME
+from pyams_utils.adapter import query_adapter
 from pyams_utils.request import check_request
 from pyams_utils.vocabulary import vocabulary_config
 
@@ -77,15 +78,32 @@ class PermissionsVocabulary(SimpleVocabulary):
         super().__init__(terms)
 
 
-def get_edit_permission(request, context=None, view=None):
-    """Get required edit permission"""
-    if context is None:
-        context = request.context
-    registry = request.registry
-    checker = registry.queryMultiAdapter((context, request, view),
-                                         IViewContextPermissionChecker)
-    if checker is None:
-        checker = registry.queryAdapter(context, IViewContextPermissionChecker)
+def get_permission_checker(request, context=None, view=None, action=''):
+    """Get permission checker for given action
+
+    :param request: current request
+    :param context: current context
+    :param view: current view
+    :param action: name of the action to be checked; this may be the name of a custom
+        adapter registered for :ref:`IViewContextPermissionChecker`
+    """
+    return query_adapter(IViewContextPermissionChecker, request, context, view, action)
+
+
+def get_edit_permission(request, context=None, view=None, action=''):
+    """Get required edit permission
+
+    :param request: current request
+    :param context: current context
+    :param view: current view
+    :param action: name of the action to be checked; this may be the name of a custom
+        adapter registered for :ref:`IViewContextPermissionChecker`. If no permission
+        checker is available for given action, a registry lookup will be made for
+        default one.
+    """
+    checker = get_permission_checker(request, context, view, action)
+    if (checker is None) and action:
+        checker = get_permission_checker(request, context, view)
     if checker is not None:
         return checker.edit_permission
     return None
