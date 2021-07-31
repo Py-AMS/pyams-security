@@ -1,6 +1,10 @@
 Changelog
 =========
 
+1.7.1
+-----
+ - added strings constants for plug-ins labels
+
 1.7.0
 -----
  - added ProtectedViewObjectMixin, to be used as base for any object using dynamic
