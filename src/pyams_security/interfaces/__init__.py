@@ -173,6 +173,9 @@ class IAuthenticationPlugin(IAuthenticationPluginInfo, IPlugin):
     """Principal authentication plug-in interface"""
 
 
+ADMIN_AUTHENTICATION_PLUGIN_LABEL = _("System authentication plug-in")
+
+
 class IAdminAuthenticationPlugin(IAuthenticationPlugin):
     """Admin authentication plug-in base interface"""
 
@@ -252,6 +255,9 @@ SALT_SIZE = {
     'SSHA512': 32,
     'PBKDF2': 32
 }
+
+
+USERS_FOLDER_PLUGIN_LABEL = _("Users folder plug-in")
 
 
 class IUsersFolderPlugin(IAuthenticationPlugin, IDirectorySearchPlugin):
@@ -471,6 +477,9 @@ class ILocalUser(IAttributeAnnotatable):
 #
 # Principals groups
 #
+
+GROUPS_FOLDER_PLUGIN_LABEL = _("Groups folder plug-in")
+
 
 class IGroupsFolderPlugin(IDirectorySearchPlugin, IGroupsAwareDirectoryPlugin):
     """Principals groups folder plug-in"""
