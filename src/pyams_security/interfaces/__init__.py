@@ -618,6 +618,12 @@ class ISecurityManager(IContainer, IDirectoryPluginInfo, IAttributeAnnotatable):
     def get_all_principals(self, principal_id):
         """Get all principals of given principal ID"""
 
+    show_home_menu = Bool(title=_("Access menu from home"),
+                          description=_("If 'yes', a menu will be displayed to get access to "
+                                        "security manager from site admin home page"),
+                          required=True,
+                          default=False)
+
 
 LOGIN_REFERER_KEY = 'pyams_security.login.referer'
 """Key of request annotation used to store referer"""

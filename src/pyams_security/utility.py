@@ -48,6 +48,8 @@ class SecurityManager(Folder):
     authentication_plugins_names = FieldProperty(ISecurityManager['authentication_plugins_names'])
     directory_plugins_names = FieldProperty(ISecurityManager['directory_plugins_names'])
 
+    show_home_menu = FieldProperty(ISecurityManager['show_home_menu'])
+
     def __setitem__(self, key, value):
         super().__setitem__(key, value)
         if IAuthenticationPlugin.providedBy(value):
