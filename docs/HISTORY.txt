@@ -1,6 +1,10 @@
 Changelog
 =========
 
+1.8.0
+-----
+ - added attribute to security manager to show link in home page
+
 1.7.1
 -----
  - added strings constants for plug-ins labels
