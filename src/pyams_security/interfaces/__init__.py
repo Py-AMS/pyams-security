@@ -55,6 +55,8 @@ SYSTEM_VIEWER_ROLE = 'system.Viewer'
 
 USER_LOGIN_TITLE = _("User login")
 
+UNKNOWN_PRINCIPAL_ID = '__UNKNOWN__'
+
 
 #
 # Roles events interfaces

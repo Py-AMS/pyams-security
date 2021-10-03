@@ -20,6 +20,7 @@ from zope.interface import implementer
 from zope.principalannotation.interfaces import IPrincipalAnnotationUtility
 from zope.schema.fieldproperty import FieldProperty
 
+from pyams_security.interfaces import UNKNOWN_PRINCIPAL_ID
 from pyams_security.interfaces.base import IPrincipalInfo
 from pyams_utils.adapter import adapter_config
 from pyams_utils.registry import query_utility
@@ -54,7 +55,7 @@ class PrincipalInfo:
 class UnknownPrincipal:
     """Unknown principal info"""
 
-    id = '__none__'  # pylint: disable=invalid-name
+    id = UNKNOWN_PRINCIPAL_ID  # pylint: disable=invalid-name
     title = _("< unknown principal >")
 
 
