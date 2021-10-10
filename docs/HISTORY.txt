@@ -1,6 +1,11 @@
 Changelog
 =========
 
+1.8.1
+-----
+ - added constant for unknown principal ID
+  -added constants for principal and group ID formatters
+
 1.8.0
 -----
  - added attribute to security manager to show link in home page
