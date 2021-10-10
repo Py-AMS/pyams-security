@@ -23,14 +23,11 @@ is available on `Gitlab <https://gitlab.com/pyams>`_ and pushed to `Github
 What is PyAMS_security?
 =======================
 
-PyAMS_security is a core extension package for PyAMS which provides all main security-related
+PyAMS_security is a core extension package for PyAMS which provides all base security-related
 features; the package provides a custom authentication policy which is based on a custom "security
-manager". This utility is a pluggable tool which is handling system users, local users and groups,
-as well as OAuth authentication; external packages can also provide authentication based
-on an LDAP directory.
+manager". This utility is a pluggable tool which is handling system users, local users and groups;
+external packages are available to provide other authentication and security mechanisms, like
+HTTP authentication, JWT tokens management, and OAuth, Azure or LDAP based authentication.
 
-PyAMS_security also provides utilities to extract credentials from queries, like HTTP basic
-authentication or JWT tokens, and can also provide your own credentials extraction mechanisms.
-
-Finally, PyAMS_security provides roles management, as well as custom schema fields to store
-roles assigned to principals.
+Finally, PyAMS_security provides ACLs and roles management, as well as custom schema fields to
+store roles assigned to principals.
