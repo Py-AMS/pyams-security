@@ -1,10 +1,14 @@
 Changelog
 =========
 
+1.8.2
+-----
+ - reStructuredText formatting error...
+
 1.8.1
 -----
  - added constant for unknown principal ID
-  -added constants for principal and group ID formatters
+ - added constants for principal and group ID formatters
 
 1.8.0
 -----
