@@ -26,7 +26,7 @@ from zope.lifecycleevent.interfaces import IObjectAddedEvent
 from zope.schema.fieldproperty import FieldProperty
 from zope.schema.vocabulary import SimpleTerm, SimpleVocabulary
 
-from pyams_security.interfaces import IGroupsFolderPlugin, ILocalGroup, \
+from pyams_security.interfaces import GROUP_ID_FORMATTER, IGroupsFolderPlugin, ILocalGroup, \
     IPrincipalsAddedToGroupEvent, IPrincipalsRemovedFromGroupEvent, ISecurityManager, \
     PrincipalsAddedToGroupEvent, PrincipalsRemovedFromGroupEvent
 from pyams_security.interfaces.names import LOCAL_GROUPS_VOCABULARY_NAME
@@ -40,8 +40,6 @@ from pyams_utils.vocabulary import vocabulary_config
 __docformat__ = 'restructuredtext'
 
 LOGGER = logging.getLogger('PyAMS(security)')
-
-GROUP_ID_FORMATTER = '{prefix}:{group_id}'
 
 
 @factory_config(ILocalGroup)
@@ -89,7 +87,7 @@ class LocalGroupsVocabulary(SimpleVocabulary):
             for plugin in manager.values():
                 if IGroupsFolderPlugin.providedBy(plugin):
                     for group in plugin.values():
-                        terms.append(SimpleTerm('{prefix}:{group_id}'.format(
+                        terms.append(SimpleTerm(GROUP_ID_FORMATTER.format(
                             prefix=plugin.prefix, group_id=group.group_id),
                                                 title=group.title))
         super().__init__(terms)

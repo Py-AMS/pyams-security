@@ -36,7 +36,8 @@ from zope.schema.fieldproperty import FieldProperty
 from zope.schema.vocabulary import SimpleTerm, SimpleVocabulary
 
 from pyams_i18n.interfaces import II18n
-from pyams_security.interfaces import ILocalUser, ISecurityManager, IUsersFolderPlugin, SALT_SIZE
+from pyams_security.interfaces import ILocalUser, ISecurityManager, IUsersFolderPlugin, \
+    PRINCIPAL_ID_FORMATTER, SALT_SIZE
 from pyams_security.interfaces.base import IPrincipalInfo
 from pyams_security.interfaces.names import USERS_FOLDERS_VOCABULARY_NAME
 from pyams_security.interfaces.notification import INotificationSettings
@@ -80,8 +81,8 @@ class UsersFolder(Folder):
         if principal is not None:
             password = attrs.get('password')
             if principal.check_password(password):
-                return "{prefix}:{login}".format(prefix=self.prefix,
-                                                 login=principal.login)
+                return PRINCIPAL_ID_FORMATTER.format(prefix=self.prefix,
+                                                     login=principal.login)
         return None
 
     def check_login(self, login):
@@ -100,8 +101,8 @@ class UsersFolder(Folder):
         user = self.get(login)
         if user is not None:
             if info:
-                return PrincipalInfo(id='{prefix}:{login}'.format(prefix=self.prefix,
-                                                                  login=user.login),
+                return PrincipalInfo(id=PRINCIPAL_ID_FORMATTER.format(prefix=self.prefix,
+                                                                      login=user.login),
                                      title=user.title)
         return user
 
@@ -130,8 +131,8 @@ class UsersFolder(Folder):
                     continue
                 if (exact_match and query == attr.lower()) or \
                         (not exact_match and query in attr.lower()):
-                    yield PrincipalInfo(id='{prefix}:{login}'.format(prefix=self.prefix,
-                                                                     login=user.login),
+                    yield PrincipalInfo(id=PRINCIPAL_ID_FORMATTER.format(prefix=self.prefix,
+                                                                         login=user.login),
                                         title='{title} <{email}>'.format(title=user.title,
                                                                          email=user.email))
                     break
@@ -338,8 +339,8 @@ class LocalUser(Persistent, Contained):
 @adapter_config(required=ILocalUser, provides=IPrincipalInfo)
 def user_principal_info_adapter(user):
     """User principal info adapter"""
-    return PrincipalInfo(id="{prefix}:{login}".format(prefix=user.__parent__.prefix,
-                                                      login=user.login),
+    return PrincipalInfo(id=PRINCIPAL_ID_FORMATTER.format(prefix=user.__parent__.prefix,
+                                                          login=user.login),
                          title=user.title)
 
 

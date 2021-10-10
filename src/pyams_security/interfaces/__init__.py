@@ -57,6 +57,9 @@ USER_LOGIN_TITLE = _("User login")
 
 UNKNOWN_PRINCIPAL_ID = '__UNKNOWN__'
 
+PRINCIPAL_ID_FORMATTER = '{prefix}:{login}'
+GROUP_ID_FORMATTER = '{prefix}:{group_id}'
+
 
 #
 # Roles events interfaces
