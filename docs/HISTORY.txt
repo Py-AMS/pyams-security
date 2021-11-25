@@ -1,6 +1,10 @@
 Changelog
 =========
 
+1.8.3
+-----
+ - updated translations
+
 1.8.2
 -----
  - reStructuredText formatting error...
