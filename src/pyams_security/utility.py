@@ -194,6 +194,25 @@ class SecurityManager(Folder):
                     return principal
         return MissingPrincipal(id=principal_id)
 
+    def get_raw_principal(self, principal_id):
+        """Principal lookup for given principal ID
+
+        The method will always bypass the cache and return a *raw* principal, instead of a
+        generic principal info, and None if the principal can't be found.
+        """
+        if not principal_id:
+            return None
+        for plugin in self.directory_plugins:
+            try:
+                principal = plugin.get_principal(principal_id, info=False)
+            except:
+                LOGGER.debug("Can't get principal {0}!".format(principal_id), exc_info=True)
+                continue
+            else:
+                if principal is not None:
+                    return principal
+        return MissingPrincipal(id=principal_id)
+
     def get_all_principals(self, principal_id):
         """Get all principals of given principal ID"""
         principals = set()

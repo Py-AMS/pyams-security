@@ -620,6 +620,14 @@ class ISecurityManager(IContainer, IDirectoryPluginInfo, IAttributeAnnotatable):
     def get_principal(self, principal_id, info=True):
         """Principal lookup for provided principal ID"""
 
+    def get_raw_principal(self, principal_id):
+        """Principal lookup for provided principal ID
+
+        Unlike *get_principal* method, this one will always return a
+        *raw* principal, instead of a generic principal info, and *None*
+        if the principal can't be found.
+        """
+
     def get_all_principals(self, principal_id):
         """Get all principals of given principal ID"""
 

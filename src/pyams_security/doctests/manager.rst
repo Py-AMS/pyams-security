@@ -149,6 +149,8 @@ Let's create a new local user:
     {'users:user1'}
     >>> sm.get_principal(user1_id)
     <...PrincipalInfo object at 0x...>
+    >>> sm.get_raw_principal(user1_id)
+    <pyams_security.plugin.userfolder.LocalUser object at 0x...>
     >>> sm.get_all_principals(user1_id)
     {'users:user1'}
 
