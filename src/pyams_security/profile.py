@@ -56,7 +56,8 @@ class PublicProfile(Persistent, Contained):
         return result
 
 
-@adapter_config(required=Interface, provides=IPublicProfile)
+@adapter_config(required=Interface,
+                provides=IPublicProfile)
 def public_profile_factory(context):  # pylint: disable=unused-argument
     """Generic public profile factory
 
@@ -67,13 +68,15 @@ def public_profile_factory(context):  # pylint: disable=unused-argument
     return IPublicProfile(request.principal)
 
 
-@adapter_config(required=IRequest, provides=IPublicProfile)
+@adapter_config(required=IRequest,
+                provides=IPublicProfile)
 def request_profile_factory(request):
     """Request public profile factory"""
     return IPublicProfile(request.principal)
 
 
-@adapter_config(required=IPrincipalInfo, provides=IPublicProfile)
+@adapter_config(required=IPrincipalInfo,
+                provides=IPublicProfile)
 def principal_profile_factory(principal):
     """Principal public profile factory adapter
 
@@ -95,7 +98,9 @@ def principal_profile_factory(principal):
                                   locate=False, callback=public_profile_callback)
 
 
-@adapter_config(name='profile', required=(Interface, Interface), provides=ITraversable)
+@adapter_config(name='profile',
+                required=(Interface, Interface),
+                provides=ITraversable)
 class ProfileTraverser(ContextRequestAdapter):
     """++profile++ namespace traverser"""
 
@@ -108,7 +113,9 @@ class ProfileTraverser(ContextRequestAdapter):
         return IPublicProfile(profile, None)
 
 
-@adapter_config(name='public_profile', required=(Interface, Interface), provides=ITALESExtension)
+@adapter_config(name='public_profile',
+                required=(Interface, Interface),
+                provides=ITALESExtension)
 class PublicProfileExtension(ContextRequestAdapter):
     """public_profile TALES extension"""
 
