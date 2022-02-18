@@ -1,6 +1,10 @@
 Changelog
 =========
 
+1.8.4
+-----
+ - added method to security manager to get a raw principal, bypassing cache
+
 1.8.3
 -----
  - updated translations
