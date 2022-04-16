@@ -19,7 +19,8 @@ __docformat__ = 'restructuredtext'
 
 from zope.interface import implementer
 
-from pyams_security.interfaces import IRolesPolicy, SYSTEM_ADMIN_ROLE
+from pyams_security.interfaces import IRolesPolicy
+from pyams_security.interfaces.names import SYSTEM_ADMIN_ROLE
 from pyams_security.interfaces.site import ISiteRootRoles
 from pyams_security.property import RolePrincipalsFieldProperty
 from pyams_security.security import ProtectedObjectRoles

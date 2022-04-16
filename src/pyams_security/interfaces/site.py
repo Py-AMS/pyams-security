@@ -15,7 +15,8 @@
 This module defines site root roles interface.
 """
 
-from pyams_security.interfaces import IContentRoles, SYSTEM_ADMIN_ROLE, SYSTEM_VIEWER_ROLE
+from pyams_security.interfaces import IContentRoles
+from pyams_security.interfaces.names import SYSTEM_ADMIN_ROLE, SYSTEM_VIEWER_ROLE
 from pyams_security.schema import PrincipalsSetField
 
 

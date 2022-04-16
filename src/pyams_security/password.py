@@ -23,7 +23,7 @@ from os import urandom
 from zope.password.interfaces import IPasswordManager
 from zope.password.password import _PrefixedPasswordManager, _encoder
 
-from pyams_security.interfaces import SALT_SIZE
+from pyams_security.interfaces.plugin import SALT_SIZE
 from pyams_utils.registry import utility_config
 
 

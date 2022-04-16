@@ -14,15 +14,17 @@
 
 """
 
-import sys
 from importlib import import_module
 
+import sys
 from zope.lifecycleevent import ObjectCreatedEvent
 from zope.principalannotation.interfaces import IPrincipalAnnotationUtility
 from zope.principalannotation.utility import PrincipalAnnotationUtility
 
-from pyams_security.interfaces import ADMIN_USER_LOGIN, ADMIN_USER_NAME, INTERNAL_USER_LOGIN, \
-    INTERNAL_USER_NAME, ISecurityManager, SYSTEM_PREFIX
+from pyams_security.interfaces import ISecurityManager
+from pyams_security.interfaces.names import ADMIN_USER_LOGIN, INTERNAL_USER_LOGIN, \
+    INTERNAL_USER_NAME
+from pyams_security.interfaces.names import ADMIN_USER_NAME, SYSTEM_PREFIX
 from pyams_security.plugin.admin import AdminAuthenticationPlugin
 from pyams_site.generations import check_required_utilities
 from pyams_site.interfaces import ISiteGenerations

@@ -16,16 +16,15 @@ This module defines the SecurityManager utility and custom Pyramid authenticatio
 """
 
 import logging
-
 from beaker.cache import cache_region
 from pyramid.location import lineage
 from zope.container.folder import Folder
 from zope.schema.fieldproperty import FieldProperty
 
-from pyams_security.interfaces import AuthenticatedPrincipalEvent, IAuthenticationPlugin, \
-    ICredentialsPlugin, IDirectoryPlugin, IGroupsAwareDirectoryPlugin, \
-    IProtectedObject, ISecurityManager
+from pyams_security.interfaces import IProtectedObject, ISecurityManager
 from pyams_security.interfaces.base import ROLE_ID
+from pyams_security.interfaces.plugin import AuthenticatedPrincipalEvent, IAuthenticationPlugin, \
+    ICredentialsPlugin, IDirectoryPlugin, IGroupsAwareDirectoryPlugin
 from pyams_security.principal import MissingPrincipal, UnknownPrincipal
 from pyams_utils.factory import factory_config
 from pyams_utils.registry import get_all_utilities_registered_for, get_utilities_for, \

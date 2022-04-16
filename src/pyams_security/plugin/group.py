@@ -16,7 +16,6 @@ This module defines local groups of principals.
 """
 
 import logging
-
 from BTrees import OOBTree  # pylint: disable=no-name-in-module
 from persistent import Persistent
 from pyramid.events import subscriber
@@ -26,10 +25,11 @@ from zope.lifecycleevent.interfaces import IObjectAddedEvent
 from zope.schema.fieldproperty import FieldProperty
 from zope.schema.vocabulary import SimpleTerm, SimpleVocabulary
 
-from pyams_security.interfaces import GROUP_ID_FORMATTER, IGroupsFolderPlugin, ILocalGroup, \
-    IPrincipalsAddedToGroupEvent, IPrincipalsRemovedFromGroupEvent, ISecurityManager, \
+from pyams_security.interfaces import ISecurityManager
+from pyams_security.interfaces.names import GROUP_ID_FORMATTER, LOCAL_GROUPS_VOCABULARY_NAME
+from pyams_security.interfaces.plugin import IGroupsFolderPlugin, ILocalGroup, \
+    IPrincipalsAddedToGroupEvent, IPrincipalsRemovedFromGroupEvent, \
     PrincipalsAddedToGroupEvent, PrincipalsRemovedFromGroupEvent
-from pyams_security.interfaces.names import LOCAL_GROUPS_VOCABULARY_NAME
 from pyams_security.principal import PrincipalInfo
 from pyams_utils.factory import factory_config
 from pyams_utils.registry import query_utility

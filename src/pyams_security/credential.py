@@ -18,7 +18,7 @@ This module defines credentials class.
 from zope.interface import implementer
 from zope.schema.fieldproperty import FieldProperty
 
-from pyams_security.interfaces import ICredentials
+from pyams_security.interfaces.plugin import ICredentials
 
 
 __docformat__ = 'restructuredtext'

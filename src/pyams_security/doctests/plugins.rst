@@ -24,7 +24,7 @@ You can add a predicate on plugins events to filter events based on their origin
     >>> selector.text()
     'plugin_selector = admin'
 
-    >>> from pyams_security.interfaces import AuthenticatedPrincipalEvent
+    >>> from pyams_security.interfaces.plugin import AuthenticatedPrincipalEvent
     >>> event = AuthenticatedPrincipalEvent('admin', 'admin')
     >>> selector(event)
     True
@@ -34,7 +34,7 @@ call the "factory_config" decorator for testing:
 
     >>> from pyams_utils.testing import call_decorator
     >>> from pyams_utils.factory import factory_config
-    >>> from pyams_security.interfaces import IAdminAuthenticationPlugin
+    >>> from pyams_security.interfaces.plugin import IAdminAuthenticationPlugin
     >>> from pyams_security.plugin.admin import AdminAuthenticationPlugin
 
     >>> call_decorator(config, factory_config, AdminAuthenticationPlugin,

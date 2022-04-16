@@ -30,10 +30,11 @@ from zope.container.contained import Contained
 from zope.interface import implementer
 from zope.schema.fieldproperty import FieldProperty
 
-from pyams_security.interfaces import ADMIN_USER_ID, GrantedRoleEvent, IContentRoles, \
+from pyams_security.interfaces import GrantedRoleEvent, IContentRoles, \
     IDefaultProtectionPolicy, IProtectedObject, IRoleProtectedObject, ISecurityContext, \
     RevokedRoleEvent
 from pyams_security.interfaces.base import IPrincipalInfo, IRole, PUBLIC_PERMISSION, ROLE_ID
+from pyams_security.interfaces.names import ADMIN_USER_ID
 from pyams_security.permission import get_edit_permission
 from pyams_utils.adapter import adapter_config, get_annotation_adapter
 from pyams_utils.factory import factory_config

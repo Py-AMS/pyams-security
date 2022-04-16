@@ -175,7 +175,7 @@ Two accounts are created on upgrade: a "normal" account called "admin" (with def
 "admin"), and a "service" account called "internal"; the later one is used to handle
 internal administration tasks.
 
-    >>> from pyams_security.interfaces import ADMIN_USER_NAME, INTERNAL_USER_NAME
+    >>> from pyams_security.interfaces.names import ADMIN_USER_NAME, INTERNAL_USER_NAME
     >>> admin = sm[ADMIN_USER_NAME]
     >>> admin.__name__
     '__system__'
@@ -269,7 +269,7 @@ principals associated with a given request:
     {'system.Everyone'}
 
     >>> from zope.interface import implementer
-    >>> from pyams_security.interfaces import ICredentialsPlugin
+    >>> from pyams_security.interfaces.plugin import ICredentialsPlugin
     >>> from pyams_security.credential import Credentials
 
     >>> @implementer(ICredentialsPlugin)

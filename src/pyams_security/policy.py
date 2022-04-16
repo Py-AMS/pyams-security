@@ -24,7 +24,8 @@ from pyramid.interfaces import IAuthenticationPolicy
 from pyramid.security import Authenticated, Everyone
 from zope.interface import implementer
 
-from pyams_security.interfaces import ICredentialsPlugin, ISecurityManager
+from pyams_security.interfaces import ISecurityManager
+from pyams_security.interfaces.plugin import ICredentialsPlugin
 from pyams_utils.registry import get_all_utilities_registered_for, query_utility
 from pyams_utils.wsgi import wsgi_environ_cache
 

@@ -20,8 +20,8 @@ from zope.interface import implementer
 from zope.principalannotation.interfaces import IPrincipalAnnotationUtility
 from zope.schema.fieldproperty import FieldProperty
 
-from pyams_security.interfaces import UNKNOWN_PRINCIPAL_ID
 from pyams_security.interfaces.base import IPrincipalInfo
+from pyams_security.interfaces.names import UNKNOWN_PRINCIPAL_ID
 from pyams_utils.adapter import adapter_config
 from pyams_utils.registry import query_utility
 

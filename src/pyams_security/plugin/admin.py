@@ -24,7 +24,7 @@ from zope.interface import implementer
 from zope.password.interfaces import IPasswordManager
 from zope.schema.fieldproperty import FieldProperty
 
-from pyams_security.interfaces import IAdminAuthenticationPlugin, IDirectoryPlugin
+from pyams_security.interfaces.plugin import IAdminAuthenticationPlugin, IDirectoryPlugin
 from pyams_security.principal import PrincipalInfo
 from pyams_utils.factory import factory_config
 from pyams_utils.registry import get_utility

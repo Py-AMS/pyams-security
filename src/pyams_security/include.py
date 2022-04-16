@@ -21,11 +21,11 @@ from zope.password.interfaces import IPasswordManager
 from zope.password.password import MD5PasswordManager, PlainTextPasswordManager, \
     SHA1PasswordManager, SSHAPasswordManager
 
-from pyams_security.interfaces import ADMIN_USER_ID, IDefaultProtectionPolicy, \
-    SYSTEM_ADMIN_ROLE, SYSTEM_VIEWER_ROLE
+from pyams_security.interfaces import IDefaultProtectionPolicy
 from pyams_security.interfaces.base import MANAGE_PERMISSION, MANAGE_ROLES_PERMISSION, \
     MANAGE_SECURITY_PERMISSION, MANAGE_SYSTEM_PERMISSION, PUBLIC_PERMISSION, \
     ROLE_ID, VIEW_PERMISSION, VIEW_SYSTEM_PERMISSION
+from pyams_security.interfaces.names import ADMIN_USER_ID, SYSTEM_ADMIN_ROLE, SYSTEM_VIEWER_ROLE
 from pyams_security.permission import register_permission
 from pyams_security.plugin import PluginSelector
 from pyams_security.role import RoleSelector, register_role, upgrade_role

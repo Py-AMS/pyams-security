@@ -273,7 +273,7 @@ Let's also try to validate a few attributes:
     >>> user4.email = 'bob'
     >>> user4.password = 'none'
 
-    >>> from pyams_security.interfaces import ILocalUser
+    >>> from pyams_security.interfaces.plugin import ILocalUser
     >>> ILocalUser.validateInvariants(user4)
     Traceback (most recent call last):
     ...
@@ -354,8 +354,8 @@ Principals groups
 Groups can be used to group principals together; permissions and roles can then be assigned to
 all group members in a single operation:
 
-    >>> from pyams_security.interfaces import PrincipalsAddedToGroupEvent, \
-    ...                                       PrincipalsRemovedFromGroupEvent
+    >>> from pyams_security.interfaces.plugin import PrincipalsAddedToGroupEvent, \
+    ...                                              PrincipalsRemovedFromGroupEvent
     >>> from pyams_security.plugin.group import Group, GroupsFolder, \
     ...                                         handle_added_group, handle_added_principals, \
     ...                                         handle_removed_principals
@@ -514,7 +514,7 @@ You will also have to enable this auto-registration, and to select a users folde
 principals will be stored:
 
     >>> from zope.interface import implementer
-    >>> from pyams_security.interfaces import IUserRegistrationInfo
+    >>> from pyams_security.interfaces.plugin import IUserRegistrationInfo
 
     >>> @implementer(IUserRegistrationInfo)
     ... class UserRegistration:

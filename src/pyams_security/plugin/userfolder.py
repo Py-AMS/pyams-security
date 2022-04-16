@@ -36,10 +36,10 @@ from zope.schema.fieldproperty import FieldProperty
 from zope.schema.vocabulary import SimpleTerm, SimpleVocabulary
 
 from pyams_i18n.interfaces import II18n
-from pyams_security.interfaces import ILocalUser, ISecurityManager, IUsersFolderPlugin, \
-    PRINCIPAL_ID_FORMATTER, SALT_SIZE
+from pyams_security.interfaces import ISecurityManager
+from pyams_security.interfaces.plugin import ILocalUser, IUsersFolderPlugin, SALT_SIZE
 from pyams_security.interfaces.base import IPrincipalInfo
-from pyams_security.interfaces.names import USERS_FOLDERS_VOCABULARY_NAME
+from pyams_security.interfaces.names import PRINCIPAL_ID_FORMATTER, USERS_FOLDERS_VOCABULARY_NAME
 from pyams_security.interfaces.notification import INotificationSettings
 from pyams_security.principal import PrincipalInfo
 from pyams_utils.adapter import ContextAdapter, adapter_config

@@ -17,6 +17,28 @@ Package constant strings.
 
 __docformat__ = 'restructuredtext'
 
+from pyams_security import _
+
+
+SYSTEM_PREFIX = 'system'
+ADMIN_USER_NAME = '__system__'
+ADMIN_USER_LOGIN = 'admin'
+ADMIN_USER_ID = '{0}:{1}'.format(SYSTEM_PREFIX, ADMIN_USER_LOGIN)
+
+INTERNAL_USER_NAME = '__internal__'
+INTERNAL_USER_LOGIN = 'internal'
+INTERNAL_USER_ID = '{0}:{1}'.format(SYSTEM_PREFIX, INTERNAL_USER_LOGIN)
+
+SYSTEM_ADMIN_ROLE = 'system.Manager'
+SYSTEM_VIEWER_ROLE = 'system.Viewer'
+
+USER_LOGIN_TITLE = _("User login")
+
+UNKNOWN_PRINCIPAL_ID = '__UNKNOWN__'
+
+PRINCIPAL_ID_FORMATTER = '{prefix}:{login}'
+GROUP_ID_FORMATTER = '{prefix}:{group_id}'
+
 
 PERMISSIONS_VOCABULARY_NAME = 'pyams_security.permissions'
 ROLES_VOCABULARY_NAME = 'pyams_security.roles'

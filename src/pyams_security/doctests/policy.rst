@@ -68,7 +68,7 @@ required for first management tasks, his password ("admin") should be changed as
 
     >>> request = new_test_request('admin', 'admin', registry=config.registry)
 
-    >>> from pyams_security.interfaces import ADMIN_USER_NAME
+    >>> from pyams_security.interfaces.names import ADMIN_USER_NAME
     >>> admin = sm.get(ADMIN_USER_NAME)
     >>> admin
     <...AdminAuthenticationPlugin object at 0x...>
@@ -110,7 +110,7 @@ external plug-ins), we will create a fake plug-in which will extract credentials
 environment:
 
     >>> from zope.interface import implementer
-    >>> from pyams_security.interfaces import ICredentialsPlugin
+    >>> from pyams_security.interfaces.plugin import ICredentialsPlugin
     >>> from pyams_security.credential import Credentials
 
     >>> @implementer(ICredentialsPlugin)
