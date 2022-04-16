@@ -1,6 +1,11 @@
 Changelog
 =========
 
+1.9.0
+-----
+ - moved security plugins interfaces to dedicated module
+ - added support for Python 3.10
+
 1.8.4
 -----
  - added method to security manager to get a raw principal, bypassing cache
