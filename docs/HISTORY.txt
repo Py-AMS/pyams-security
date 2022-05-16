@@ -1,6 +1,10 @@
 Changelog
 =========
 
+1.10.0
+------
+ - added REST services configuration and validators to handle CORS requests
+
 1.9.0
 -----
  - moved security plugins interfaces to dedicated module
