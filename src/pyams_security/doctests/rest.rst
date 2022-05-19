@@ -56,12 +56,12 @@ CORS configuration
 CORS configuration is handled by a specific interface:
 
     >>> from pyams_security.interfaces.rest import ICORSSecurityInfo
-    >>> config = ICORSSecurityInfo(sm)
-    >>> config
+    >>> cors_config = ICORSSecurityInfo(sm)
+    >>> cors_config
     <pyams_security.rest.CORSSecurityInfo object at 0x...>
-    >>> config.restrict_origins
+    >>> cors_config.restrict_origins
     True
-    >>> config.allowed_origins is None
+    >>> cors_config.allowed_origins is None
     True
 
 
@@ -87,15 +87,15 @@ Nothing notable here, let's create a CORS request:
     >>> check_cors_origin(request)
     Traceback (most recent call last):
     ...
-    pyramid.httpexceptions.HTTPServiceUnavailable: Forbidden origin
+    pyramid.httpexceptions.HTTPBadRequest: Forbidden origin
 
 We can disable origin checking, or add selected origin to our configuration:
 
-    >>> config.restrict_origins = False
+    >>> cors_config.restrict_origins = False
     >>> check_cors_origin(request)
 
-    >>> config.restrict_origins = True
-    >>> config.allowed_origins = ['http://another-site.com']
+    >>> cors_config.restrict_origins = True
+    >>> cors_config.allowed_origins = ['http://another-site.com']
     >>> check_cors_origin(request)
 
 A complete CORS request should include more headers:
@@ -110,6 +110,27 @@ A complete CORS request should include more headers:
     >>> sorted(request.response.headers.keys())
     ['Access-Control-Allow-Credentials', 'Access-Control-Allow-Headers',
      'Access-Control-Allow-Origin', 'Content-Length', 'Content-Type']
+    >>> request.response.headers['Access-Control-Allow-Credentials']
+    'true'
+    >>> request.response.headers['Access-Control-Allow-Origin']
+    'http://another-site.com'
+
+This feature is also available as a CORS request handler:
+
+    >>> from zope.interface import alsoProvides
+    >>> from pyams_utils.request import PyAMSRequest
+    >>> from pyams_utils.interfaces.rest import ICORSRequestHandler
+    >>> from pyams_utils.rest import handle_cors_headers
+    >>> from pyams_layer.interfaces import IPyAMSLayer
+
+    >>> request = PyAMSRequest({})
+    >>> request.scheme = 'http'
+    >>> request.host = 'example.com'
+    >>> request.registry = config.registry
+    >>> request.headers['Origin'] = 'http://another-site.com'
+    >>> alsoProvides(request, IPyAMSLayer)
+    >>> handle_cors_headers(request)
+
     >>> request.response.headers['Access-Control-Allow-Credentials']
     'true'
     >>> request.response.headers['Access-Control-Allow-Origin']

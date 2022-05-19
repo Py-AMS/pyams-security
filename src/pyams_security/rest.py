@@ -19,15 +19,18 @@ using CORS requests.
 import sys
 
 from persistent import Persistent
-from pyramid.httpexceptions import HTTPServerError, HTTPServiceUnavailable
+from pyramid.httpexceptions import HTTPBadRequest, HTTPServerError
 from zope.container.contained import Contained
 from zope.schema.fieldproperty import FieldProperty
 
+from pyams_layer.interfaces import IPyAMSLayer
 from pyams_security.interfaces import ISecurityManager
 from pyams_security.interfaces.rest import CORS_CONFIGURATION_KEY, ICORSSecurityInfo
 from pyams_utils.adapter import adapter_config, get_annotation_adapter
 from pyams_utils.factory import factory_config
+from pyams_utils.interfaces.rest import ICORSRequestHandler
 from pyams_utils.registry import get_utility
+from pyams_utils.rest import CORSRequestHandler
 
 
 __docformat__ = 'restructuredtext'
@@ -47,7 +50,7 @@ class CORSSecurityInfo(Persistent, Contained):
         origin = request.headers.get('Origin', request.host_url)
         if (origin == request.host_url) or (origin in (self.allowed_origins or ())):
             return
-        raise HTTPServiceUnavailable('Forbidden origin')
+        raise HTTPBadRequest('Forbidden origin')
 
     @staticmethod
     def set_headers(request):
@@ -89,3 +92,14 @@ def set_cors_headers(request, **kwargs):  # pylint: disable=unused-argument
     sm = get_utility(ISecurityManager)  # pylint: disable=invalid-name
     cors_info = ICORSSecurityInfo(sm)
     cors_info.set_headers(request)
+
+
+@adapter_config(required=IPyAMSLayer,
+                provides=ICORSRequestHandler)
+class ProtectedCORSRequestHandler(CORSRequestHandler):
+    """Protected CORS request handler"""
+
+    def handle_request(self):
+        """Check request origin and add requested headers to current request"""
+        check_cors_origin(self.request)
+        set_cors_headers(self.request)
