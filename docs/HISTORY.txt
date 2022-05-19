@@ -1,6 +1,10 @@
 Changelog
 =========
 
+1.10.2
+------
+ - added custom CORS requests handler adapter
+
 1.10.1
 ------
  - updated Gitlab-CI configuration
