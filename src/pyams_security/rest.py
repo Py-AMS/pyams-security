@@ -53,7 +53,7 @@ class CORSSecurityInfo(Persistent, Contained):
         raise HTTPBadRequest('Forbidden origin')
 
     @staticmethod
-    def set_headers(request):
+    def set_headers(request, allowed_methods=None):
         """Set CORS headers of provided request"""
         req_headers = request.headers
         resp_headers = request.response.headers
@@ -62,16 +62,19 @@ class CORSSecurityInfo(Persistent, Contained):
             req_headers.get('Origin', request.host_url)
         if 'Access-Control-Request-Headers' in req_headers:
             resp_headers['Access-Control-Allow-Headers'] = \
-                req_headers.get('Access-Control-Request-Headers', 'origin')
+                req_headers.get('Access-Control-Request-Headers', 'Origin')
         if 'Access-Control-Request-Method' in req_headers:
             try:
                 service = request.current_service
                 resp_headers['Access-Control-Allow-Methods'] = \
                     ', '.join(service.cors_supported_methods)
             except AttributeError as exc:
-                test_mode = sys.argv[-1].endswith('/test')
-                if not test_mode:
-                    raise HTTPServerError from exc
+                if allowed_methods:
+                    resp_headers['Access-Control-Allow-Methods'] = ', '.join(allowed_methods)
+                else:
+                    test_mode = sys.argv[-1].endswith('/test')
+                    if not test_mode:
+                        raise HTTPServerError from exc
 
 
 @adapter_config(required=ISecurityManager, provides=ICORSSecurityInfo)
@@ -91,7 +94,7 @@ def set_cors_headers(request, **kwargs):  # pylint: disable=unused-argument
     """Set REST CORS headers"""
     sm = get_utility(ISecurityManager)  # pylint: disable=invalid-name
     cors_info = ICORSSecurityInfo(sm)
-    cors_info.set_headers(request)
+    cors_info.set_headers(request, allowed_methods=kwargs.get('allowed_methods'))
 
 
 @adapter_config(required=IPyAMSLayer,
@@ -99,7 +102,7 @@ def set_cors_headers(request, **kwargs):  # pylint: disable=unused-argument
 class ProtectedCORSRequestHandler(CORSRequestHandler):
     """Protected CORS request handler"""
 
-    def handle_request(self):
+    def handle_request(self, allowed_methods=None):
         """Check request origin and add requested headers to current request"""
         check_cors_origin(self.request)
-        set_cors_headers(self.request)
+        set_cors_headers(self.request, allowed_methods=allowed_methods)

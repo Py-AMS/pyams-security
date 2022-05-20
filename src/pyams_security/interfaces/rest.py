@@ -52,5 +52,5 @@ class ICORSSecurityInfo(Interface):
         Raise an HTTP exception if request origin is not allowed.
         """
 
-    def set_headers(self, request):
+    def set_headers(self, request, allowed_methods=None):
         """Set CORS headers of given request"""

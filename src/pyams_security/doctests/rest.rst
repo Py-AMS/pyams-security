@@ -136,6 +136,17 @@ This feature is also available as a CORS request handler:
     >>> request.response.headers['Access-Control-Allow-Origin']
     'http://another-site.com'
 
+To set allowed methods on services which are not based on Cornice, you can add another
+argument:
+
+    >>> request.headers['Access-Control-Request-Method'] = 'GET'
+    >>> handle_cors_headers(request, allowed_methods=('GET', 'OPTIONS'))
+    >>> sorted(request.response.headers)
+    ['Access-Control-Allow-Credentials', 'Access-Control-Allow-Methods',
+     'Access-Control-Allow-Origin', 'Content-Length', 'Content-Type']
+    >>> request.response.headers['Access-Control-Allow-Methods']
+    'GET, OPTIONS'
+
 
 Tests cleanup:
 
