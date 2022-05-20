@@ -40,6 +40,8 @@ test-3.7:
         paths:
             - ./coverage/
             - coverage.xml
+        reports:
+            junit: coverage.xml
 
 pylint:
     stage: quality
