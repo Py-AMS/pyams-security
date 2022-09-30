@@ -39,7 +39,8 @@ from pyams_i18n.interfaces import II18n
 from pyams_security.interfaces import ISecurityManager
 from pyams_security.interfaces.plugin import ILocalUser, IUsersFolderPlugin, SALT_SIZE
 from pyams_security.interfaces.base import IPrincipalInfo
-from pyams_security.interfaces.names import PRINCIPAL_ID_FORMATTER, USERS_FOLDERS_VOCABULARY_NAME
+from pyams_security.interfaces.names import PRINCIPAL_ID_FORMATTER, UNCHANGED_PASSWORD, \
+    USERS_FOLDERS_VOCABULARY_NAME
 from pyams_security.interfaces.notification import INotificationSettings
 from pyams_security.principal import PrincipalInfo
 from pyams_utils.adapter import ContextAdapter, adapter_config
@@ -264,7 +265,7 @@ class LocalUser(Persistent, Contained):
     def password(self, value):
         """Encode and set user password"""
         if value:
-            if value == '*****':
+            if value == UNCHANGED_PASSWORD:
                 return
             self._password_salt = urandom(SALT_SIZE.get(self.password_manager, 4))
             manager = get_utility(IPasswordManager, name=self.password_manager)

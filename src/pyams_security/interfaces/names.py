@@ -35,6 +35,7 @@ SYSTEM_VIEWER_ROLE = 'system.Viewer'
 USER_LOGIN_TITLE = _("User login")
 
 UNKNOWN_PRINCIPAL_ID = '__UNKNOWN__'
+UNCHANGED_PASSWORD = '*****'
 
 PRINCIPAL_ID_FORMATTER = '{prefix}:{login}'
 GROUP_ID_FORMATTER = '{prefix}:{group_id}'
