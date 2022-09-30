@@ -1,6 +1,10 @@
 Changelog
 =========
 
+1.10.5
+------
+ - added constant to set unchanged password value
+
 1.10.4
 ------
  - added allowed methods argument to CORS requests handler
