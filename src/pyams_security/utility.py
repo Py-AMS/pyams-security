@@ -157,7 +157,7 @@ class SecurityManager(Folder):
         return principals
 
     def effective_principals(self, principal_id, request=None, context=None):
-        """Extratc effective principals of given principal ID"""
+        """Extract effective principals of given principal ID"""
         # add principals extracted from security plug-ins
         principals = self._get_plugins_principals(principal_id)
         # add context roles granted to principal
