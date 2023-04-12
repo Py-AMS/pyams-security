@@ -112,11 +112,11 @@ class PyAMSAuthenticationPolicy:
     def effective_principals(self, request, context=None):
         """Get effective principals from given request"""
         try:
-            LOGGER.debug(">>> getting principals for principal {0} ({1}) on {2!r}".format(
-                request.principal.title, request.principal.id, context or request.context))
+            LOGGER.debug(f">>> getting principals for principal {request.principal.title} "
+                         f"({request.principal.id}) on {context if context is not None else request.context!r}")
         except AttributeError:
-            LOGGER.debug(">>> getting principals for request {0} on {1!r}".format(
-                request, context or request.context))
+            LOGGER.debug(f">>> getting principals for request {request} on "
+                         f"{context if context is not None else request.context!r}")
         principals = {Everyone}
         principal_id = self.authenticated_userid(request)
         if principal_id:
@@ -126,7 +126,7 @@ class PyAMSAuthenticationPolicy:
             manager = self.security_manager
             if manager is not None:
                 principals |= set(manager.effective_principals(principal_id, request, context))
-        LOGGER.debug('<<< principals = {0}'.format(str(sorted(principals))))
+        LOGGER.debug(f'<<< principals = {sorted(principals)}')
         return principals
 
     def remember(self, request, principal, **kw):
