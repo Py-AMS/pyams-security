@@ -1,6 +1,10 @@
 Changelog
 =========
 
+1.10.6
+------
+ - use f-strings in logger output
+
 1.10.5
 ------
  - added constant to set unchanged password value
