@@ -47,6 +47,9 @@ MANAGE_SECURITY_PERMISSION = 'pyams.ManageSecurity'
 MANAGE_ROLES_PERMISSION = 'pyams.ManageRoles'
 '''Permission used to manage roles'''
 
+USE_INTERNAL_API_PERMISSION = 'pyams.UseInternalAPI'
+'''Permission used to access read-only APIs'''
+
 
 class IPermission(Interface):
     """Permission interface"""

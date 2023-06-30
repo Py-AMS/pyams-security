@@ -24,7 +24,7 @@ from zope.password.password import MD5PasswordManager, PlainTextPasswordManager,
 from pyams_security.interfaces import IDefaultProtectionPolicy
 from pyams_security.interfaces.base import MANAGE_PERMISSION, MANAGE_ROLES_PERMISSION, \
     MANAGE_SECURITY_PERMISSION, MANAGE_SYSTEM_PERMISSION, PUBLIC_PERMISSION, \
-    ROLE_ID, VIEW_PERMISSION, VIEW_SYSTEM_PERMISSION
+    ROLE_ID, USE_INTERNAL_API_PERMISSION, VIEW_PERMISSION, VIEW_SYSTEM_PERMISSION
 from pyams_security.interfaces.names import ADMIN_USER_ID, SYSTEM_ADMIN_ROLE, SYSTEM_VIEWER_ROLE
 from pyams_security.permission import register_permission
 from pyams_security.plugin import PluginSelector
@@ -94,6 +94,10 @@ def include_package(config):
     config.register_permission({
         'id': MANAGE_ROLES_PERMISSION,
         'title': _("Manage roles")
+    })
+    config.register_permission({
+        'id': USE_INTERNAL_API_PERMISSION,
+        'title': _("Use internal API")
     })
 
     # register standard roles
