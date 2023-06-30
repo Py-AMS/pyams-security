@@ -198,8 +198,10 @@ class RoleProtectedObject(Persistent, Contained):
         """
         # always grant all permissions to system manager
         # and 'public' permission to everyone
-        result = [(Allow, ADMIN_USER_ID, ALL_PERMISSIONS),
-                  (Allow, Everyone, {PUBLIC_PERMISSION})]
+        result = [
+            (Allow, ADMIN_USER_ID, ALL_PERMISSIONS),
+            (Allow, Everyone, {PUBLIC_PERMISSION})
+        ]
         # grant access to all roles permissions
         for role_id in self.get_granted_roles():
             role = query_utility(IRole, role_id)
