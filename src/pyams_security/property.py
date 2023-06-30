@@ -74,7 +74,7 @@ class RolePrincipalsFieldProperty:
         # pylint: disable=assignment-from-no-return
         old_principals = protection.get_principals(self.__role_id)
         if not isinstance(value, set):
-            value = {value}
+            value = {value} if value else set()
         added = value - old_principals
         removed = old_principals - value
         for principal_id in added:
