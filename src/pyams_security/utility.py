@@ -41,9 +41,6 @@ LOGGER = logging.getLogger('PyAMS (security)')
 class SecurityManager(Folder):
     """Security manager utility"""
 
-    open_registration = FieldProperty(ISecurityManager['open_registration'])
-    users_folder = FieldProperty(ISecurityManager['users_folder'])
-
     authentication_plugins_names = FieldProperty(ISecurityManager['authentication_plugins_names'])
     directory_plugins_names = FieldProperty(ISecurityManager['directory_plugins_names'])
 

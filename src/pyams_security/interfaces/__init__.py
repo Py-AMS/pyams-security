@@ -18,15 +18,14 @@ This module provides all security-related constants and interfaces.
 from zope.annotation import IAttributeAnnotatable
 from zope.container.constraints import contains
 from zope.container.interfaces import IContainer
-from zope.interface import Attribute, Interface, Invalid, implementer, invariant
+from zope.interface import Attribute, Interface, implementer
 from zope.interface.interfaces import IObjectEvent, ObjectEvent
-from zope.schema import Bool, Choice, TextLine, Tuple
+from zope.schema import Bool, TextLine, Tuple
 
 from pyams_security.interfaces.names import PASSWORD_MANAGERS_VOCABULARY_NAME, \
     USERS_FOLDERS_VOCABULARY_NAME
 from pyams_security.interfaces.plugin import IDirectoryPluginInfo, IPlugin, IPluginEvent
 from pyams_security.schema import PermissionsSetField
-
 
 __docformat__ = 'restructuredtext'
 
@@ -81,24 +80,6 @@ class ISecurityManager(IContainer, IDirectoryPluginInfo, IAttributeAnnotatable):
     """Authentication and principals management utility"""
 
     contains(IPlugin)
-
-    open_registration = Bool(title=_("Enable free registration?"),
-                             description=_("If 'Yes', any use will be able to create a new user "
-                                           "account"),
-                             required=False,
-                             default=False)
-
-    users_folder = Choice(title=_("Users folder"),
-                          description=_("Name of users folder used to store registered principals"),
-                          required=False,
-                          vocabulary=USERS_FOLDERS_VOCABULARY_NAME)
-
-    @invariant
-    def check_users_folder(self):
-        """Check for open registration"""
-        if self.open_registration and not self.users_folder:
-            raise Invalid(_("You can't activate open registration without selecting a users "
-                            "folder"))
 
     credentials_plugins_names = Tuple(title=_("Credentials plug-ins"),
                                       description=_("These plug-ins are used to extract "
