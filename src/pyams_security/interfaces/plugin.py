@@ -231,6 +231,8 @@ def check_password(password):
 
 EMAIL_REGEX = re.compile(r"[^@]+@[^@]+\.[^@]+")
 
+LOCKED_ACCOUNT_PASSWORD = '##LOCKED##'
+
 
 class IUserRegistrationInfo(Interface):
     """User registration info"""
@@ -393,6 +395,15 @@ class ILocalUser(IAttributeAnnotatable):
     activation_date = Datetime(title=_("Activation date"),
                                required=False)
 
+    password_hash = TextLine(title=_("Password reset hash"),
+                             description=_("This hash is provided when a user is asking for a password "
+                                           "reset; please note that password reset request should not "
+                                           "update password..."),
+                             required=False)
+
+    password_hash_validity = Datetime(title=_("Password reset hash date"),
+                                      required=False)
+
     def check_password(self, password):
         """Check user password against provided one"""
 
@@ -404,6 +415,12 @@ class ILocalUser(IAttributeAnnotatable):
 
     def check_activation(self, hash, login, password):  # pylint: disable=redefined-builtin
         """Check activation for given settings"""
+
+    def generate_reset_hash(self):
+        """Create request for password reset"""
+
+    def reset_password(self, hash, password):  # pylint: disable=redefined-builtin
+        """Check password reset for given settings"""
 
     def to_dict(self):
         """Get main user properties as mapping"""

@@ -21,36 +21,40 @@ import hmac
 import logging
 import random
 import sys
-from datetime import datetime
+from datetime import datetime, timedelta
 from os import urandom
 
 from persistent import Persistent
+from pyramid.events import subscriber
 from pyramid.renderers import render
 from pyramid_mailer.message import Attachment, Message
 from zope.component.interfaces import ISite
 from zope.container.contained import Contained
 from zope.container.folder import Folder
 from zope.interface import Invalid
+from zope.lifecycleevent.interfaces import IObjectRemovedEvent
 from zope.password.interfaces import IPasswordManager
+from zope.principalannotation.interfaces import IPrincipalAnnotationUtility
 from zope.schema.fieldproperty import FieldProperty
 from zope.schema.vocabulary import SimpleTerm, SimpleVocabulary
 
 from pyams_i18n.interfaces import II18n
 from pyams_security.interfaces import ISecurityManager
-from pyams_security.interfaces.plugin import ILocalUser, IUsersFolderPlugin, SALT_SIZE
 from pyams_security.interfaces.base import IPrincipalInfo
 from pyams_security.interfaces.names import PRINCIPAL_ID_FORMATTER, UNCHANGED_PASSWORD, \
     USERS_FOLDERS_VOCABULARY_NAME
 from pyams_security.interfaces.notification import INotificationSettings
+from pyams_security.interfaces.plugin import ILocalUser, IUsersFolderPlugin, LOCKED_ACCOUNT_PASSWORD, SALT_SIZE
 from pyams_security.principal import PrincipalInfo
+from pyams_security.interfaces.profile import IUserRegistrationViews
 from pyams_utils.adapter import ContextAdapter, adapter_config
 from pyams_utils.factory import factory_config
 from pyams_utils.html import html_to_text
-from pyams_utils.registry import get_utility, query_utility
+from pyams_utils.registry import get_pyramid_registry, get_utility, query_utility
 from pyams_utils.request import check_request
+from pyams_utils.timezone import tztime
 from pyams_utils.traversing import get_parent
 from pyams_utils.vocabulary import vocabulary_config
-
 
 __docformat__ = 'restructuredtext'
 
@@ -169,9 +173,9 @@ class UsersFolderVocabulary(SimpleVocabulary):
 # Local users
 #
 
-def notify_user_activation(user, request=None):
-    """Send mail for user activation"""
-    security = query_utility(ISecurityManager)
+def send_message(subject, template, user, request, **params):
+    """Send HTML message to user"""
+    security = get_utility(ISecurityManager)
     settings = INotificationSettings(security)
     if not settings.enable_notifications:  # pylint: disable=assignment-from-no-return
         LOGGER.info("Security notifications disabled, no message sent...")
@@ -180,40 +184,20 @@ def notify_user_activation(user, request=None):
     if mailer is None:
         LOGGER.warning("Can't find mailer utility, no notification message sent!")
         return
-    if request is None:
-        request = check_request()
-    translate = request.localizer.translate
-    i18n_settings = II18n(settings)
-    message_text, template_name = None, None
-    if user.self_registered:
-        # pylint: disable=assignment-from-no-return
-        message_text = i18n_settings.query_attribute('registration_template', request=request)
-        if not message_text:
-            template_name = 'templates/register-message.pt'
-    elif user.wait_confirmation:
-        # pylint: disable=assignment-from-no-return
-        message_text = i18n_settings.query_attribute('confirmation_template', request=request)
-        if not message_text:
-            template_name = 'templates/register-info.pt'
     site = get_parent(request.context, ISite)
-    if message_text is not None:
-        message_text = message_text.format(**user.to_dict())
-    elif template_name is not None:
-        message_text = render(template_name, request=request, value={
-            'user': user,
-            'site': site,
-            'settings': settings
-        })
-    html_body = render('templates/register-body.pt', request=request, value={
-        'user': user,
+    value = {
         'site': site,
         'settings': settings,
-        'message': message_text
-    })
+        'user': user
+    }
+    value.update(params)
+    html_body = render(template, request=request, value=value)
+    translate = request.localizer.translate
     message = Message(
-        subject=translate(_("{prefix}Please confirm registration")).format(
+        subject=translate(_("{prefix}{subject}")).format(
             prefix="{prefix} ".format(prefix=settings.subject_prefix)
-            if settings.subject_prefix else ''),
+                if settings.subject_prefix else '',
+            subject=translate(subject)),
         sender='{name} <{email}>'.format(name=settings.sender_name,
                                          email=settings.sender_email),
         recipients=("{firstname} {lastname} <{email}>".format(firstname=user.firstname,
@@ -228,6 +212,49 @@ def notify_user_activation(user, request=None):
                         disposition='inline',
                         transfer_encoding='quoted-printable'))
     mailer.send(message)
+
+
+def notify_user_activation(user, request=None):
+    """Send mail for user activation"""
+    security = get_utility(ISecurityManager)
+    settings = INotificationSettings(security)
+    if request is None:
+        request = check_request()
+    # translate = request.localizer.translate
+    i18n_settings = II18n(settings)
+    message_text, template_name = None, None
+    if user.self_registered:
+        # pylint: disable=assignment-from-no-return
+        message_text = i18n_settings.query_attribute('registration_template', request=request)
+        if not message_text:
+            template_name = 'templates/register-message.pt'
+    elif user.wait_confirmation:
+        # pylint: disable=assignment-from-no-return
+        message_text = i18n_settings.query_attribute('confirmation_template', request=request)
+        if not message_text:
+            template_name = 'templates/register-info.pt'
+    if message_text is not None:
+        message_text = message_text.format(**user.to_dict())
+    elif template_name is not None:
+        message_text = render(template_name, request=request, value={
+            'user': user,
+            'settings': settings
+        })
+    registry = get_pyramid_registry()
+    views = registry.getMultiAdapter((request.root, request), IUserRegistrationViews)
+    send_message(_("Please confirm registration"), 'templates/register-body.pt', user, request,
+                 message=message_text,
+                 confirm_url=views.register_confirm_view)
+
+
+def notify_password_reset(user, request=None):
+    """Send mail for user password reset"""
+    if request is None:
+        request = check_request()
+    registry = get_pyramid_registry()
+    views = registry.getMultiAdapter((request.root, request), IUserRegistrationViews)
+    send_message(_("Password reset"), 'templates/password-reset.pt', user, request,
+                 change_url=views.password_change_view)
 
 
 @factory_config(ILocalUser)
@@ -247,8 +274,10 @@ class LocalUser(Persistent, Contained):
     self_registered = FieldProperty(ILocalUser['self_registered'])
     activation_secret = FieldProperty(ILocalUser['activation_secret'])
     activation_hash = FieldProperty(ILocalUser['activation_hash'])
-    activation_date = FieldProperty(ILocalUser['activation_date'])
     activated = FieldProperty(ILocalUser['activated'])
+    activation_date = FieldProperty(ILocalUser['activation_date'])
+    password_hash = FieldProperty(ILocalUser['password_hash'])
+    password_hash_validity = FieldProperty(ILocalUser['password_hash_validity'])
 
     @property
     def title(self):
@@ -278,6 +307,8 @@ class LocalUser(Persistent, Contained):
 
     def check_password(self, password):
         """Check given password with encoded one"""
+        if password == LOCKED_ACCOUNT_PASSWORD:
+            return False
         if not (self.activated and self.password):
             return False
         manager = query_utility(IPasswordManager, name=self.password_manager)
@@ -325,6 +356,28 @@ class LocalUser(Persistent, Contained):
         self.activation_date = datetime.utcnow()
         self.activated = True
 
+    def generate_reset_hash(self, notify=True, request=None):
+        """Password reset request"""
+        secret = hmac.new(self.login.encode(), (self.activation_secret or '').encode(),
+                          digestmod=hashlib.sha512)
+        self.password_hash = base64.b32encode(secret.digest()).decode()
+        self.password_hash_validity = tztime(datetime.utcnow())
+        if notify:
+            notify_password_reset(self, request)
+
+    def reset_password(self, hash, password):  # pylint: disable=redefined-builtin
+        """Check password reset for given settings"""
+        if not self.password_hash:
+            raise Invalid(_("Invalid reset request!"))
+        if hash != self.password_hash:
+            raise Invalid(_("Can't reset password with given params!"))
+        validity_expiration = self.password_hash_validity + timedelta(days=7)
+        if tztime(datetime.utcnow()) > validity_expiration:
+            raise Invalid(_("Your password reset hash is no longer valid!"))
+        self.password = password
+        self.password_hash = None
+        self.password_hash_validity = None
+
     def to_dict(self):
         """Get main user properties as mapping"""
         return {
@@ -337,7 +390,8 @@ class LocalUser(Persistent, Contained):
         }
 
 
-@adapter_config(required=ILocalUser, provides=IPrincipalInfo)
+@adapter_config(required=ILocalUser,
+                provides=IPrincipalInfo)
 def user_principal_info_adapter(user):
     """User principal info adapter"""
     return PrincipalInfo(id=PRINCIPAL_ID_FORMATTER.format(prefix=user.__parent__.prefix,
@@ -350,7 +404,8 @@ try:
 except ImportError:
     pass
 else:
-    @adapter_config(required=ILocalUser, provides=IPrincipalMailInfo)
+    @adapter_config(required=ILocalUser,
+                    provides=IPrincipalMailInfo)
     class UserPrincipalMailInfoAdapter(ContextAdapter):
         """User principal mail info adapter"""
 
@@ -359,3 +414,13 @@ else:
             yield ('{0} {1}'.format(self.context.firstname,
                                     self.context.lastname),
                    self.context.email)
+
+
+@subscriber(IObjectRemovedEvent, context_selector=ILocalUser)
+def handle_removed_local_user(event: IObjectRemovedEvent):
+    """Handle local user delete"""
+    user = event.object
+    principal = IPrincipalInfo(user)
+    utility = get_utility(IPrincipalAnnotationUtility)
+    if utility.hasAnnotations(principal):
+        del utility.annotations[principal.id]
