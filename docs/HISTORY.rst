@@ -1,6 +1,11 @@
 Changelog
 =========
 
+1.11.0
+------
+ - added support for user registration
+ - moved open registration settings to PyAMS_security_views package
+
 1.10.6
 ------
  - updated CORS requests handler
