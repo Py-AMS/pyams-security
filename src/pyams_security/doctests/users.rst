@@ -27,6 +27,9 @@ Managing users with PyAMS security package
     >>> from pyams_security import includeme as include_security
     >>> include_security(config)
 
+    >>> from pyramid_chameleon.zpt import renderer_factory
+    >>> config.add_renderer('.pt', renderer_factory)
+
     >>> from pyams_site.generations import upgrade_site
     >>> request = new_test_request('admin', 'admin')
 
@@ -35,6 +38,8 @@ Managing users with PyAMS security package
     Upgrading PyAMS catalog to generation 1...
     Upgrading PyAMS file to generation 3...
     Upgrading PyAMS security to generation 2...
+
+    >>> request.root = app
 
     >>> from zope.traversing.interfaces import BeforeTraverseEvent
     >>> from pyramid.threadlocal import manager
@@ -146,9 +151,6 @@ and activate he's account:
     >>> mailer = settings.get_mailer()
     >>> mailer
     <pyramid_mailer.mailer.DummyMailer object at 0x...>
-
-    >>> from pyramid_chameleon.zpt import renderer_factory
-    >>> config.add_renderer('.pt', renderer_factory)
 
     >>> notify_user_activation(user1)
     >>> mailer.outbox

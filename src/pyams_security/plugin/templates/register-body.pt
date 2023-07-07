@@ -12,7 +12,7 @@
     <p i18n:translate="">The login that was given to your account is: <tal:var content="user.login" i18n:name="login" />.</p>
     <p><span i18n:translate="">To confirm your registration, please click on the following link, re-enter your login and
                                set a new password:</span><br />
-        <a tal:define="href string:${confirm_url}?hash=${user.activation_hash}"
+        <a tal:define="href string:${confirm_url or '--'}?hash=${user.activation_hash}"
            href="${href}">${href}</a>
     </p>
     <p i18n:translate="">If you don't want to confirm this registration, please just ignore this message and your registration information

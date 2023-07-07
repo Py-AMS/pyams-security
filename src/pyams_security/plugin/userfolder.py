@@ -241,10 +241,15 @@ def notify_user_activation(user, request=None):
             'settings': settings
         })
     registry = get_pyramid_registry()
-    views = registry.getMultiAdapter((request.root, request), IUserRegistrationViews)
-    send_message(_("Please confirm registration"), 'templates/register-body.pt', user, request,
-                 message=message_text,
-                 confirm_url=views.register_confirm_view)
+    if hasattr(request, 'root'):
+        views = registry.getMultiAdapter((request.root, request), IUserRegistrationViews)
+        send_message(_("Please confirm registration"), 'templates/register-body.pt', user, request,
+                     message=message_text,
+                     confirm_url=views.register_confirm_view)
+    else:
+        send_message(_("Please confirm registration"), 'templates/register-body.pt', user, request,
+                     message=message_text,
+                     confirm_url=None)
 
 
 def notify_password_reset(user, request=None):
