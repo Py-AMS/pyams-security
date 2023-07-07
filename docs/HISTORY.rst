@@ -1,6 +1,11 @@
 Changelog
 =========
 
+1.11.1
+------
+ - updated doctests
+ - added support for Python 3.11
+
 1.11.0
 ------
  - added support for user registration
