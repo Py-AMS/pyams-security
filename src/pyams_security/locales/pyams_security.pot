@@ -1,12 +1,12 @@
 #
 # SOME DESCRIPTIVE TITLE
 # This file is distributed under the same license as the PACKAGE package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, 2022.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2023.
 #, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE 1.0\n"
-"POT-Creation-Date: 2022-05-16 10:47+0200\n"
+"POT-Creation-Date: 2023-07-05 16:55+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -15,11 +15,6 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Lingua 4.15.0\n"
-
-#. pylint: disable=invalid-name
-#: ./src/pyams_security/principal.py:59
-msgid "< unknown principal >"
-msgstr ""
 
 #: ./src/pyams_security/include.py:72
 msgid "View public contents"
@@ -49,210 +44,21 @@ msgstr ""
 msgid "Manage roles"
 msgstr ""
 
-#: ./src/pyams_security/include.py:102
+#: ./src/pyams_security/include.py:100
+msgid "Use internal API"
+msgstr ""
+
+#: ./src/pyams_security/include.py:106
 msgid "System manager (role)"
 msgstr ""
 
-#: ./src/pyams_security/include.py:115
+#: ./src/pyams_security/include.py:119
 msgid "System viewer (role)"
 msgstr ""
 
-#: ./src/pyams_security/plugin/userfolder.py:213
-#, python-format
-msgid "{prefix}Please confirm registration"
-msgstr ""
-
-#: ./src/pyams_security/plugin/userfolder.py:316
-#: ./src/pyams_security/plugin/userfolder.py:321
-msgid "Can't activate profile with given params!"
-msgstr ""
-
-#: ./src/pyams_security/plugin/templates/register-message.pt:2
-#: ./src/pyams_security/plugin/templates/register-info.pt:2
-msgid "Hello,"
-msgstr ""
-
-#: ./src/pyams_security/plugin/templates/register-message.pt:3
-#: ./src/pyams_security/plugin/templates/register-info.pt:3
-msgid "${service_name} is a service provided by ${service_owner}."
-msgstr ""
-
-#: ./src/pyams_security/plugin/templates/register-message.pt:5
-msgid ""
-"You have registered a new account that you may confirm before being able to "
-"use the service."
-msgstr ""
-
-#: ./src/pyams_security/plugin/templates/register-info.pt:5
-msgid ""
-"A new account has been created for your email address, that you may confirm "
-"before being able to use the service."
-msgstr ""
-
-#: ./src/pyams_security/plugin/templates/register-info.pt:7
-#: ./src/pyams_security/plugin/templates/register-body.pt:12
-msgid "The login that was given to your account is: ${login}."
-msgstr ""
-
-#: ./src/pyams_security/plugin/templates/register-body.pt:7
-msgid "${header} Registration notice"
-msgstr ""
-
-#: ./src/pyams_security/plugin/templates/register-body.pt:13
-msgid ""
-"To confirm your registration, please click on the following link and re-enter"
-" your login credentials:"
-msgstr ""
-
-#: ./src/pyams_security/plugin/templates/register-body.pt:18
-msgid ""
-"If you don't want to confirm this registration, please just ignore this "
-"message and your registration information will be deleted within 30 days."
-msgstr ""
-
-#: ./src/pyams_security/plugin/templates/register-body.pt:20
-msgid "Thank you for using our services."
-msgstr ""
-
-#: ./src/pyams_security/interfaces/profile.py:33
-msgid "Profile's avatar"
-msgstr ""
-
-#: ./src/pyams_security/interfaces/profile.py:34
-msgid "This picture will be associated to your user profile"
-msgstr ""
-
-#: ./src/pyams_security/interfaces/__init__.py:85
-msgid "Enable free registration?"
-msgstr ""
-
-#: ./src/pyams_security/interfaces/__init__.py:86
-msgid "If 'Yes', any use will be able to create a new user account"
-msgstr ""
-
-#: ./src/pyams_security/interfaces/__init__.py:91
-msgid "Users folder"
-msgstr ""
-
-#: ./src/pyams_security/interfaces/__init__.py:92
-msgid "Name of users folder used to store registered principals"
-msgstr ""
-
-#: ./src/pyams_security/interfaces/__init__.py:100
-msgid "You can't activate open registration without selecting a users folder"
-msgstr ""
-
-#: ./src/pyams_security/interfaces/__init__.py:103
-msgid "Credentials plug-ins"
-msgstr ""
-
-#: ./src/pyams_security/interfaces/__init__.py:104
-msgid ""
-"These plug-ins are used to extract credentials from an incoming request (the "
-"Pyramid session plug-in is built-in!). They can rely on authentication plug-"
-"ins to ensure that provided credentials are valid..."
-msgstr ""
-
-#: ./src/pyams_security/interfaces/__init__.py:113
-msgid "Authentication plug-ins"
-msgstr ""
-
-#: ./src/pyams_security/interfaces/__init__.py:114
-msgid ""
-"The plug-ins can be used to check extracted credentials against a local or "
-"remote users database"
-msgstr ""
-
-#: ./src/pyams_security/interfaces/__init__.py:120
-msgid "Directory plug-ins"
-msgstr ""
-
-#: ./src/pyams_security/interfaces/__init__.py:121
-msgid "The plug-in can be used to extract principals information"
-msgstr ""
-
-#: ./src/pyams_security/interfaces/__init__.py:154
-msgid "Access menu from home"
-msgstr ""
-
-#: ./src/pyams_security/interfaces/__init__.py:155
-msgid ""
-"If 'yes', a menu will be displayed to get access to security manager from "
-"site admin home page"
-msgstr ""
-
-#: ./src/pyams_security/interfaces/__init__.py:176
-msgid "Inherit parent security?"
-msgstr ""
-
-#: ./src/pyams_security/interfaces/__init__.py:177
-msgid "Get access control entries (ACE) inherited from parent levels"
-msgstr ""
-
-#: ./src/pyams_security/interfaces/__init__.py:182
-msgid "Public denied permissions"
-msgstr ""
-
-#: ./src/pyams_security/interfaces/__init__.py:183
-msgid ""
-"These permissions will be denied to all users. Denied permissions take "
-"precedence over granted ones."
-msgstr ""
-
-#: ./src/pyams_security/interfaces/__init__.py:188
-msgid "Public granted permissions"
-msgstr ""
-
-#: ./src/pyams_security/interfaces/__init__.py:189
-msgid "These permissions will be granted to all users"
-msgstr ""
-
-#: ./src/pyams_security/interfaces/__init__.py:193
-msgid "Authenticated denied permissions"
-msgstr ""
-
-#: ./src/pyams_security/interfaces/__init__.py:194
-msgid ""
-"These permissions will be denied to authenticated users. Denied permissions "
-"take precedence over granted ones."
-msgstr ""
-
-#: ./src/pyams_security/interfaces/__init__.py:200
-msgid "Authenticated granted permissions"
-msgstr ""
-
-#: ./src/pyams_security/interfaces/__init__.py:201
-msgid "These permissions will be granted to authenticated users"
-msgstr ""
-
-#: ./src/pyams_security/interfaces/__init__.py:205
-msgid "Inherit parent roles?"
-msgstr ""
-
-#: ./src/pyams_security/interfaces/__init__.py:206
-msgid "Get roles granted on parent levels"
-msgstr ""
-
-#: ./src/pyams_security/interfaces/rest.py:37
-msgid "Check request origin"
-msgstr ""
-
-#: ./src/pyams_security/interfaces/rest.py:38
-msgid ""
-"If enabled, REST API will check requests against currently allowed origins, "
-"and raise an HTTP forbidden exception if not allowed"
-msgstr ""
-
-#: ./src/pyams_security/interfaces/rest.py:44
-msgid "Allowed origins"
-msgstr ""
-
-#: ./src/pyams_security/interfaces/rest.py:45
-msgid "List of allowed origins URLs using CORS requests"
-msgstr ""
-
-#: ./src/pyams_security/interfaces/names.py:35
-msgid "User login"
+#. pylint: disable=invalid-name
+#: ./src/pyams_security/principal.py:59
+msgid "< unknown principal >"
 msgstr ""
 
 #: ./src/pyams_security/interfaces/notification.py:34
@@ -353,23 +159,8 @@ msgstr ""
 msgid "Text displayed in email footer"
 msgstr ""
 
-#: ./src/pyams_security/interfaces/site.py:31
-msgid "Site managers"
-msgstr ""
-
-#: ./src/pyams_security/interfaces/site.py:32
-msgid ""
-"These principals are allowed to manage the whole application environment"
-msgstr ""
-
-#: ./src/pyams_security/interfaces/site.py:37
-msgid "Site viewers"
-msgstr ""
-
-#: ./src/pyams_security/interfaces/site.py:38
-msgid ""
-"These principals are allowed to view some application settings, without "
-"update"
+#: ./src/pyams_security/interfaces/names.py:35
+msgid "User login"
 msgstr ""
 
 #: ./src/pyams_security/interfaces/plugin.py:43
@@ -415,153 +206,403 @@ msgid ""
 "lowercase letters, uppercase letters, numbers and special characters"
 msgstr ""
 
-#: ./src/pyams_security/interfaces/plugin.py:239
+#: ./src/pyams_security/interfaces/plugin.py:241
 msgid ""
 "If you don't provide a custom login, your login will be your email address..."
 msgstr ""
 
-#: ./src/pyams_security/interfaces/plugin.py:249
+#: ./src/pyams_security/interfaces/plugin.py:251
 msgid "E-mail address"
 msgstr ""
 
-#: ./src/pyams_security/interfaces/plugin.py:250
+#: ./src/pyams_security/interfaces/plugin.py:252
 msgid ""
 "An email will be sent to this address to validate account activation; it will"
 " be used as your future user login"
 msgstr ""
 
-#: ./src/pyams_security/interfaces/plugin.py:258
+#: ./src/pyams_security/interfaces/plugin.py:260
 msgid "Your email address is not valid!"
 msgstr ""
 
-#: ./src/pyams_security/interfaces/plugin.py:260
-#: ./src/pyams_security/interfaces/plugin.py:337
+#: ./src/pyams_security/interfaces/plugin.py:262
+#: ./src/pyams_security/interfaces/plugin.py:339
 msgid "First name"
 msgstr ""
 
-#: ./src/pyams_security/interfaces/plugin.py:263
-#: ./src/pyams_security/interfaces/plugin.py:340
+#: ./src/pyams_security/interfaces/plugin.py:265
+#: ./src/pyams_security/interfaces/plugin.py:342
 msgid "Last name"
 msgstr ""
 
-#: ./src/pyams_security/interfaces/plugin.py:266
-#: ./src/pyams_security/interfaces/plugin.py:345
+#: ./src/pyams_security/interfaces/plugin.py:268
+#: ./src/pyams_security/interfaces/plugin.py:347
 msgid "Company name"
 msgstr ""
 
-#: ./src/pyams_security/interfaces/plugin.py:269
-#: ./src/pyams_security/interfaces/plugin.py:298
-#: ./src/pyams_security/interfaces/plugin.py:354
+#: ./src/pyams_security/interfaces/plugin.py:271
+#: ./src/pyams_security/interfaces/plugin.py:300
+#: ./src/pyams_security/interfaces/plugin.py:356
 msgid "Password"
 msgstr ""
 
-#: ./src/pyams_security/interfaces/plugin.py:270
+#: ./src/pyams_security/interfaces/plugin.py:272
 msgid ""
 "Password must be at least 8 characters long, and contain at least three kinds"
 " of characters between lowercase letters, uppercase letters, numbers and "
 "special characters"
 msgstr ""
 
-#: ./src/pyams_security/interfaces/plugin.py:278
-#: ./src/pyams_security/interfaces/plugin.py:302
-#: ./src/pyams_security/interfaces/plugin.py:358
+#: ./src/pyams_security/interfaces/plugin.py:280
+#: ./src/pyams_security/interfaces/plugin.py:304
+#: ./src/pyams_security/interfaces/plugin.py:360
 msgid "Confirmed password"
 msgstr ""
 
-#: ./src/pyams_security/interfaces/plugin.py:285
-#: ./src/pyams_security/interfaces/plugin.py:309
+#: ./src/pyams_security/interfaces/plugin.py:287
+#: ./src/pyams_security/interfaces/plugin.py:311
 msgid "You didn't confirmed your password correctly!"
 msgstr ""
 
-#: ./src/pyams_security/interfaces/plugin.py:292
-#: ./src/pyams_security/interfaces/plugin.py:383
+#: ./src/pyams_security/interfaces/plugin.py:294
+#: ./src/pyams_security/interfaces/plugin.py:385
 msgid "Activation hash"
 msgstr ""
 
-#: ./src/pyams_security/interfaces/plugin.py:328
+#: ./src/pyams_security/interfaces/plugin.py:330
 msgid "User email address"
 msgstr ""
 
-#: ./src/pyams_security/interfaces/plugin.py:335
+#: ./src/pyams_security/interfaces/plugin.py:337
 msgid "Given email address is not valid!"
 msgstr ""
 
-#: ./src/pyams_security/interfaces/plugin.py:348
+#: ./src/pyams_security/interfaces/plugin.py:350
 msgid "Password manager name"
 msgstr ""
 
-#: ./src/pyams_security/interfaces/plugin.py:349
+#: ./src/pyams_security/interfaces/plugin.py:351
 msgid "Utility used to encrypt user password"
 msgstr ""
 
-#: ./src/pyams_security/interfaces/plugin.py:362
+#: ./src/pyams_security/interfaces/plugin.py:364
 msgid "Wait confirmation?"
 msgstr ""
 
-#: ./src/pyams_security/interfaces/plugin.py:363
+#: ./src/pyams_security/interfaces/plugin.py:365
 msgid ""
 "If 'no', user will be activated immediately without waiting email "
 "confirmation"
 msgstr ""
 
-#: ./src/pyams_security/interfaces/plugin.py:372
+#: ./src/pyams_security/interfaces/plugin.py:374
 msgid "You can't activate an account without setting a password!"
 msgstr ""
 
-#: ./src/pyams_security/interfaces/plugin.py:374
+#: ./src/pyams_security/interfaces/plugin.py:376
 msgid "Self-registered profile?"
 msgstr ""
 
-#: ./src/pyams_security/interfaces/plugin.py:379
+#: ./src/pyams_security/interfaces/plugin.py:381
 msgid "Activation secret key"
 msgstr ""
 
-#: ./src/pyams_security/interfaces/plugin.py:380
+#: ./src/pyams_security/interfaces/plugin.py:382
 msgid "This private secret is used to create and check activation hash"
 msgstr ""
 
-#: ./src/pyams_security/interfaces/plugin.py:384
+#: ./src/pyams_security/interfaces/plugin.py:386
 msgid ""
 "This hash is provided into activation message URL. Activation hash is missing"
 " for local users which were registered without waiting their confirmation."
 msgstr ""
 
-#: ./src/pyams_security/interfaces/plugin.py:389
+#: ./src/pyams_security/interfaces/plugin.py:391
 msgid "Activated"
 msgstr ""
 
-#: ./src/pyams_security/interfaces/plugin.py:393
+#: ./src/pyams_security/interfaces/plugin.py:395
 msgid "Activation date"
 msgstr ""
 
-#: ./src/pyams_security/interfaces/plugin.py:416
-msgid "Groups folder plug-in"
+#: ./src/pyams_security/interfaces/plugin.py:398
+msgid "Password reset hash"
+msgstr ""
+
+#: ./src/pyams_security/interfaces/plugin.py:399
+msgid ""
+"This hash is provided when a user is asking for a password reset; please note"
+" that password reset request should not update password..."
+msgstr ""
+
+#: ./src/pyams_security/interfaces/plugin.py:404
+msgid "Password reset hash date"
 msgstr ""
 
 #: ./src/pyams_security/interfaces/plugin.py:433
+msgid "Groups folder plug-in"
+msgstr ""
+
+#: ./src/pyams_security/interfaces/plugin.py:450
 msgid "Group ID"
 msgstr ""
 
-#: ./src/pyams_security/interfaces/plugin.py:434
+#: ./src/pyams_security/interfaces/plugin.py:451
 msgid "This ID should be unique between all groups"
 msgstr ""
 
-#: ./src/pyams_security/interfaces/plugin.py:438
+#: ./src/pyams_security/interfaces/plugin.py:455
 msgid "Title"
 msgstr ""
 
-#: ./src/pyams_security/interfaces/plugin.py:439
+#: ./src/pyams_security/interfaces/plugin.py:456
 msgid "Public label of this group"
 msgstr ""
 
-#: ./src/pyams_security/interfaces/plugin.py:442
+#: ./src/pyams_security/interfaces/plugin.py:459
 msgid "Description"
 msgstr ""
 
-#: ./src/pyams_security/interfaces/plugin.py:445
+#: ./src/pyams_security/interfaces/plugin.py:462
 msgid "Group principals"
 msgstr ""
 
-#: ./src/pyams_security/interfaces/plugin.py:446
+#: ./src/pyams_security/interfaces/plugin.py:463
 msgid "IDs of principals contained in this group"
+msgstr ""
+
+#: ./src/pyams_security/interfaces/rest.py:37
+msgid "Check request origin"
+msgstr ""
+
+#: ./src/pyams_security/interfaces/rest.py:38
+msgid ""
+"If enabled, REST API will check requests against currently allowed origins, "
+"and raise an HTTP forbidden exception if not allowed"
+msgstr ""
+
+#: ./src/pyams_security/interfaces/rest.py:44
+msgid "Allowed origins"
+msgstr ""
+
+#: ./src/pyams_security/interfaces/rest.py:45
+msgid "List of allowed origins URLs using CORS requests"
+msgstr ""
+
+#: ./src/pyams_security/interfaces/site.py:31
+msgid "Site managers"
+msgstr ""
+
+#: ./src/pyams_security/interfaces/site.py:32
+msgid ""
+"These principals are allowed to manage the whole application environment"
+msgstr ""
+
+#: ./src/pyams_security/interfaces/site.py:37
+msgid "Site viewers"
+msgstr ""
+
+#: ./src/pyams_security/interfaces/site.py:38
+msgid ""
+"These principals are allowed to view some application settings, without "
+"update"
+msgstr ""
+
+#: ./src/pyams_security/interfaces/profile.py:34
+msgid "Profile's avatar"
+msgstr ""
+
+#: ./src/pyams_security/interfaces/profile.py:35
+msgid "This picture will be associated to your user profile"
+msgstr ""
+
+#: ./src/pyams_security/interfaces/__init__.py:84
+msgid "Credentials plug-ins"
+msgstr ""
+
+#: ./src/pyams_security/interfaces/__init__.py:85
+msgid ""
+"These plug-ins are used to extract credentials from an incoming request (the "
+"Pyramid session plug-in is built-in!). They can rely on authentication plug-"
+"ins to ensure that provided credentials are valid..."
+msgstr ""
+
+#: ./src/pyams_security/interfaces/__init__.py:94
+msgid "Authentication plug-ins"
+msgstr ""
+
+#: ./src/pyams_security/interfaces/__init__.py:95
+msgid ""
+"The plug-ins can be used to check extracted credentials against a local or "
+"remote users database"
+msgstr ""
+
+#: ./src/pyams_security/interfaces/__init__.py:101
+msgid "Directory plug-ins"
+msgstr ""
+
+#: ./src/pyams_security/interfaces/__init__.py:102
+msgid "The plug-in can be used to extract principals information"
+msgstr ""
+
+#: ./src/pyams_security/interfaces/__init__.py:135
+msgid "Access menu from home"
+msgstr ""
+
+#: ./src/pyams_security/interfaces/__init__.py:136
+msgid ""
+"If 'yes', a menu will be displayed to get access to security manager from "
+"site admin home page"
+msgstr ""
+
+#: ./src/pyams_security/interfaces/__init__.py:157
+msgid "Inherit parent security?"
+msgstr ""
+
+#: ./src/pyams_security/interfaces/__init__.py:158
+msgid "Get access control entries (ACE) inherited from parent levels"
+msgstr ""
+
+#: ./src/pyams_security/interfaces/__init__.py:163
+msgid "Public denied permissions"
+msgstr ""
+
+#: ./src/pyams_security/interfaces/__init__.py:164
+msgid ""
+"These permissions will be denied to all users. Denied permissions take "
+"precedence over granted ones."
+msgstr ""
+
+#: ./src/pyams_security/interfaces/__init__.py:169
+msgid "Public granted permissions"
+msgstr ""
+
+#: ./src/pyams_security/interfaces/__init__.py:170
+msgid "These permissions will be granted to all users"
+msgstr ""
+
+#: ./src/pyams_security/interfaces/__init__.py:174
+msgid "Authenticated denied permissions"
+msgstr ""
+
+#: ./src/pyams_security/interfaces/__init__.py:175
+msgid ""
+"These permissions will be denied to authenticated users. Denied permissions "
+"take precedence over granted ones."
+msgstr ""
+
+#: ./src/pyams_security/interfaces/__init__.py:181
+msgid "Authenticated granted permissions"
+msgstr ""
+
+#: ./src/pyams_security/interfaces/__init__.py:182
+msgid "These permissions will be granted to authenticated users"
+msgstr ""
+
+#: ./src/pyams_security/interfaces/__init__.py:186
+msgid "Inherit parent roles?"
+msgstr ""
+
+#: ./src/pyams_security/interfaces/__init__.py:187
+msgid "Get roles granted on parent levels"
+msgstr ""
+
+#: ./src/pyams_security/plugin/userfolder.py:197
+#, python-format
+msgid "{prefix}{subject}"
+msgstr ""
+
+#: ./src/pyams_security/plugin/userfolder.py:245
+msgid "Please confirm registration"
+msgstr ""
+
+#: ./src/pyams_security/plugin/userfolder.py:256
+msgid "Password reset"
+msgstr ""
+
+#: ./src/pyams_security/plugin/userfolder.py:348
+#: ./src/pyams_security/plugin/userfolder.py:353
+msgid "Can't activate profile with given params!"
+msgstr ""
+
+#: ./src/pyams_security/plugin/userfolder.py:371
+msgid "Invalid reset request!"
+msgstr ""
+
+#: ./src/pyams_security/plugin/userfolder.py:373
+msgid "Can't reset password with given params!"
+msgstr ""
+
+#: ./src/pyams_security/plugin/userfolder.py:376
+msgid "Your password reset hash is no longer valid!"
+msgstr ""
+
+#: ./src/pyams_security/plugin/templates/register-info.pt:2
+#: ./src/pyams_security/plugin/templates/password-reset.pt:11
+#: ./src/pyams_security/plugin/templates/register-message.pt:2
+msgid "Hello,"
+msgstr ""
+
+#: ./src/pyams_security/plugin/templates/register-info.pt:3
+#: ./src/pyams_security/plugin/templates/password-reset.pt:12
+#: ./src/pyams_security/plugin/templates/register-message.pt:3
+msgid "${service_name} is a service provided by ${service_owner}."
+msgstr ""
+
+#: ./src/pyams_security/plugin/templates/register-info.pt:5
+msgid ""
+"A new account has been created for your email address, that you may confirm "
+"before being able to use the service."
+msgstr ""
+
+#: ./src/pyams_security/plugin/templates/register-info.pt:7
+#: ./src/pyams_security/plugin/templates/register-body.pt:12
+msgid "The login that was given to your account is: ${login}."
+msgstr ""
+
+#: ./src/pyams_security/plugin/templates/password-reset.pt:7
+msgid "${header} Password reset"
+msgstr ""
+
+#: ./src/pyams_security/plugin/templates/password-reset.pt:14
+msgid "A password reset has been requested for your account: ${login}."
+msgstr ""
+
+#: ./src/pyams_security/plugin/templates/password-reset.pt:15
+msgid ""
+"If you want to confirm this action, please click on the following link, re-"
+"enter your login and set a new password:"
+msgstr ""
+
+#: ./src/pyams_security/plugin/templates/password-reset.pt:20
+msgid ""
+"This link is only valid during 7 days. After this delay, you will have to do "
+"a new request to get another email with a new link."
+msgstr ""
+
+#: ./src/pyams_security/plugin/templates/password-reset.pt:22
+#: ./src/pyams_security/plugin/templates/register-body.pt:20
+msgid "Thank you for using our services."
+msgstr ""
+
+#: ./src/pyams_security/plugin/templates/register-message.pt:5
+msgid ""
+"You have registered a new account that you may confirm before being able to "
+"use the service."
+msgstr ""
+
+#: ./src/pyams_security/plugin/templates/register-body.pt:7
+msgid "${header} Registration notice"
+msgstr ""
+
+#: ./src/pyams_security/plugin/templates/register-body.pt:13
+msgid ""
+"To confirm your registration, please click on the following link, re-enter "
+"your login and set a new password:"
+msgstr ""
+
+#: ./src/pyams_security/plugin/templates/register-body.pt:18
+msgid ""
+"If you don't want to confirm this registration, please just ignore this "
+"message and your registration information will be deleted within 30 days."
 msgstr ""
