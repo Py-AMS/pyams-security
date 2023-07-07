@@ -3,6 +3,7 @@ Changelog
 
 1.10.6
 ------
+ - updated CORS requests handler
  - use f-strings in logger output
 
 1.10.5
