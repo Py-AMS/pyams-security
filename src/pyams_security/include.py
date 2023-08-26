@@ -127,7 +127,7 @@ def include_package(config):
     })
 
     # custom classes implementations
-    if not asbool(config.registry.settings.get('pyams.security.disable-default-policy', False)):
+    if not asbool(config.registry.settings.get('pyams.security.disable_default_policy', False)):
         classImplements(BaseSiteRoot, IDefaultProtectionPolicy)
         BaseSiteRoot.__acl__ = ProtectedObjectMixin.__acl__
 
