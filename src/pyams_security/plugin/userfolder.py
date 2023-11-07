@@ -287,8 +287,7 @@ class LocalUser(Persistent, Contained):
     @property
     def title(self):
         """Concatenate first and last names"""
-        return '{firstname} {lastname}'.format(firstname=self.firstname,
-                                               lastname=self.lastname)
+        return f'{self.firstname} {self.lastname}'
 
     @property
     def password(self):
@@ -416,9 +415,7 @@ else:
 
         def get_addresses(self):
             """Get user email address"""
-            yield ('{0} {1}'.format(self.context.firstname,
-                                    self.context.lastname),
-                   self.context.email)
+            yield self.context.title, self.context.email
 
 
 @subscriber(IObjectRemovedEvent, context_selector=ILocalUser)
