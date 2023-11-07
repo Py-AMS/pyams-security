@@ -115,6 +115,15 @@ class ISecurityManager(IContainer, IDirectoryPluginInfo, IAttributeAnnotatable):
 
     groups_directory_plugins = Attribute("Iterator on registered and local groups plug-ins")
 
+    def extract_credentials(self, request, **kwargs):
+        """Extract credentials from request"""
+
+    def authenticate(self, credentials, request, get_plugin_name=False):
+        """Try to authenticate request with given credentials"""
+
+    def authenticated_userid(self, request, principal_id=None):
+        """Extract authenticated user ID from request"""
+
     def effective_principals(self, principal_id, request=None, context=None):
         """Get effective principals of provided principal ID"""
 
@@ -131,6 +140,9 @@ class ISecurityManager(IContainer, IDirectoryPluginInfo, IAttributeAnnotatable):
 
     def get_all_principals(self, principal_id):
         """Get all principals of given principal ID"""
+
+    def find_principals(self, query, exact_match=False):
+        """Find principals matching given query"""
 
     show_home_menu = Bool(title=_("Access menu from home"),
                           description=_("If 'yes', a menu will be displayed to get access to "
