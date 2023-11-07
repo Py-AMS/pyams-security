@@ -57,7 +57,8 @@ class PyAMSAuthenticationPolicy:
                  wild_domain=True,
                  hashalg='sha256',
                  parent_domain=False,
-                 domain=None):
+                 domain=None,
+                 samesite='Lax'):
         self.cookie = AuthTktCookieHelper(secret,
                                           cookie_name=cookie_name,
                                           secure=secure,
@@ -70,7 +71,8 @@ class PyAMSAuthenticationPolicy:
                                           wild_domain=wild_domain,
                                           hashalg=hashalg,
                                           parent_domain=parent_domain,
-                                          domain=domain)
+                                          domain=domain,
+                                          samesite=samesite)
 
     @property
     def credentials_plugins(self):
