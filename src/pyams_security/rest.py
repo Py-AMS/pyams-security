@@ -19,7 +19,8 @@ using CORS requests.
 import sys
 
 from persistent import Persistent
-from pyramid.httpexceptions import HTTPBadRequest, HTTPServerError
+from pyramid.authorization import Authenticated
+from pyramid.httpexceptions import HTTPBadRequest, HTTPServerError, HTTPUnauthorized
 from zope.container.contained import Contained
 from zope.schema.fieldproperty import FieldProperty
 

@@ -58,7 +58,7 @@ By default, the PublicProfile class only provides a simple avatar:
     >>> pprint.pprint(profile.__acl__())
     [('Allow',
       'system:admin',
-      <pyramid.security.AllPermissionsList object at 0x...>),
+      <pyramid.authorization.AllPermissionsList object at 0x...>),
      ('Allow', 'system.Everyone', 'public')]
 
     >>> profile.__name__

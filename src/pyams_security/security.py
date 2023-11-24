@@ -22,9 +22,9 @@ import logging
 
 from persistent import Persistent
 from persistent.dict import PersistentDict
+from pyramid.authorization import ALL_PERMISSIONS, Allow, Authenticated, DENY_ALL, Deny, Everyone
 from pyramid.decorator import reify
 from pyramid.location import lineage
-from pyramid.security import ALL_PERMISSIONS, Allow, Authenticated, DENY_ALL, Deny, Everyone
 from zope.annotation import IAttributeAnnotatable
 from zope.container.contained import Contained
 from zope.interface import implementer
@@ -40,7 +40,6 @@ from pyams_utils.adapter import adapter_config, get_annotation_adapter
 from pyams_utils.factory import factory_config
 from pyams_utils.registry import get_pyramid_registry, query_utility
 from pyams_utils.request import check_request, request_property
-
 
 __docformat__ = 'restructuredtext'
 

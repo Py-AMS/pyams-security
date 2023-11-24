@@ -54,14 +54,11 @@ Associated utilities also provides support for role-based authorizations.
 
 The policy is generally initialized ou your main application startup script:
 
-    >>> from pyramid.authorization import ACLAuthorizationPolicy
-    >>> config.set_authorization_policy(ACLAuthorizationPolicy())
-
-    >>> from pyams_security.policy import PyAMSAuthenticationPolicy
-    >>> policy = PyAMSAuthenticationPolicy(secret='my secret',
-    ...                                    http_only=True,
-    ...                                    secure=False)
-    >>> config.set_authentication_policy(policy)
+    >>> from pyams_security.policy import PyAMSSecurityPolicy
+    >>> policy = PyAMSSecurityPolicy(secret='my secret',
+    ...                              http_only=True,
+    ...                              secure=False)
+    >>> config.set_security_policy(policy)
 
 The "admin" principal is created automatically on database upgrade; this first admin user is
 required for first management tasks, his password ("admin") should be changed as soon as possble!!
@@ -80,12 +77,12 @@ required for first management tasks, his password ("admin") should be changed as
     True
 
 
-Using PyAMS authentication policy
----------------------------------
+Using PyAMS security policy
+---------------------------
 
-PyAMS authentication policy relies on a persistent security manager utility; this manager
+PyAMS security policy relies on a persistent security manager utility; this manager
 is a pluggable component which relies itself on registered utilities and local components
-to extract credentials from requests and authenticate requests principals.
+to extract credentials from requests and then authenticate these credentials.
 
     >>> from beaker.cache import CacheManager, cache_regions
     >>> cache = CacheManager(**{'cache.type': 'memory'})
@@ -97,15 +94,14 @@ to extract credentials from requests and authenticate requests principals.
     >>> admin in policy.credentials_plugins
     False
 
-    >>> policy.unauthenticated_userid(request) is None
-    True
     >>> policy.authenticated_userid(request) is None
     True
-    >>> policy.effective_principals(request)
-    {'system.Everyone'}
+    >>> identity = request.identity
+    >>> identity is None
+    True
 
-Once registered, authentication policy is used automatically by Pyramid requests to extract
-informations; to be able to extract credentials (which are actually handled by
+Once registered, security policy is used automatically by Pyramid requests to extract
+information; to be able to extract credentials (which are actually handled by
 external plug-ins), we will create a fake plug-in which will extract credentials from request
 environment:
 
@@ -131,24 +127,20 @@ environment:
     True
 
     >>> request = DummyRequest()
-    >>> request.environ.update({'login': 'system:admin', 'passwd': 'admin'})
+    >>> request.environ.update({'login': 'admin', 'passwd': 'admin'})
 
-    >>> policy.unauthenticated_userid(request)
-    'system:admin'
-    >>> policy.authenticated_userid(request)
-    'system:admin'
-    >>> sorted(policy.effective_principals(request))
+    >>> sorted(request.identity.get('principals'))
     ['system.Authenticated', 'system.Everyone', 'system:admin']
 
-Authentication policy is also used when you have to remember a user's session, using cookies:
+Security policy is also used when you have to remember a user's session, using cookies:
 
     >>> headers = policy.remember(request, 'users:user1')
     >>> headers[0]
-    ('Set-Cookie', 'auth_ticket=...!userid_type:b64unicode; Path=/; HttpOnly; SameSite=Lax')
+    ('Set-Cookie', 'auth_ticket=...!userid_type:b64unicode; Domain=example.com; Path=/; HttpOnly; SameSite=Lax')
 
     >>> headers = policy.forget(request)
     >>> headers[0]
-    ('Set-Cookie', 'auth_ticket=; Max-Age=0; Path=/; expires=Wed, 31-Dec-97 23:59:59 GMT; HttpOnly; SameSite=Lax')
+    ('Set-Cookie', 'auth_ticket=; Domain=example.com; Max-Age=0; Path=/; expires=Wed, 31-Dec-97 23:59:59 GMT; HttpOnly; SameSite=Lax')
 
 Authentication plugins are available as external packages, which can be included individually
 into Pyramid's application configuration; some examples are "pyams_auth_http", "pyams_auth_jwt",

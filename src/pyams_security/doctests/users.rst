@@ -465,7 +465,7 @@ Looking for principals inside groups is possible:
     >>> [group.id for group in groups_folder.find_principals('group')]
     ['groups:group1', 'groups:super_group']
 
-    >>> sorted(sm.effective_principals(principal.id, request=request))
+    >>> sorted(sm.effective_principals(principal.id))
     ['groups:group1', 'users:user1']
 
 A vocabulary is available to select groups:

@@ -16,8 +16,8 @@ This module defines classes and functions to handle public profiles.
 """
 
 from persistent import Persistent
+from pyramid.authorization import ALL_PERMISSIONS, Allow, Everyone
 from pyramid.interfaces import IRequest
-from pyramid.security import ALL_PERMISSIONS, Allow, Everyone
 from pyramid.threadlocal import get_current_request
 from zope.container.contained import Contained
 from zope.interface import Interface
@@ -35,7 +35,6 @@ from pyams_utils.interfaces.tales import ITALESExtension
 from pyams_utils.registry import get_utility
 from pyams_utils.request import check_request, query_request
 
-
 __docformat__ = 'restructuredtext'
 
 
@@ -51,7 +50,9 @@ class PublicProfile(Persistent, Contained):
         result = [(Allow, ADMIN_USER_ID, ALL_PERMISSIONS)]
         request = query_request()
         if request is not None:
-            result.append((Allow, request.principal.id, ALL_PERMISSIONS))
+            principal_id = request.principal.id
+            if principal_id != ADMIN_USER_ID:
+                result.append((Allow, request.principal.id, ALL_PERMISSIONS))
         result.append((Allow, Everyone, PUBLIC_PERMISSION))
         return result
 

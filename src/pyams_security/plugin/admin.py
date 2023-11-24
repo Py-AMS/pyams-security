@@ -24,7 +24,7 @@ from zope.interface import implementer
 from zope.password.interfaces import IPasswordManager
 from zope.schema.fieldproperty import FieldProperty
 
-from pyams_security.interfaces.names import UNCHANGED_PASSWORD
+from pyams_security.interfaces.names import PRINCIPAL_ID_FORMATTER, UNCHANGED_PASSWORD
 from pyams_security.interfaces.plugin import IAdminAuthenticationPlugin, IDirectoryPlugin
 from pyams_security.principal import PrincipalInfo
 from pyams_utils.factory import factory_config
@@ -76,7 +76,8 @@ class AdminAuthenticationPlugin(Persistent, Contained):
         password = attrs.get('password')
         manager = get_utility(IPasswordManager, name='SSHA')
         if login == self.login and manager.checkPassword(self.password, password):
-            return "{0}:{1}".format(self.prefix, login)
+            return PRINCIPAL_ID_FORMATTER.format(prefix=self.prefix,
+                                                 login=login)
         return None
 
     def get_principal(self, principal_id, info=True):
@@ -108,5 +109,5 @@ class AdminAuthenticationPlugin(Persistent, Contained):
         query = query.lower()
         title = self.title.lower()
         if (query == self.login) or (not exact_match and query in title):
-            yield PrincipalInfo(id='{0}:{1}'.format(self.prefix, self.login),
+            yield PrincipalInfo(id='PRINCIPAL_ID_FORMATTER'.format(self.prefix, self.login),
                                 title=self.title)

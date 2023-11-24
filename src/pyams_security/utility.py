@@ -16,23 +16,22 @@ This module defines the SecurityManager utility and custom Pyramid authenticatio
 """
 
 import logging
+
 from beaker.cache import cache_region
-from pyramid.location import lineage
 from zope.container.folder import Folder
 from zope.schema.fieldproperty import FieldProperty
 
-from pyams_security.interfaces import IProtectedObject, ISecurityManager
-from pyams_security.interfaces.base import ROLE_ID
-from pyams_security.interfaces.plugin import AuthenticatedPrincipalEvent, IAuthenticationPlugin, \
+from pyams_security.interfaces import ISecurityManager
+from pyams_security.interfaces.plugin import IAuthenticationPlugin, \
     ICredentialsPlugin, IDirectoryPlugin, IGroupsAwareDirectoryPlugin
 from pyams_security.principal import MissingPrincipal, UnknownPrincipal
 from pyams_utils.factory import factory_config
 from pyams_utils.registry import get_all_utilities_registered_for, get_utilities_for, \
     query_utility
-from pyams_utils.request import check_request
-
 
 __docformat__ = 'restructuredtext'
+
+from pyams_utils.request import query_request
 
 LOGGER = logging.getLogger('PyAMS (security)')
 
@@ -130,10 +129,10 @@ class SecurityManager(Folder):
     def authenticated_userid(self, request, principal_id=None):
         """Extract authenticated user ID from request"""
         if principal_id is None:
-            credentials = self.extract_credentials(request)
-            if credentials is None:
+            identity = request.identity
+            if identity is None:
                 return None
-            principal_id = self.authenticate(credentials, request)
+            principal_id = identity['userid']
         if principal_id is not None:
             principal = self.get_principal(principal_id)
             if principal is not None:
@@ -141,37 +140,22 @@ class SecurityManager(Folder):
         return None
 
     @cache_region('short', 'security_plugins_principals')
-    def _get_plugins_principals(self, principal_id):
+    def _get_global_principals(self, principal_id):
         """Extract all principals of given principal ID"""
-        principals = set()
+        principals = {principal_id}
         # get direct principals
         for plugin in self.directory_plugins:
             principals |= set(plugin.get_all_principals(principal_id))
         # get indirect principals by searching groups members
-        for principal in principals.copy():
+        for principal_id in principals.copy():
             for plugin in self.groups_directory_plugins:
-                principals |= set(plugin.get_all_principals(principal))
+                principals |= set(plugin.get_all_principals(principal_id))
         return principals
 
-    def effective_principals(self, principal_id, request=None, context=None):
+    def effective_principals(self, principal_id):
         """Extract effective principals of given principal ID"""
         # add principals extracted from security plug-ins
-        principals = self._get_plugins_principals(principal_id)
-        # add context roles granted to principal
-        if context is None:
-            if request is None:
-                request = check_request()
-            context = request.context
-        if context is not None:
-            for parent in lineage(context):
-                protection = IProtectedObject(parent, None)
-                if protection is not None:
-                    for principal in principals.copy():
-                        principals |= set(map(ROLE_ID.format,
-                                              protection.get_roles(principal)))
-                    if not protection.inherit_parent_roles:
-                        break
-        return principals
+        return self._get_global_principals(principal_id)
 
     # IDirectoryPlugin interface methods
     @cache_region('long', 'security_plugins_principal')
@@ -233,9 +217,12 @@ def get_principal(request, principal_id=None):
     """Get principal associated with given request"""
     manager = query_utility(ISecurityManager)
     if manager is not None:
-        if principal_id is None:
-            principal_id = request.authenticated_userid
-        if principal_id:
-            return manager.get_principal(principal_id)
-        return UnknownPrincipal
+        if request is None:
+            request = query_request()
+        if request is not None:
+            if principal_id is None:
+                principal_id = request.authenticated_userid
+            if principal_id:
+                return manager.get_principal(principal_id)
+            return UnknownPrincipal
     return None

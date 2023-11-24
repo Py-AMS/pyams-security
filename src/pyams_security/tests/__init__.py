@@ -65,8 +65,8 @@ def setup_tests_registry():
 
 def new_test_request(login, password, method='basic', context=None, registry=None):
     """Create test request with HTTP authorization header"""
-    auth = base64.b64encode('{}:{}'.format(login, password).encode()).decode()
-    request = DummyRequest(headers={'Authorization': '{} {}'.format(method, auth)},
+    auth = base64.b64encode(f'{login}:{password}'.encode()).decode()
+    request = DummyRequest(headers={'Authorization': f'{method} {auth}'},
                            context=context)
     if registry is not None:
         manager.clear()

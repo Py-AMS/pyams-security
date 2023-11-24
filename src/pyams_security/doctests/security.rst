@@ -244,7 +244,7 @@ Principals can be set using a set or strings:
     >>> pprint.pprint(protected.__acl__())
     [('Allow',
       'system:admin',
-      <pyramid.security.AllPermissionsList object at 0x...>),
+      <pyramid.authorization.AllPermissionsList object at 0x...>),
      ('Allow', 'system.Everyone', {'public'}),
      ('Allow', 'role:pyams...', {'pyams...}),
      ('Allow', 'role:pyams...', {'pyams...})]
@@ -268,7 +268,7 @@ By default, child ACLs are the same as their parent ACLs:
     >>> pprint.pprint(child.__acl__())
     [('Allow',
       'system:admin',
-      <pyramid.security.AllPermissionsList object at 0x...>),
+      <pyramid.authorization.AllPermissionsList object at 0x...>),
      ('Allow', 'system.Everyone', {'public'}),
      ('Allow', 'role:pyams...', {'pyams...'}),
      ('Allow', 'role:pyams...', {'pyams...'})]
@@ -279,7 +279,7 @@ But you can add custom principals and extend ACLs:
     >>> pprint.pprint(child.__acl__())
     [('Allow',
       'system:admin',
-      <pyramid.security.AllPermissionsList object at 0x...>),
+      <pyramid.authorization.AllPermissionsList object at 0x...>),
      ('Allow', 'system.Everyone', {'public'}),
      ('Allow', 'role:pyams...', {'pyams...'}),
      ('Allow', 'role:pyams...', {'pyams...'})]
@@ -291,7 +291,7 @@ You can also revoke roles from principals:
     >>> pprint.pprint(child.__acl__())
     [('Allow',
       'system:admin',
-      <pyramid.security.AllPermissionsList object at 0x...>),
+      <pyramid.authorization.AllPermissionsList object at 0x...>),
      ('Allow', 'system.Everyone', {'public'}),
      ('Allow', 'role:pyams...', {'pyams...'}),
      ('Allow', 'role:pyams...', {'pyams...'})]
@@ -341,8 +341,61 @@ Using security manager to get principals
 Roles granted to a principal are seen as additional principals:
 
     >>> request = new_test_request('user1', 'password', context=child)
-    >>> sorted(sm.effective_principals(principal.id, request=request))
-    ['role:pyams.manager', 'system:admin']
+    >>> identity = request.identity
+    >>> identity is None
+    True
+
+We have to set a security policy and register plug-ins to extract credentials:
+
+    >>> from pyams_security.policy import PyAMSSecurityPolicy
+    >>> policy = PyAMSSecurityPolicy(secret='my secret',
+    ...                              http_only=True,
+    ...                              secure=False,
+    ...                              debug=True)
+    >>> config.set_security_policy(policy)
+
+    >>> from base64 import b64decode
+    >>> from pyams_security.interfaces.plugin import ICredentialsPlugin
+    >>> from pyams_security.credential import Credentials
+
+    >>> @implementer(ICredentialsPlugin)
+    ... class FakeCredentialsPlugin:
+    ...     title = "Fake credentials plugin"
+    ...     prefix = 'fake'
+    ...     enabled = True
+    ...     def extract_credentials(self, request):
+    ...         auth = request.headers.get('Authorization')
+    ...         if auth:
+    ...             method, token = auth.split(' ', 1)
+    ...             login, password = b64decode(token.encode()).decode().split(':', 1)
+    ...             return Credentials(self.prefix, login, login=login, password=password)
+
+    >>> plugin = FakeCredentialsPlugin()
+    >>> config.registry.registerUtility(plugin, ICredentialsPlugin, name='fake')
+
+    >>> plugin in policy.credentials_plugins
+    True
+
+    >>> from pyramid.interfaces import IRequest
+    >>> from pyams_security.interfaces import IRolesGetter
+    >>> from pyams_security.role import PrincipalRolesAdapter
+
+    >>> call_decorator(config, adapter_config, PrincipalRolesAdapter,
+    ...                required=(Interface, IRequest),
+    ...                provides=IRolesGetter)
+
+    >>> request = new_test_request('admin', 'admin', context=child)
+    >>> identity = request.identity
+    >>> identity is None
+    False
+    >>> identity.userid
+    'system:admin'
+    >>> sorted(identity.principals)
+    ['role:pyams.manager', 'system.Authenticated', 'system.Everyone', 'system:admin']
+    >>> request.has_permission(view_permission.id)
+    <ACLAllowed instance at ... with msg "ACLAllowed permission 'pyams.view' via ACE (...
+    >>> bool(request.has_permission(view_permission.id))
+    True
 
 
 Granted and denied permissions
@@ -367,7 +420,7 @@ to any authenticated principal:
     >>> pprint.pprint(child_protection.__acl__())
     [('Allow',
       'system:admin',
-      <pyramid.security.AllPermissionsList object at 0x...>),
+      <pyramid.authorization.AllPermissionsList object at 0x...>),
      ('Allow', 'system.Everyone', {'public'}),
      ('Allow', 'role:pyams...', {'pyams...'}),
      ('Allow', 'role:pyams...', {'pyams...'}),
@@ -377,7 +430,7 @@ to any authenticated principal:
      ('Allow', 'system.Everyone', {'granted:everyone'}),
      ('Deny',
       'system.Everyone',
-      <pyramid.security.AllPermissionsList object at 0x...>)]
+      <pyramid.authorization.AllPermissionsList object at 0x...>)]
 
 
 Getting context edit permission

@@ -59,14 +59,11 @@ token which will be used in every request after authentication.
     >>> handle_site_before_traverse(BeforeTraverseEvent(app, request))
     >>> manager.push({'request': request, 'registry': config.registry})
 
-    >>> from pyramid.authorization import ACLAuthorizationPolicy
-    >>> config.set_authorization_policy(ACLAuthorizationPolicy())
-
-    >>> from pyams_security.policy import PyAMSAuthenticationPolicy
-    >>> policy = PyAMSAuthenticationPolicy(secret='my secret',
-    ...                                    http_only=True,
-    ...                                    secure=False)
-    >>> config.set_authentication_policy(policy)
+    >>> from pyams_security.policy import PyAMSSecurityPolicy
+    >>> policy = PyAMSSecurityPolicy(secret='my secret',
+    ...                              http_only=True,
+    ...                              secure=False)
+    >>> config.set_security_policy(policy)
 
 Some tests will require a configured cache:
 
@@ -125,14 +122,11 @@ information was extraced:
     >>> from pyams_security import includeme as include_security
     >>> include_security(config)
 
-    >>> from pyramid.authorization import ACLAuthorizationPolicy
-    >>> config.set_authorization_policy(ACLAuthorizationPolicy())
-
-    >>> from pyams_security.policy import PyAMSAuthenticationPolicy
-    >>> policy = PyAMSAuthenticationPolicy(secret='my secret',
-    ...                                    http_only=True,
-    ...                                    secure=False)
-    >>> config.set_authentication_policy(policy)
+    >>> from pyams_security.policy import PyAMSSecurityPolicy
+    >>> policy = PyAMSSecurityPolicy(secret='my secret',
+    ...                              http_only=True,
+    ...                              secure=False)
+    >>> config.set_security_policy(policy)
 
     >>> from pyams_site.generations import upgrade_site
     >>> request = DummyRequest()
@@ -265,8 +259,8 @@ Some system principals also exist, for example "{Everyone}" or "{Authenticated}"
 principals associated with a given request:
 
     >>> request = DummyRequest()
-    >>> policy.effective_principals(request)
-    {'system.Everyone'}
+    >>> request.identity is None
+    True
 
     >>> from zope.interface import implementer
     >>> from pyams_security.interfaces.plugin import ICredentialsPlugin
@@ -293,16 +287,17 @@ principals associated with a given request:
     >>> request = DummyRequest()
     >>> request.environ.update({'login': 'system:admin', 'passwd': 'bad'})
     >>> request.environ.update({'doctest': True})
-    >>> policy.authenticated_userid(request)
-    'system:admin'
-    >>> sorted(policy.effective_principals(request))
-    ['system.Authenticated', 'system.Everyone', 'system:admin']
+    >>> policy.authenticated_userid(request) is None
+    True
+    >>> request.identity is None
+    True
 
     >>> request = DummyRequest()
-    >>> request.environ.update({'login': 'system:admin', 'passwd': 'admin'})
+    >>> request.environ.update({'login': 'admin', 'passwd': 'admin'})
     >>> policy.authenticated_userid(request)
     'system:admin'
-    >>> sorted(policy.effective_principals(request))
+    >>> identity = request.identity
+    >>> sorted(identity.get('principals'))
     ['system.Authenticated', 'system.Everyone', 'system:admin']
 
 As you can see here, the policy "authenticated_userid" doesn't means that the request was
@@ -360,7 +355,7 @@ A generic utility function is available to get principal of a given request:
     >>> from pyams_security.utility import get_principal
 
     >>> request = DummyRequest()
-    >>> request.environ.update({'login': 'system:admin', 'passwd': 'admin'})
+    >>> request.environ.update({'login': 'admin', 'passwd': 'admin'})
     >>> principal = get_principal(request)
     >>> principal
     <pyams_security.principal.PrincipalInfo object at 0x...>
@@ -405,7 +400,7 @@ Other principal features
 Principals can be compared by their ID, and used as mapping keys:
 
     >>> request = DummyRequest()
-    >>> request.environ.update({'login': 'system:admin', 'passwd': 'admin'})
+    >>> request.environ.update({'login': 'admin', 'passwd': 'admin'})
     >>> principal = get_principal(request)
     >>> principal3 = get_principal(request)
 

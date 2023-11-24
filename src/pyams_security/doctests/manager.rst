@@ -77,14 +77,11 @@ Using the security manager
 We now have a security manager with two authentication plug-ins and two principals. Let's try to
 use them:
 
-    >>> from pyramid.authorization import ACLAuthorizationPolicy
-    >>> config.set_authorization_policy(ACLAuthorizationPolicy())
-
-    >>> from pyams_security.policy import PyAMSAuthenticationPolicy
-    >>> policy = PyAMSAuthenticationPolicy(secret='my secret',
-    ...                                    http_only=True,
-    ...                                    secure=False)
-    >>> config.set_authentication_policy(policy)
+    >>> from pyams_security.policy import PyAMSSecurityPolicy
+    >>> policy = PyAMSSecurityPolicy(secret='my secret',
+    ...                              http_only=True,
+    ...                              secure=False)
+    >>> config.set_security_policy(policy)
 
     >>> request = new_test_request('user1', 'passwd', registry=config.registry)
     >>> list(sm.credentials_plugins_names)
@@ -145,7 +142,7 @@ Let's create a new local user:
     >>> user1_id = folder.authenticate(creds, request)
     >>> user1_id
     'users:user1'
-    >>> sm.effective_principals(user1_id, request)
+    >>> sm.effective_principals(user1_id)
     {'users:user1'}
     >>> sm.get_principal(user1_id)
     <...PrincipalInfo object at 0x...>
