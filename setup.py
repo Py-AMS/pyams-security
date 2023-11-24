@@ -23,7 +23,7 @@ DOCS = os.path.join(os.path.dirname(__file__),
 README = os.path.join(DOCS, 'README.rst')
 HISTORY = os.path.join(DOCS, 'HISTORY.rst')
 
-version = '1.11.1'
+version = '2.0.0'
 long_description = open(README).read() + '\n\n' + open(HISTORY).read()
 
 tests_require = [
@@ -53,7 +53,7 @@ setup(name='pyams_security',
       include_package_data=True,
       package_data={'': ['*.zcml', '*.txt', '*.pt', '*.pot', '*.po', '*.mo',
                          '*.png', '*.gif', '*.jpeg', '*.jpg', '*.css', '*.js']},
-      python_requires='>=3.5',
+      python_requires='>=3.7',
       zip_safe=False,
       # uncomment this to be able to run tests with setup.py
       test_suite="pyams_security.tests.test_utilsdocs.test_suite",
@@ -72,8 +72,8 @@ setup(name='pyams_security',
           'pyams_i18n',
           'pyams_mail',
           'pyams_site',
-          'pyams_utils >= 1.3.6',
-          'pyramid',
+          'pyams_utils >= 2.0.0',
+          'pyramid >= 2.0.0',
           'pyramid_chameleon',
           'pyramid_mailer',
           'zodbupdate',

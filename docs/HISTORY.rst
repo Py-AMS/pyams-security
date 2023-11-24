@@ -1,6 +1,16 @@
 Changelog
 =========
 
+2.0.0
+-----
+ - migrated to Pyramid 2.0
+ - added interface and adapter to get user roles
+ - added REST API authentication checker
+
+1.11.2
+------
+ - renamed settings parameter used to disable default security policy on site root
+
 1.11.1
 ------
  - updated doctests
