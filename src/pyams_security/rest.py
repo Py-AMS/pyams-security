@@ -86,6 +86,13 @@ def security_manager_cors_configuration_factory(context):
     return get_annotation_adapter(context, CORS_CONFIGURATION_KEY, ICORSSecurityInfo)
 
 
+def check_authentication(request, **kwargs):
+    """Raise HTTPUnauthorized if request is not authenticated"""
+    identity = request.identity
+    if (identity is None) or (Authenticated not in identity.principals):
+        raise HTTPUnauthorized()
+
+
 def check_cors_origin(request, **kwargs):  # pylint: disable=unused-argument
     """Cornice service origin validator"""
     sm = get_utility(ISecurityManager)  # pylint: disable=invalid-name
