@@ -109,5 +109,6 @@ class AdminAuthenticationPlugin(Persistent, Contained):
         query = query.lower()
         title = self.title.lower()
         if (query == self.login) or (not exact_match and query in title):
-            yield PrincipalInfo(id='PRINCIPAL_ID_FORMATTER'.format(self.prefix, self.login),
+            yield PrincipalInfo(id=PRINCIPAL_ID_FORMATTER.format(prefix=self.prefix,
+                                                                 login=self.login),
                                 title=self.title)
