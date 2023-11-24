@@ -124,7 +124,7 @@ class ISecurityManager(IContainer, IDirectoryPluginInfo, IAttributeAnnotatable):
     def authenticated_userid(self, request, principal_id=None):
         """Extract authenticated user ID from request"""
 
-    def effective_principals(self, principal_id, request=None, context=None):
+    def effective_principals(self, principal_id):
         """Get effective principals of provided principal ID"""
 
     def get_principal(self, principal_id, info=True):
@@ -149,6 +149,28 @@ class ISecurityManager(IContainer, IDirectoryPluginInfo, IAttributeAnnotatable):
                                         "security manager from site admin home page"),
                           required=True,
                           default=False)
+
+
+class IPrincipalsGetter(Interface):
+    """Principals getter
+
+    This multi-interfaces adapter is used by security policy to get custom principals,
+    for example to get principal roles.
+    """
+
+    def get_principals(self, principal_id):
+        """Get custom principals matching given arguments"""
+
+
+class IRolesGetter(Interface):
+    """Roles getter
+
+    This multi-interfaces adapter is used by security policy to get roles of principals,
+    which roles will be added to initial principals roles.
+    """
+
+    def get_roles(self, principals):
+        """Get set of roles associated with given principals"""
 
 
 LOGIN_REFERER_KEY = 'pyams_security.login.referer'

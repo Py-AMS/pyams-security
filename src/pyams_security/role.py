@@ -14,17 +14,21 @@
 
 This module provides classes related to roles definition and registration.
 """
+
 from pyramid.exceptions import ConfigurationError
-from zope.interface import implementer
+from pyramid.traversal import lineage
+from zope.interface import Interface, implementer
 from zope.schema.fieldproperty import FieldProperty
 from zope.schema.vocabulary import SimpleTerm, SimpleVocabulary
 
-from pyams_security.interfaces import IRoleEvent
-from pyams_security.interfaces.base import IRole
+from pyams_layer.interfaces import IPyAMSLayer
+from pyams_security.interfaces import IProtectedObject, IRoleEvent, IRolesGetter, ISecurityManager
+from pyams_security.interfaces.base import IRole, ROLE_ID
 from pyams_security.interfaces.names import ROLES_VOCABULARY_NAME
+from pyams_utils.adapter import ContextRequestAdapter, adapter_config
+from pyams_utils.registry import query_utility
 from pyams_utils.request import check_request
 from pyams_utils.vocabulary import vocabulary_config
-
 
 __docformat__ = 'restructuredtext'
 
@@ -142,3 +146,21 @@ class RolesVocabulary(SimpleVocabulary):
                  for n, r in registry.getUtilitiesFor(self.interface)]
         terms.sort(key=lambda x: x.title)
         super().__init__(terms)
+
+
+@adapter_config(required=(Interface, IPyAMSLayer),
+                provides=IRolesGetter)
+class PrincipalRolesAdapter(ContextRequestAdapter):
+    """Principal roles adapter"""
+
+    def get_roles(self, principals):
+        """Get additional roles for provided principals"""
+        manager = query_utility(ISecurityManager)
+        if manager is not None:
+            for parent in lineage(self.context):
+                protection = IProtectedObject(parent, None)
+                if protection is not None:
+                    for principal in principals:
+                        yield from set(map(ROLE_ID.format, protection.get_roles(principal)))
+                    if not protection.inherit_parent_roles:
+                        break
