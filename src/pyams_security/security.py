@@ -25,6 +25,7 @@ from persistent.dict import PersistentDict
 from pyramid.authorization import ALL_PERMISSIONS, Allow, Authenticated, DENY_ALL, Deny, Everyone
 from pyramid.decorator import reify
 from pyramid.location import lineage
+from pyramid.settings import asbool
 from zope.annotation import IAttributeAnnotatable
 from zope.container.contained import Contained
 from zope.interface import implementer
@@ -33,7 +34,7 @@ from zope.schema.fieldproperty import FieldProperty
 from pyams_security.interfaces import GrantedRoleEvent, IContentRoles, \
     IDefaultProtectionPolicy, IProtectedObject, IRoleProtectedObject, ISecurityContext, \
     RevokedRoleEvent
-from pyams_security.interfaces.base import IPrincipalInfo, IRole, PUBLIC_PERMISSION, ROLE_ID
+from pyams_security.interfaces.base import FORBIDDEN_PERMISSION, IPrincipalInfo, IRole, PUBLIC_PERMISSION, ROLE_ID
 from pyams_security.interfaces.names import ADMIN_USER_ID
 from pyams_security.permission import get_edit_permission
 from pyams_utils.adapter import adapter_config, get_annotation_adapter
@@ -42,6 +43,7 @@ from pyams_utils.registry import get_pyramid_registry, query_utility
 from pyams_utils.request import check_request, request_property
 
 __docformat__ = 'restructuredtext'
+
 
 LOGGER = logging.getLogger('PyAMS (security)')
 
@@ -197,10 +199,14 @@ class RoleProtectedObject(Persistent, Contained):
         """
         # always grant all permissions to system manager
         # and 'public' permission to everyone
-        result = [
+        result = []
+        registry = get_pyramid_registry()
+        if asbool(registry.settings.get('pyams.security.deny_forbidden_to_admin', True)):
+            result.append((Deny, Everyone, {FORBIDDEN_PERMISSION}))
+        result.extend([
             (Allow, ADMIN_USER_ID, ALL_PERMISSIONS),
             (Allow, Everyone, {PUBLIC_PERMISSION})
-        ]
+        ])
         # grant access to all roles permissions
         for role_id in self.get_granted_roles():
             role = query_utility(IRole, role_id)
