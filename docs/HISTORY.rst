@@ -1,6 +1,11 @@
 Changelog
 =========
 
+2.1.0
+-----
+ - "forbidden" permission is not granted automatically to system manager automatically anymore;
+   an optional configuration setting must be used to grant this permission
+
 2.0.1
 -----
  - updated Buildout configuration
