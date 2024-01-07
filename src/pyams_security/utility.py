@@ -213,16 +213,16 @@ class SecurityManager(Folder):
         return sorted(principals, key=lambda x: x.title)
 
 
-def get_principal(request, principal_id=None):
+def get_principal(request=None, principal_id=None):
     """Get principal associated with given request"""
+    assert (request is not None) or (principal_id is not None), "Request and principal ID can't be None!"
     manager = query_utility(ISecurityManager)
-    if manager is not None:
-        if request is None:
-            request = query_request()
-        if request is not None:
-            if principal_id is None:
-                principal_id = request.authenticated_userid
-            if principal_id:
-                return manager.get_principal(principal_id)
-            return UnknownPrincipal
-    return None
+    if manager is None:
+        return None
+    if principal_id is not None:
+        return manager.get_principal(principal_id)
+    if request is None:
+        request = query_request()
+    if request is not None:
+        return manager.get_principal(request.authenticated_userid)
+    return UnknownPrincipal

@@ -354,6 +354,11 @@ A generic utility function is available to get principal of a given request:
 
     >>> from pyams_security.utility import get_principal
 
+    >>> get_principal()
+    Traceback (most recent call last):
+    ...
+    AssertionError: Request and principal ID can't be None!
+
     >>> request = DummyRequest()
     >>> request.environ.update({'login': 'admin', 'passwd': 'admin'})
     >>> principal = get_principal(request)
@@ -367,7 +372,7 @@ A generic utility function is available to get principal of a given request:
     >>> principal2.title
     '< unknown principal >'
 
-    >>> principal3 = get_principal(request, 'users:user1')
+    >>> principal3 = get_principal(principal_id='users:user1')
     >>> principal3
     <pyams_security.principal.MissingPrincipal object at 0x...>
     >>> principal3.title
