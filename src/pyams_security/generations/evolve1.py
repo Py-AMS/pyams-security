@@ -22,7 +22,7 @@ from zope.annotation import IAnnotations
 
 from pyams_security.interfaces import IDefaultProtectionPolicy
 from pyams_security.security import POLICY_ANNOTATIONS_KEY
-from pyams_utils.container import find_objects_providing
+from pyams_utils.finder import find_objects_providing
 from pyams_utils.registry import get_local_registry, set_local_registry
 
 
