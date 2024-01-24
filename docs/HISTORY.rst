@@ -1,6 +1,11 @@
 Changelog
 =========
 
+2.1.1
+-----
+ - optimized principal getter helper function
+ - moved PyAMS_utils finder helper to new module
+
 2.1.0
 -----
  - "forbidden" permission is not granted automatically to system manager automatically anymore;
