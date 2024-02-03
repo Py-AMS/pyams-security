@@ -1,6 +1,10 @@
 Changelog
 =========
 
+2.1.2
+-----
+ - renamed UnknownPrincipal class to avoid strange pickle behaviour...
+
 2.1.1
 -----
  - optimized principal getter helper function
