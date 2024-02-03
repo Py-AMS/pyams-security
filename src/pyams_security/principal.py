@@ -52,14 +52,14 @@ class PrincipalInfo:
 
 
 @implementer(IPrincipalInfo)
-class UnknownPrincipal:
+class _UnknownPrincipal:
     """Unknown principal info"""
 
     id = UNKNOWN_PRINCIPAL_ID  # pylint: disable=invalid-name
     title = _("< unknown principal >")
 
 
-UnknownPrincipal = UnknownPrincipal()  # pylint: disable=invalid-name
+UnknownPrincipal = _UnknownPrincipal()  # pylint: disable=invalid-name
 
 
 @implementer(IPrincipalInfo)

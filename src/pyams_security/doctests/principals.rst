@@ -368,7 +368,7 @@ A generic utility function is available to get principal of a given request:
     >>> request = DummyRequest()
     >>> principal2 = get_principal(request)
     >>> principal2
-    <pyams_security.principal.UnknownPrincipal object at 0x...>
+    <pyams_security.principal._UnknownPrincipal object at 0x...>
     >>> principal2.title
     '< unknown principal >'
 
