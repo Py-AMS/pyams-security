@@ -20,7 +20,8 @@ from zope.interface import implementer
 from zope.principalannotation.interfaces import IPrincipalAnnotationUtility
 from zope.schema.fieldproperty import FieldProperty
 
-from pyams_security.interfaces.base import IPrincipalInfo
+from pyams_security.interfaces.base import IMissingPrincipalInfo, IPrincipalInfo, IUnavailablePrincipalInfo, \
+    IUnknownPrincipalInfo
 from pyams_security.interfaces.names import UNKNOWN_PRINCIPAL_ID
 from pyams_utils.adapter import adapter_config
 from pyams_utils.registry import query_utility
@@ -51,7 +52,7 @@ class PrincipalInfo:
         return hash(self.id)
 
 
-@implementer(IPrincipalInfo)
+@implementer(IUnknownPrincipalInfo)
 class _UnknownPrincipal:
     """Unknown principal info"""
 
@@ -62,7 +63,7 @@ class _UnknownPrincipal:
 UnknownPrincipal = _UnknownPrincipal()  # pylint: disable=invalid-name
 
 
-@implementer(IPrincipalInfo)
+@implementer(IMissingPrincipalInfo)
 class MissingPrincipal:
     """Missing principal info
 
@@ -90,4 +91,10 @@ def get_principal_annotations(principal):
     annotations = query_utility(IPrincipalAnnotationUtility)
     if annotations is not None:
         return annotations.getAnnotations(principal)
+    return None
+
+
+@adapter_config(required=IUnavailablePrincipalInfo, provides=IAnnotations)
+def unavailable_principal_annotations(principal):
+    """Unavailable principal annotations adapter"""
     return None

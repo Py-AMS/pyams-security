@@ -114,3 +114,15 @@ class IPrincipalInfo(Interface):
     attributes = Dict(title="Principal groups",
                       description="IDs of principals to which this principal directly belongs",
                       value_type=TextLine())
+
+
+class IUnavailablePrincipalInfo(IPrincipalInfo):
+    """Unavailable principal information parent interface"""
+
+
+class IUnknownPrincipalInfo(IUnavailablePrincipalInfo):
+    """Unknown principal information interface"""
+
+
+class IMissingPrincipalInfo(IUnavailablePrincipalInfo):
+    """Missing principal information interface"""

@@ -56,7 +56,7 @@ class IPlugin(IContained, IAttributeAnnotatable):
 class IPluginEvent(Interface):
     """Plug-in event interface"""
 
-    plugin = Attribute("Event plug-in name")
+    plugin = Attribute("Event source plug-in")
 
 
 #
