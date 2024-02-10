@@ -118,7 +118,7 @@ class ISecurityManager(IContainer, IDirectoryPluginInfo, IAttributeAnnotatable):
     def extract_credentials(self, request, **kwargs):
         """Extract credentials from request"""
 
-    def authenticate(self, credentials, request, get_plugin_name=False):
+    def authenticate(self, credentials, request, get_plugin_name=False, get_plugin=False):
         """Try to authenticate request with given credentials"""
 
     def authenticated_userid(self, request, principal_id=None):

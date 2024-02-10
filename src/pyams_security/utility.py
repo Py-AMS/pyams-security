@@ -111,7 +111,7 @@ class SecurityManager(Folder):
                 return credentials
         return None
 
-    def authenticate(self, credentials, request, get_plugin_name=False):
+    def authenticate(self, credentials, request, get_plugin_name=False, get_plugin=False):
         """Try to authenticate request with given credentials"""
         for plugin in self.authentication_plugins:
             try:
@@ -121,10 +121,13 @@ class SecurityManager(Folder):
                 continue
             else:
                 if principal_id is not None:
-                    if get_plugin_name:
+                    if get_plugin:
+                        return principal_id, plugin
+                    elif get_plugin_name:
                         return principal_id, plugin.prefix
-                    return principal_id
-        return (None, None) if get_plugin_name else None
+                    else:
+                        return principal_id
+        return (None, None) if (get_plugin or get_plugin_name) else None
 
     def authenticated_userid(self, request, principal_id=None):
         """Extract authenticated user ID from request"""
