@@ -1,6 +1,12 @@
 Changelog
 =========
 
+2.2.0
+-----
+ - added marker interface to handle unknown or missing principals
+ - added argument to security manager authentication method to get plugins instance
+   instead of plugin name
+
 2.1.2
 -----
  - renamed UnknownPrincipal class to avoid strange pickle behaviour...
