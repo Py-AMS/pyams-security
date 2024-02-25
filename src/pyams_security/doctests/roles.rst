@@ -92,18 +92,23 @@ or revoke this role to principals.
     ...                     permissions={view_permission.id, manage_permission.id})
     >>> register_role(config, manager_role)
 
+You can also add custom properties to a role, which are stored in it's "custom_data" attribute:
+
     >>> contributor_role = Role(id='pyams.ocntributor',
     ...                         title='Contributor',
     ...                         permissions={view_permission.id},
-    ...                         managers={manager_role.id})
+    ...                         managers={manager_role.id},
+    ...                         custom_value='Value')
     >>> register_role(config, contributor_role)
 
     >>> from pyams_security.interfaces.base import IRole
     >>> queryUtility(IRole, name=manager_role.id)
     <....Role object at 0x...>
+    >>> queryUtility(IRole, name=contributor_role.id).custom_data
+    {'custom_value': 'Value'}
 
-If you try to register the same role multiple times, this will comple his permissions and
-managers sets, but will not update it's other properties:
+If you try to register the same role multiple times, this will complete his permissions,
+managers sets and custom data, but will not update it's other properties:
 
     >>> another_role = Role(id='pyams.manager',
     ...                     title='Another manager role',

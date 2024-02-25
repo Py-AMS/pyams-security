@@ -97,6 +97,9 @@ class IRole(Interface):
                    value_type=TextLine(),
                    required=False)
 
+    custom_data = Dict(title="Custom role data",
+                       required=False)
+
 
 class IPrincipalInfo(Interface):
     """Principal info class

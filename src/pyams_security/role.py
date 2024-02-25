@@ -42,15 +42,17 @@ class Role:
     description = FieldProperty(IRole['description'])
     permissions = FieldProperty(IRole['permissions'])
     managers = FieldProperty(IRole['managers'])
+    custom_data = FieldProperty(IRole['custom_data'])
 
     def __init__(self, values=None, **args):
         if not isinstance(values, dict):
             values = args
-        self.id = values.get('id')  # pylint: disable=invalid-name
-        self.title = values.get('title')
-        self.description = values.get('description')
-        self.permissions = values.get('permissions')
-        self.managers = values.get('managers')
+        self.id = values.pop('id')  # pylint: disable=invalid-name
+        self.title = values.pop('title')
+        self.description = values.pop('description', None)
+        self.permissions = values.pop('permissions', set())
+        self.managers = values.pop('managers', set())
+        self.custom_data = values or {}
 
 
 class RoleSelector:
@@ -111,6 +113,7 @@ def register_role(config, role):
                                    (role.permissions or set())
         role_utility.managers = (role_utility.managers or set()) | \
                                 (role.managers or set())
+        role_utility.custom_data.update(role.custom_data)
 
 
 def upgrade_role(config, role, required=True, **kwargs):
@@ -126,10 +129,13 @@ def upgrade_role(config, role, required=True, **kwargs):
         if required:
             raise ConfigurationError("Provided role isn't registered!")
         return
-    if 'permissions' in kwargs:
-        role.permissions = (role.permissions or set()) | set(kwargs['permissions'])
-    if 'managers' in kwargs:
-        role.managers = (role.managers or set()) | set(kwargs['managers'])
+    permissions = kwargs.pop('permissions', None)
+    if permissions:
+        role.permissions = (role.permissions or set()) | set(permissions)
+    managers = kwargs.pop('managers', None)
+    if managers:
+        role.managers = (role.managers or set()) | set(managers)
+    role.custom_data.update(kwargs)
 
 
 @vocabulary_config(name=ROLES_VOCABULARY_NAME)
