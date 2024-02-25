@@ -54,7 +54,7 @@ msgstr "Administrateur (rôle)"
 
 #: src/pyams_security/include.py:119
 msgid "System viewer (role)"
-msgstr "Opérateur (rôle)"
+msgstr "Invité (rôle)"
 
 #. pylint: disable=invalid-name
 #: src/pyams_security/principal.py:59
@@ -451,15 +451,15 @@ msgstr ""
 
 #: src/pyams_security/interfaces/site.py:37
 msgid "Site viewers"
-msgstr "Opérateurs"
+msgstr "Invités"
 
 #: src/pyams_security/interfaces/site.py:38
 msgid ""
 "These principals are allowed to view some application settings, without "
 "update"
 msgstr ""
-"Les détenteurs de ce rôle peuvent accéder à l'interface d'administration, "
-"mais sans droits de mise à jour"
+"Les détenteurs de ce rôle peuvent accéder à certains écrans de l'interface d'administration, "
+"mais sans droit de mise à jour"
 
 #: src/pyams_security/interfaces/profile.py:34
 msgid "Profile's avatar"
