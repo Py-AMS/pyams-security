@@ -1,6 +1,10 @@
 Changelog
 =========
 
+2.2.1
+-----
+ - added support for custom attributes in roles
+
 2.2.0
 -----
  - added marker interface to handle unknown or missing principals
