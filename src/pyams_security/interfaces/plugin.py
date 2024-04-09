@@ -200,6 +200,11 @@ class IUsersFolderPlugin(IAuthenticationPlugin, IDirectorySearchPlugin):
 
     contains('pyams_security.interfaces.ILocalUser')
 
+    case_insensitive_login = Bool(title=_("Use case insensitive login"),
+                                  description=_("If enabled, users login will not be case sensitive"),
+                                  required=True,
+                                  default=False)
+
     def check_login(self, login):
         """Check for existence of given login"""
 

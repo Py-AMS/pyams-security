@@ -76,12 +76,31 @@ class UsersFolder(Folder):
     title = FieldProperty(IUsersFolderPlugin['title'])
     enabled = FieldProperty(IUsersFolderPlugin['enabled'])
 
+    case_insensitive_login = FieldProperty(IUsersFolderPlugin['case_insensitive_login'])
+
+    def get(self, key, default=None):
+        if self.case_insensitive_login:
+            key = key.lower()
+        return super().get(key, default)
+
+    def __contains__(self, item):
+        if self.case_insensitive_login:
+            item = item.lower()
+        return super().__contains__(item)
+
+    def __setitem__(self, key, value):
+        if self.case_insensitive_login:
+            key = key.lower()
+        super().__setitem__(key, value)
+
     def authenticate(self, credentials, request):  # pylint: disable=unused-argument
         """Try to authenticate given credentials"""
         if not self.enabled:
             return None
         attrs = credentials.attributes
         login = attrs.get('login')
+        if not login:
+            return None
         principal = self.get(login)
         if principal is not None:
             password = attrs.get('password')

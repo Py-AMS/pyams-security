@@ -350,6 +350,37 @@ A vocabulary is available to select between users folders:
     {'users': <zope.schema.vocabulary.SimpleTerm object at 0x...>}
 
 
+Case insensitive login
+----------------------
+
+By default, local users folder login is case sensitive:
+
+    >>> folder.case_insensitive_login
+    False
+
+    >>> 'user1' in folder
+    True
+    >>> 'User1' in folder
+    False
+    >>> folder.get('User1') is None
+    True
+
+You can switch case sensitive property to False:
+
+    >>> folder.case_insensitive_login = True
+
+    >>> 'user1' in folder
+    True
+    >>> 'User1' in folder
+    True
+    >>> folder.get('User1') is user1
+    True
+
+    >>> folder['User4'] = LocalUser()
+    >>> sorted(folder.keys())
+    ['user1', 'user2@example.com', 'user3@example.com', 'user4']
+
+
 Principals groups
 -----------------
 
