@@ -1,6 +1,10 @@
 Changelog
 =========
 
+2.3.0
+-----
+ - allow case-insensitive local user login
+
 2.2.1
 -----
  - added support for custom attributes in roles
