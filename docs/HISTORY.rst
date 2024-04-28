@@ -1,6 +1,10 @@
 Changelog
 =========
 
+2.3.1
+-----
+ - updated translations
+
 2.3.0
 -----
  - allow case-insensitive local user login
