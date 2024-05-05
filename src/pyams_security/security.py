@@ -35,7 +35,7 @@ from pyams_security.interfaces import GrantedRoleEvent, IContentRoles, \
     IDefaultProtectionPolicy, IProtectedObject, IRoleProtectedObject, ISecurityContext, \
     RevokedRoleEvent
 from pyams_security.interfaces.base import FORBIDDEN_PERMISSION, IPrincipalInfo, IRole, PUBLIC_PERMISSION, ROLE_ID
-from pyams_security.interfaces.names import ADMIN_USER_ID
+from pyams_security.interfaces.names import ADMIN_USER_ID, INTERNAL_USER_ID
 from pyams_security.permission import get_edit_permission
 from pyams_utils.adapter import adapter_config, get_annotation_adapter
 from pyams_utils.factory import factory_config
@@ -205,6 +205,7 @@ class RoleProtectedObject(Persistent, Contained):
             result.append((Deny, Everyone, {FORBIDDEN_PERMISSION}))
         result.extend([
             (Allow, ADMIN_USER_ID, ALL_PERMISSIONS),
+            (Allow, INTERNAL_USER_ID, ALL_PERMISSIONS),
             (Allow, Everyone, {PUBLIC_PERMISSION})
         ])
         # grant access to all roles permissions
