@@ -142,6 +142,27 @@ Security policy is also used when you have to remember a user's session, using c
     >>> headers[0]
     ('Set-Cookie', 'auth_ticket=; Domain=example.com; Max-Age=0; Path=/; expires=Wed, 31-Dec-97 23:59:59 GMT; HttpOnly; SameSite=Lax')
 
+
+Internal service identity
+-------------------------
+
+Some tasks, like scheduler ones, can be run using a specific internal user ID:
+
+    >>> from pyramid.threadlocal import RequestContext, manager
+    >>> from pyams_security.interfaces.names import INTERNAL_USER_ID
+    >>> from pyams_utils.request import check_request
+
+    >>> manager.clear()
+    >>> request = check_request(registry=config.registry, principal_id=INTERNAL_USER_ID)
+    >>> identity = request.identity
+    >>> identity is None
+    False
+    >>> identity['userid'] == INTERNAL_USER_ID
+    True
+    >>> sorted(identity['principals'])
+    ['system.Authenticated', 'system.Everyone', 'system:internal']
+
+
 Authentication plugins are available as external packages, which can be included individually
 into Pyramid's application configuration; some examples are "pyams_auth_http", "pyams_auth_jwt",
 "pyams_auth_oauth" or "pyams_ldap".

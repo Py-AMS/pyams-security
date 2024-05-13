@@ -99,25 +99,28 @@ class PyAMSSecurityPolicy:
         if identity is not None:
             principal_id = identity['userid']
         else:
-            if (hasattr(request, 'principal') and
-                    IPrincipalInfo.providedBy(request.principal) and
-                    (request.principal.id == INTERNAL_USER_ID)):
-                principal_id = request.principal.id
-                identity = {
-                    'userid': principal_id
-                }
+            try:
+                request_principal_id = request.principal.id
+            except AttributeError:
+                pass
             else:
-                for plugin in self.credentials_plugins:
-                    credentials = plugin.extract_credentials(request)
-                    if (credentials is not None) and (sm is not None):
-                        principal_id = sm.authenticate(credentials, request)
-                        if IPrincipalInfo.providedBy(principal_id):
-                            principal_id = principal_id.id
-                        if principal_id is not None:
-                            identity = {
-                                'userid': principal_id
-                            }
-                            break
+                if request_principal_id == INTERNAL_USER_ID:
+                    principal_id = request_principal_id
+                    identity = {
+                        'userid': principal_id
+                    }
+        if not principal_id:
+            for plugin in self.credentials_plugins:
+                credentials = plugin.extract_credentials(request)
+                if (credentials is not None) and (sm is not None):
+                    principal_id = sm.authenticate(credentials, request)
+                    if IPrincipalInfo.providedBy(principal_id):
+                        principal_id = principal_id.id
+                    if principal_id is not None:
+                        identity = {
+                            'userid': principal_id
+                        }
+                        break
         if principal_id:
             principals.add(Authenticated)
             principals.add(principal_id)
