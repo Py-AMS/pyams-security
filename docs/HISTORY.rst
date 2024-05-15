@@ -1,6 +1,10 @@
 Changelog
 =========
 
+2.3.2
+-----
+ - updated internal service identity checker
+
 2.3.1
 -----
  - updated translations
