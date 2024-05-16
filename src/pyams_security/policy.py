@@ -101,7 +101,7 @@ class PyAMSSecurityPolicy:
         else:
             try:
                 request_principal_id = request.principal.id
-            except AttributeError:
+            except (RecursionError, AttributeError):
                 pass
             else:
                 if request_principal_id == INTERNAL_USER_ID:
