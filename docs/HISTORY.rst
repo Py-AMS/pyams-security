@@ -1,6 +1,10 @@
 Changelog
 =========
 
+2.3.3
+-----
+ - added exception handler in identity getter
+
 2.3.2
 -----
  - updated internal service identity checker
