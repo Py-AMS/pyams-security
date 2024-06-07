@@ -1,6 +1,11 @@
 Changelog
 =========
 
+2.3.4
+-----
+ - disable authentication of pre-authenticated credentials as defined by remote user
+   authentication package
+
 2.3.3
 -----
  - added exception handler in identity getter
