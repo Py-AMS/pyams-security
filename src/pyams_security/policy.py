@@ -112,10 +112,13 @@ class PyAMSSecurityPolicy:
         if not principal_id:
             for plugin in self.credentials_plugins:
                 credentials = plugin.extract_credentials(request)
-                if (credentials is not None) and (sm is not None):
-                    principal_id = sm.authenticate(credentials, request)
-                    if IPrincipalInfo.providedBy(principal_id):
-                        principal_id = principal_id.id
+                if credentials is not None:
+                    if credentials.attributes.get('pre_authenticated'):
+                        principal_id = credentials.id
+                    elif sm is not None:
+                        principal_id = sm.authenticate(credentials, request)
+                        if IPrincipalInfo.providedBy(principal_id):
+                            principal_id = principal_id.id
                     if principal_id is not None:
                         identity = {
                             'userid': principal_id
