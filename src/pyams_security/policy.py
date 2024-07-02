@@ -27,9 +27,7 @@ from zope.interface import implementer
 
 from pyams_security.interfaces import IPrincipalsGetter, IRolesGetter, ISecurityManager
 from pyams_security.interfaces.base import IPrincipalInfo
-from pyams_security.interfaces.names import INTERNAL_USER_ID
 from pyams_security.interfaces.plugin import ICredentialsPlugin
-from pyams_utils.adapter import get_adapter_weight
 from pyams_utils.dict import DotDict
 from pyams_utils.registry import get_all_utilities_registered_for, query_utility
 from pyams_utils.wsgi import wsgi_environ_cache
@@ -98,17 +96,6 @@ class PyAMSSecurityPolicy:
         identity = self.cookie_helper.identify(request)
         if identity is not None:
             principal_id = identity['userid']
-        else:
-            try:
-                request_principal_id = request.principal.id
-            except (RecursionError, AttributeError):
-                pass
-            else:
-                if request_principal_id == INTERNAL_USER_ID:
-                    principal_id = request_principal_id
-                    identity = {
-                        'userid': principal_id
-                    }
         if not principal_id:
             for plugin in self.credentials_plugins:
                 credentials = plugin.extract_credentials(request)
