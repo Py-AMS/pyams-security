@@ -35,4 +35,4 @@ class Credentials:
     def __init__(self, prefix, id, **attributes):  # pylint: disable=invalid-name,redefined-builtin
         self.prefix = prefix
         self.id = id  # pylint: disable=invalid-name
-        self.attributes.update(**attributes)
+        self.attributes = attributes
