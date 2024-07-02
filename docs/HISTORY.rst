@@ -1,6 +1,10 @@
 Changelog
 =========
 
+2.4.0
+-----
+ - added internal service credentials plug-in
+
 2.3.4
 -----
  - disable authentication of pre-authenticated credentials as defined by remote user
