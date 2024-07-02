@@ -1,6 +1,10 @@
 Changelog
 =========
 
+2.4.1
+-----
+ - added SonarCloud support
+
 2.4.0
 -----
  - added internal service credentials plug-in
