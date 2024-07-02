@@ -24,14 +24,17 @@ from zope.interface import implementer
 from zope.password.interfaces import IPasswordManager
 from zope.schema.fieldproperty import FieldProperty
 
-from pyams_security.interfaces.names import PRINCIPAL_ID_FORMATTER, UNCHANGED_PASSWORD
-from pyams_security.interfaces.plugin import IAdminAuthenticationPlugin, IDirectoryPlugin
+from pyams_security.credential import Credentials
+from pyams_security.interfaces.names import INTERNAL_USER_ID, PRINCIPAL_ID_FORMATTER, UNCHANGED_PASSWORD
+from pyams_security.interfaces.plugin import IAdminAuthenticationPlugin, ICredentialsPlugin, IDirectoryPlugin
 from pyams_security.principal import PrincipalInfo
 from pyams_utils.factory import factory_config
-from pyams_utils.registry import get_utility
-
+from pyams_utils.registry import get_utility, utility_config
+from pyams_utils.wsgi import wsgi_environ_cache
 
 __docformat__ = 'restructuredtext'
+
+from pyams_security import _
 
 
 @factory_config(IAdminAuthenticationPlugin)
@@ -112,3 +115,24 @@ class AdminAuthenticationPlugin(Persistent, Contained):
             yield PrincipalInfo(id=PRINCIPAL_ID_FORMATTER.format(prefix=self.prefix,
                                                                  login=self.login),
                                 title=self.title)
+
+
+INTERNAL_CREDENTIALS_ENVKEY = "pyams_security.credentials.internal"
+
+
+@utility_config(name='internal-auth',
+                provides=ICredentialsPlugin)
+class InternalUserCredentialsPlugin:
+    """Internal user credentials plug-in"""
+    
+    prefix = 'internal'
+    title = _("Internal request authentication")
+    enabled = True
+    
+    @wsgi_environ_cache(INTERNAL_CREDENTIALS_ENVKEY, store_none=False)
+    def extract_credentials(self, request, **kwargs):  # pylint: disable-unused-argument
+        principal_id = getattr(request, 'principal_id', None)
+        if principal_id == INTERNAL_USER_ID:
+            return Credentials(self.prefix, principal_id,
+                               pre_authenticated=True)
+        return None

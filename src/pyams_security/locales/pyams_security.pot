@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE 1.0\n"
-"POT-Creation-Date: 2024-04-10 10:57+0200\n"
+"POT-Creation-Date: 2024-07-02 09:14+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -513,6 +513,10 @@ msgstr ""
 
 #: ./src/pyams_security/interfaces/notification.py:95
 msgid "Text displayed in email footer"
+msgstr ""
+
+#: ./src/pyams_security/plugin/admin.py:129
+msgid "Internal request authentication"
 msgstr ""
 
 #: ./src/pyams_security/plugin/userfolder.py:216
