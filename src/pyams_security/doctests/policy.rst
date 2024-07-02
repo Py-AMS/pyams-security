@@ -154,6 +154,8 @@ Some tasks, like scheduler ones, can be run using a specific internal user ID:
 
     >>> manager.clear()
     >>> request = check_request(registry=config.registry, principal_id=INTERNAL_USER_ID)
+    >>> manager.push({'registry': config.registry, 'request': request})
+
     >>> identity = request.identity
     >>> identity is None
     False

@@ -26,14 +26,11 @@ from zope.interface import Interface
 
 from pyams_i18n.attr import I18nAttributeAdapter
 from pyams_i18n.interfaces import II18n
-from pyams_security.interfaces import IRoleProtectedObject, \
-    ISecurityManager
+from pyams_security.interfaces import IRoleProtectedObject, ISecurityManager
 from pyams_security.interfaces.notification import INotificationSettings
 from pyams_security.notification import NotificationSettings, security_notification_factory
 from pyams_security.security import RoleProtectedObject
 from pyams_utils.factory import register_factory
-from pyams_utils.registry import set_local_registry
-
 
 __docformat__ = 'restructuredtext'
 

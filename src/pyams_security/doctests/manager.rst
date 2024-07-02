@@ -85,9 +85,9 @@ use them:
 
     >>> request = new_test_request('user1', 'passwd', registry=config.registry)
     >>> list(sm.credentials_plugins_names)
-    []
+    ['internal-auth']
     >>> list(sm.credentials_plugins)
-    []
+    [<pyams_security.plugin.admin.InternalUserCredentialsPlugin object at 0x...>]
     >>> list(sm.authentication_plugins)
     [<...AdminAuthenticationPlugin object at 0x...>, <...AdminAuthenticationPlugin object at 0x...>, <...UsersFolder object at 0x...>]
     >>> list(sm.directory_plugins)
@@ -174,7 +174,7 @@ Deleting plugins
     >>> del sm['__system__']
     >>> del sm['users']
     >>> list(sm.credentials_plugins)
-    []
+    [<pyams_security.plugin.admin.InternalUserCredentialsPlugin object at 0x...>]
     >>> list(sm.authentication_plugins)
     [<...AdminAuthenticationPlugin object at 0x...>]
     >>> list(sm.directory_plugins)
