@@ -249,7 +249,7 @@ user:
 
 Notification settings also allows to o set a custom notification message; please note that you can
 also change password manager (plain text storage can be required, for example, if you have to get
-access to a user passord, but it's a huge security issue if your database is compromized!!!):
+access to a user password, but it's a huge security issue if your database is compromised!!!):
 
     >>> settings.registration_template = {'en': '<p>This is a custom registration message.</p>'}
     >>> user3 = LocalUser()
@@ -576,6 +576,41 @@ principals will be stored:
 
     >>> info.password = info.confirmed_password = 'ABC1234ert_'
     >>> IUserRegistrationInfo.validateInvariants(info)
+
+
+Password reset
+--------------
+
+A local user can ask for a password reset; a password reset request will generate a new email with a reset link:
+
+    >>> user3.reset_password(user3.password_hash, 'newPassword')
+    Traceback (most recent call last):
+    ...
+    zope.interface.exceptions.Invalid: Invalid reset request!
+
+    >>> user3.generate_reset_hash(notify=False)
+    >>> user3.password_hash is None
+    False
+    >>> user3.password_hash_validity is None
+    False
+
+    >>> user3.activated
+    False
+
+    >>> user3.reset_password('bad_hash', 'newPassword')
+    Traceback (most recent call last):
+    ...
+    zope.interface.exceptions.Invalid: Can't reset password with given params!
+
+    >>> user3.reset_password(user3.password_hash, 'newPassword')
+    >>> user3.password_hash is None
+    True
+    >>> user3.password_hash_validity is None
+    True
+    >>> user3.activated
+    True
+    >>> user3.activation_date is None
+    False
 
 
 Tests cleanup:

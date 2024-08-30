@@ -400,6 +400,9 @@ class LocalUser(Persistent, Contained):
         self.password = password
         self.password_hash = None
         self.password_hash_validity = None
+        if not self.activated:
+            self.activation_date = datetime.now(timezone.utc)
+            self.activated = True
 
     def to_dict(self):
         """Get main user properties as mapping"""
