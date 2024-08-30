@@ -1,6 +1,10 @@
 Changelog
 =========
 
+2.4.3
+-----
+ - rollback on setuptools package upgrade
+
 2.4.2
 -----
  - activate user profile on password reset
