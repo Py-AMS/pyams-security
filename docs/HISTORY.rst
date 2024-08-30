@@ -1,6 +1,11 @@
 Changelog
 =========
 
+2.4.2
+-----
+ - activate user profile on password reset
+ - replaced "datetime.utcnow()" with "datetime.now(timezone.utc)"
+
 2.4.1
 -----
  - added SonarCloud support
