@@ -21,7 +21,7 @@ import hmac
 import logging
 import random
 import sys
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from os import urandom
 
 from persistent import Persistent
@@ -45,14 +45,13 @@ from pyams_security.interfaces.names import PRINCIPAL_ID_FORMATTER, UNCHANGED_PA
     USERS_FOLDERS_VOCABULARY_NAME
 from pyams_security.interfaces.notification import INotificationSettings
 from pyams_security.interfaces.plugin import ILocalUser, IUsersFolderPlugin, LOCKED_ACCOUNT_PASSWORD, SALT_SIZE
-from pyams_security.principal import PrincipalInfo
 from pyams_security.interfaces.profile import IUserRegistrationViews
+from pyams_security.principal import PrincipalInfo
 from pyams_utils.adapter import ContextAdapter, adapter_config
 from pyams_utils.factory import factory_config
 from pyams_utils.html import html_to_text
 from pyams_utils.registry import get_pyramid_registry, get_utility, query_utility
 from pyams_utils.request import check_request
-from pyams_utils.timezone import tztime
 from pyams_utils.traversing import get_parent
 from pyams_utils.vocabulary import vocabulary_config
 
@@ -376,7 +375,7 @@ class LocalUser(Persistent, Contained):
                 raise Invalid(_("Can't activate profile with given params!"))
             self.password = password
         self.wait_confirmation = False
-        self.activation_date = datetime.utcnow()
+        self.activation_date = datetime.now(timezone.utc)
         self.activated = True
 
     def generate_reset_hash(self, notify=True, request=None):
@@ -384,7 +383,7 @@ class LocalUser(Persistent, Contained):
         secret = hmac.new(self.login.encode(), (self.activation_secret or '').encode(),
                           digestmod=hashlib.sha512)
         self.password_hash = base64.b32encode(secret.digest()).decode()
-        self.password_hash_validity = tztime(datetime.utcnow())
+        self.password_hash_validity = datetime.now(timezone.utc)
         if notify:
             notify_password_reset(self, request)
 
@@ -395,7 +394,7 @@ class LocalUser(Persistent, Contained):
         if hash != self.password_hash:
             raise Invalid(_("Can't reset password with given params!"))
         validity_expiration = self.password_hash_validity + timedelta(days=7)
-        if tztime(datetime.utcnow()) > validity_expiration:
+        if datetime.now(timezone.utc) > validity_expiration:
             raise Invalid(_("Your password reset hash is no longer valid!"))
         self.password = password
         self.password_hash = None
