@@ -1,6 +1,10 @@
 Changelog
 =========
 
+2.4.4
+-----
+ - updated user profile confirmation delay management
+
 2.4.3
 -----
  - rollback on setuptools package upgrade
