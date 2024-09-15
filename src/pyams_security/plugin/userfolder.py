@@ -263,11 +263,13 @@ def notify_user_activation(user, request=None):
         views = registry.getMultiAdapter((request.root, request), IUserRegistrationViews)
         send_message(_("Please confirm registration"), 'templates/register-body.pt', user, request,
                      message=message_text,
-                     confirm_url=views.register_confirm_view)
+                     confirm_url=views.register_confirm_view,
+                     confirm_delay=views.register_confirm_delay)
     else:
         send_message(_("Please confirm registration"), 'templates/register-body.pt', user, request,
                      message=message_text,
-                     confirm_url=None)
+                     confirm_url=None,
+                     confirm_delay=30)
 
 
 def notify_password_reset(user, request=None):
@@ -359,7 +361,7 @@ class LocalUser(Persistent, Contained):
     def check_activation(self, hash, login, password):  # pylint: disable=redefined-builtin
         """Check is given hash is matching stored one, and activate user"""
         if self.self_registered:
-            # If principal was registered by it's own, we check activation hash
+            # If principal was registered by its own, we check activation hash
             # with given login and password
             manager = get_utility(IPasswordManager, name=self.password_manager)
             password = manager.encodePassword(password, salt=self._password_salt)

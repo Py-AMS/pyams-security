@@ -16,7 +16,7 @@
            href="${href}">${href}</a>
     </p>
     <p i18n:translate="">If you don't want to confirm this registration, please just ignore this message and your registration information
-                         will be deleted within 30 days.</p>
+                         will be deleted within <tal:var content="confirm_delay" i18n:name="delay" /> days.</p>
     <p i18n:translate="">Thank you for using our services.</p>
     <div>${structure:tales:html(settings.signature)}</div>
 </body>

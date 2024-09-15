@@ -43,7 +43,9 @@ class IUserRegistrationViews(Interface):
     register_view = Attribute("Register view URL")
     register_ok_view = Attribute("Register OK view URL")
     register_confirm_view = Attribute("Registration confirmation view URL")
+    register_confirm_delay = Attribute("Registration confirmation delay")
     register_final_view = Attribute("Registration final view")
+    
     password_reset_view = Attribute("Password reset view")
     password_reset_final_view = Attribute("Password reset final view")
     password_change_view = Attribute("Password change view")
