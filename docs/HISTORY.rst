@@ -1,6 +1,10 @@
 Changelog
 =========
 
+2.4.5
+-----
+ - removed duplicated information in user profile registration message
+
 2.4.4
 -----
  - updated user profile confirmation delay management
