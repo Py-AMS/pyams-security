@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE 1.0\n"
-"POT-Creation-Date: 2024-09-11 12:26+0200\n"
+"POT-Creation-Date: 2024-09-18 18:42+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -569,7 +569,6 @@ msgid ""
 msgstr ""
 
 #: ./src/pyams_security/plugin/templates/register-info.pt:7
-#: ./src/pyams_security/plugin/templates/register-body.pt:12
 msgid "The login that was given to your account is: ${login}."
 msgstr ""
 
@@ -594,7 +593,7 @@ msgid ""
 msgstr ""
 
 #: ./src/pyams_security/plugin/templates/password-reset.pt:22
-#: ./src/pyams_security/plugin/templates/register-body.pt:20
+#: ./src/pyams_security/plugin/templates/register-body.pt:19
 msgid "Thank you for using our services."
 msgstr ""
 
@@ -608,13 +607,13 @@ msgstr ""
 msgid "${header} Registration notice"
 msgstr ""
 
-#: ./src/pyams_security/plugin/templates/register-body.pt:13
+#: ./src/pyams_security/plugin/templates/register-body.pt:12
 msgid ""
 "To confirm your registration, please click on the following link, re-enter "
 "your login and set a new password:"
 msgstr ""
 
-#: ./src/pyams_security/plugin/templates/register-body.pt:18
+#: ./src/pyams_security/plugin/templates/register-body.pt:17
 msgid ""
 "If you don't want to confirm this registration, please just ignore this "
 "message and your registration information will be deleted within ${delay} "

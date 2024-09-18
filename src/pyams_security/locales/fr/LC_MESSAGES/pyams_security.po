@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PyAMS_security 1.0\n"
-"POT-Creation-Date: 2024-09-11 12:26+0200\n"
+"POT-Creation-Date: 2024-09-18 18:42+0200\n"
 "PO-Revision-Date: 2019-12-21 22:19+0100\n"
 "Last-Translator: Thierry Florac <tflorac@ulthar.net>\n"
 "Language-Team: French\n"
@@ -643,7 +643,6 @@ msgstr ""
 "messagerie, que vous devez confirmer avant de pouvoir utiliser ce service."
 
 #: src/pyams_security/plugin/templates/register-info.pt:7
-#: src/pyams_security/plugin/templates/register-body.pt:12
 msgid "The login that was given to your account is: ${login}."
 msgstr ""
 "L'identifiant de connexion qui a été fourni pour votre compte est : ${login}."
@@ -677,7 +676,7 @@ msgstr ""
 "réinitialisation de votre mot de passe."
 
 #: src/pyams_security/plugin/templates/password-reset.pt:22
-#: src/pyams_security/plugin/templates/register-body.pt:20
+#: src/pyams_security/plugin/templates/register-body.pt:19
 msgid "Thank you for using our services."
 msgstr "Merci d'utiliser nos services."
 
@@ -693,7 +692,7 @@ msgstr ""
 msgid "${header} Registration notice"
 msgstr "${header} Inscription effectuée"
 
-#: src/pyams_security/plugin/templates/register-body.pt:13
+#: src/pyams_security/plugin/templates/register-body.pt:12
 msgid ""
 "To confirm your registration, please click on the following link, re-enter "
 "your login and set a new password:"
@@ -701,7 +700,7 @@ msgstr ""
 "Pour confirmer cette inscription, veuillez cliquer sur le lien ci-dessous, "
 "indiquer votre identifiant de connexion et fournir un nouveau mot de passe."
 
-#: src/pyams_security/plugin/templates/register-body.pt:18
+#: src/pyams_security/plugin/templates/register-body.pt:17
 msgid ""
 "If you don't want to confirm this registration, please just ignore this "
 "message and your registration information will be deleted within ${delay} "
