@@ -17,13 +17,15 @@ This module provides principal related classes.
 
 from zope.annotation.interfaces import IAnnotations
 from zope.interface import implementer
+from zope.location.interfaces import ISublocations
 from zope.principalannotation.interfaces import IPrincipalAnnotationUtility
 from zope.schema.fieldproperty import FieldProperty
 
 from pyams_security.interfaces.base import IMissingPrincipalInfo, IPrincipalInfo, IUnavailablePrincipalInfo, \
     IUnknownPrincipalInfo
 from pyams_security.interfaces.names import UNKNOWN_PRINCIPAL_ID
-from pyams_utils.adapter import adapter_config
+from pyams_site.interfaces import ISiteRoot
+from pyams_utils.adapter import ContextAdapter, adapter_config
 from pyams_utils.registry import query_utility
 
 
@@ -98,3 +100,17 @@ def get_principal_annotations(principal):
 def unavailable_principal_annotations(principal):
     """Unavailable principal annotations adapter"""
     return None
+
+
+@adapter_config(name='principal.annotations',
+                required=ISiteRoot,
+                provides=ISublocations)
+class PrincipalAnnotationsSublocation(ContextAdapter):
+    """Principal annotations utility sub-location adapter"""
+
+    def sublocations(self):  # pylint: disable=no-self-use
+        """Principal annotations utility sublocations"""
+        utility = query_utility(IPrincipalAnnotationUtility)
+        if utility is not None:
+            for annotation in utility.annotations.values():
+                yield from annotation.data.values()
