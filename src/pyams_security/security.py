@@ -21,7 +21,7 @@ views objects.
 import logging
 
 from persistent import Persistent
-from persistent.dict import PersistentDict
+from persistent.mapping import PersistentMapping
 from pyramid.authorization import ALL_PERMISSIONS, Allow, Authenticated, DENY_ALL, Deny, Everyone
 from pyramid.decorator import reify
 from pyramid.location import lineage
@@ -60,8 +60,8 @@ class RoleProtectedObject(Persistent, Contained):
     inherit_parent_roles = FieldProperty(IRoleProtectedObject['inherit_parent_roles'])
 
     def __init__(self):
-        self._principals_by_role = PersistentDict()
-        self._roles_by_principal = PersistentDict()
+        self._principals_by_role = PersistentMapping()
+        self._roles_by_principal = PersistentMapping()
 
     def get_everyone_denied(self):
         """Get permissions denied to everyone"""
