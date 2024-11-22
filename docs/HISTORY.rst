@@ -1,6 +1,11 @@
 Changelog
 =========
 
+2.5.0
+-----
+ - added principal annotations utility sublocations adapter
+ - replaced deprecated PersistentDict class with PersistentMapping
+
 2.4.5
 -----
  - removed duplicated information in user profile registration message
