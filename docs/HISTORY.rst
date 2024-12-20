@@ -1,6 +1,11 @@
 Changelog
 =========
 
+2.6.0
+-----
+ - added permissions and associated roles to handle internal and public API access
+ - added support for Python 3.12
+
 2.5.0
 -----
  - added principal annotations utility sublocations adapter
