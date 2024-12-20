@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PyAMS_security 1.0\n"
-"POT-Creation-Date: 2024-09-18 18:42+0200\n"
+"POT-Creation-Date: 2024-12-19 18:15+0100\n"
 "PO-Revision-Date: 2019-12-21 22:19+0100\n"
 "Last-Translator: Thierry Florac <tflorac@ulthar.net>\n"
 "Language-Team: French\n"
@@ -16,169 +16,64 @@ msgstr ""
 "Generated-By: Lingua 3.8\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
-#: src/pyams_security/include.py:72
-msgid "View public contents"
-msgstr "Voir les contenus publics"
-
-#: src/pyams_security/include.py:76
-msgid "View protected contents"
-msgstr "Voir les contenus protégés"
-
-#: src/pyams_security/include.py:80
-msgid "Manage contents properties"
-msgstr "Gérer les contenus"
-
-#: src/pyams_security/include.py:84
-msgid "View management screens"
-msgstr "Accéder à l'interface d'administration"
-
-#: src/pyams_security/include.py:88
-msgid "Manage system properties"
-msgstr "Gérer le système"
-
-#: src/pyams_security/include.py:92
-msgid "Manage security"
-msgstr "Gérer la sécurité"
-
-#: src/pyams_security/include.py:96
-msgid "Manage roles"
-msgstr "Gérer les rôles"
-
-#: src/pyams_security/include.py:100
-msgid "Use internal API"
-msgstr "Utiliser les API internes"
-
-#: src/pyams_security/include.py:106
-msgid "System manager (role)"
-msgstr "Administrateur (rôle)"
-
-#: src/pyams_security/include.py:119
-msgid "System viewer (role)"
-msgstr "Invité (rôle)"
-
 #. pylint: disable=invalid-name
-#: src/pyams_security/principal.py:60
+#: src/pyams_security/principal.py:62
 msgid "< unknown principal >"
 msgstr "< utilisateur inconnu >"
 
-#: src/pyams_security/interfaces/notification.py:34
-msgid "Enable notifications?"
-msgstr "Activer les notifications ?"
+#: src/pyams_security/include.py:73
+msgid "View public contents"
+msgstr "Voir les contenus publics"
 
-#: src/pyams_security/interfaces/notification.py:35
-msgid "If 'no', mail notifications will be disabled"
-msgstr "Si 'non', les messages de notification ne seront pas activés"
+#: src/pyams_security/include.py:77
+msgid "View protected contents"
+msgstr "Voir les contenus protégés"
 
-#: src/pyams_security/interfaces/notification.py:39
-msgid "Mailer utility"
-msgstr "Serveur de messagerie"
+#: src/pyams_security/include.py:81
+msgid "Manage contents properties"
+msgstr "Gérer les contenus"
 
-#: src/pyams_security/interfaces/notification.py:40
-msgid "Mail delivery utility used to send notifications"
-msgstr "Serveur de messagerie utilisé pour l'envoi des notifications"
+#: src/pyams_security/include.py:85
+msgid "View management screens"
+msgstr "Accéder à l'interface d'administration"
 
-#: src/pyams_security/interfaces/notification.py:48
-msgid "Notifications can't be enabled without mailer utility"
-msgstr ""
-"Les notifications ne peuvent pas être activés sans sélection d'un serveur de "
-"messagerie"
+#: src/pyams_security/include.py:89
+msgid "Manage system properties"
+msgstr "Gérer le système"
 
-#: src/pyams_security/interfaces/notification.py:53
-msgid "Service name"
-msgstr "Nom du service"
+#: src/pyams_security/include.py:93
+msgid "Manage security"
+msgstr "Gérer la sécurité"
 
-#: src/pyams_security/interfaces/notification.py:54
-msgid "Name of service as defined in registration mail subject"
-msgstr "Ce nom sera inscrit dans le sujet des messages de notification"
+#: src/pyams_security/include.py:97
+msgid "Manage roles"
+msgstr "Gérer les rôles"
 
-#: src/pyams_security/interfaces/notification.py:58
-msgid "Service owner"
-msgstr "Propriétaire du service"
+#: src/pyams_security/include.py:101
+msgid "Use internal API"
+msgstr "Utiliser les API internes"
 
-#: src/pyams_security/interfaces/notification.py:59
-msgid ""
-"Name of the entity providing this service, which will be visible in "
-"notifications messages"
-msgstr ""
-"Nom du service ou de l'entité fournissant ce service, qui sera indiqué dans "
-"les messages de notification"
+#: src/pyams_security/include.py:105
+msgid "Use public API"
+msgstr "Utiliser les API publiques"
 
-#: src/pyams_security/interfaces/notification.py:63
-msgid "Sender name"
-msgstr "Nom d'expéditeur"
+#: src/pyams_security/include.py:111
+msgid "System manager (role)"
+msgstr "Administrateur (rôle)"
 
-#: src/pyams_security/interfaces/notification.py:64
-msgid "Visible name of registration mail sender"
-msgstr "Nom de l'expéditeur indiqué dans les messages de notification"
+#: src/pyams_security/include.py:124
+msgid "System viewer (role)"
+msgstr "Invité (rôle)"
 
-#: src/pyams_security/interfaces/notification.py:67
-msgid "Sender email"
-msgstr "Adresse de l'expéditeur"
+#: src/pyams_security/include.py:135
+msgid "Private API user (role)"
+msgstr "Utilisateur d'une API interne (rôle)"
 
-#: src/pyams_security/interfaces/notification.py:68
-msgid "Email address of registration mail sender"
-msgstr "Nom de l'adresse d'expédition des messages de notification"
+#: src/pyams_security/include.py:146
+msgid "Public API user (role)"
+msgstr "Utilisateur d'une API publique (rôle)"
 
-#: src/pyams_security/interfaces/notification.py:71
-msgid "Subject prefix"
-msgstr "Préfixe des sujets"
-
-#: src/pyams_security/interfaces/notification.py:72
-msgid ""
-"This prefix will be inserted into subject prefix of each notification message"
-msgstr "Ce préfixe sera inséré en tête du sujet des messages de notification"
-
-#: src/pyams_security/interfaces/notification.py:77
-msgid "Confirmation template"
-msgstr "Message de confirmation"
-
-#: src/pyams_security/interfaces/notification.py:78
-#, python-format
-msgid ""
-"This template will be used instead of default template to send notification "
-"when a user is registered by a system administrator; you can use some user "
-"properties into the message body, like: {login}, {email}, {firstname}, "
-"{lastname}, {title} or {company_name}; message activation link and footer "
-"are added automatically"
-msgstr ""
-"S'il est renseigné, ce modèle sera utilisé en lieu et place du modèle par "
-"défaut pour l'envoi des notifications lorsqu'un utilisateur est inscrit par "
-"un administrateur ; vous pouvez utiliser certaines propriétés de "
-"l'utilisateur dans le corps du message, en les entourant avec des "
-"accolades : code utilisateur ({login}), adresse de messagerie ({email}), "
-"prénom ({firstname}), nom ({name}), titre ({title}) et société "
-"({company_name}) ; le contenu du lien de confirmation ainsi que le pied du "
-"message seront ajoutés automatiquement"
-
-#: src/pyams_security/interfaces/notification.py:86
-msgid "Registration template"
-msgstr "Message d'enregistrement"
-
-#: src/pyams_security/interfaces/notification.py:87
-#, python-format
-msgid ""
-"This template will be used instead of default template to send notificaiton "
-"when a user is auto-registered; you can use some user properties into the "
-"message body, like: {login}, {email}, {firstname}, {lastname}, {title} or "
-"{company_name}; message activation link and footer are added automatically"
-msgstr ""
-"S'il est renseigné, ce modèle sera utilisé en lieu et place du modèle par "
-"défaut pour l'envoi des notifications lorsqu'un utilisateur s'est auto-"
-"inscrit ; vous pouvez utiliser certaines propriétés de l'utilisateur dans le "
-"corps du message, en les entourant avec des accolades : code utilisateur "
-"({login}), adresse de messagerie ({email}), prénom ({firstname}), nom "
-"({name}), titre ({title}) et société ({company_name}) ; le contenu du lien "
-"de confirmation ainsi que le pied du message seront ajoutés automatiquement"
-
-#: src/pyams_security/interfaces/notification.py:94
-msgid "Email signature"
-msgstr "Signature"
-
-#: src/pyams_security/interfaces/notification.py:95
-msgid "Text displayed in email footer"
-msgstr "Ce texte sera affiché dans le pied des messages de notification"
-
-#: src/pyams_security/interfaces/names.py:35
+#: src/pyams_security/interfaces/names.py:60
 msgid "User login"
 msgstr "Code utilisateur"
 
@@ -448,29 +343,6 @@ msgstr "Origines autorisées"
 msgid "List of allowed origins URLs using CORS requests"
 msgstr "Liste des URLs d'origine autorisées pour les requêtes CORS"
 
-#: src/pyams_security/interfaces/site.py:31
-msgid "Site managers"
-msgstr "Administrateurs"
-
-#: src/pyams_security/interfaces/site.py:32
-msgid ""
-"These principals are allowed to manage the whole application environment"
-msgstr ""
-"Les détenteurs de ce rôle sont habilités à gérer tous les paramètres de "
-"l'application"
-
-#: src/pyams_security/interfaces/site.py:37
-msgid "Site viewers"
-msgstr "Invités"
-
-#: src/pyams_security/interfaces/site.py:38
-msgid ""
-"These principals are allowed to view some application settings, without "
-"update"
-msgstr ""
-"Les détenteurs de ce rôle peuvent accéder à certains écrans de l'interface "
-"d'administration, mais sans droit de mise à jour"
-
 #: src/pyams_security/interfaces/profile.py:34
 msgid "Profile's avatar"
 msgstr "Image du profil"
@@ -585,6 +457,168 @@ msgstr "Héritage des rôles ?"
 msgid "Get roles granted on parent levels"
 msgstr "Hériter des rôles affectés aux niveaux parents"
 
+#: src/pyams_security/interfaces/site.py:31
+msgid "Internal API"
+msgstr "API internes"
+
+#: src/pyams_security/interfaces/site.py:32
+msgid "These principals are allowed to access internal API"
+msgstr ""
+"Les détenteurs de ce rôle sont habilités à accéder aux API internes"
+
+#: src/pyams_security/interfaces/site.py:37
+msgid "Public API"
+msgstr "API publiques"
+
+#: src/pyams_security/interfaces/site.py:38
+msgid "These principals are allowed to access public API"
+msgstr ""
+"Les détenteurs de ce rôle sont habilités à accéder aux API publiques"
+
+#: src/pyams_security/interfaces/site.py:43
+msgid "Site managers"
+msgstr "Administrateurs"
+
+#: src/pyams_security/interfaces/site.py:44
+msgid ""
+"These principals are allowed to manage the whole application environment"
+msgstr ""
+"Les détenteurs de ce rôle sont habilités à gérer tous les paramètres de "
+"l'application"
+
+#: src/pyams_security/interfaces/site.py:49
+msgid "Site viewers"
+msgstr "Invités"
+
+#: src/pyams_security/interfaces/site.py:50
+msgid ""
+"These principals are allowed to view some application settings, without "
+"update"
+msgstr ""
+"Les détenteurs de ce rôle peuvent accéder à certains écrans de l'interface "
+"d'administration, mais sans droit de mise à jour"
+
+#: src/pyams_security/interfaces/notification.py:34
+msgid "Enable notifications?"
+msgstr "Activer les notifications ?"
+
+#: src/pyams_security/interfaces/notification.py:35
+msgid "If 'no', mail notifications will be disabled"
+msgstr "Si 'non', les messages de notification ne seront pas activés"
+
+#: src/pyams_security/interfaces/notification.py:39
+msgid "Mailer utility"
+msgstr "Serveur de messagerie"
+
+#: src/pyams_security/interfaces/notification.py:40
+msgid "Mail delivery utility used to send notifications"
+msgstr "Serveur de messagerie utilisé pour l'envoi des notifications"
+
+#: src/pyams_security/interfaces/notification.py:48
+msgid "Notifications can't be enabled without mailer utility"
+msgstr ""
+"Les notifications ne peuvent pas être activés sans sélection d'un serveur de "
+"messagerie"
+
+#: src/pyams_security/interfaces/notification.py:53
+msgid "Service name"
+msgstr "Nom du service"
+
+#: src/pyams_security/interfaces/notification.py:54
+msgid "Name of service as defined in registration mail subject"
+msgstr "Ce nom sera inscrit dans le sujet des messages de notification"
+
+#: src/pyams_security/interfaces/notification.py:58
+msgid "Service owner"
+msgstr "Propriétaire du service"
+
+#: src/pyams_security/interfaces/notification.py:59
+msgid ""
+"Name of the entity providing this service, which will be visible in "
+"notifications messages"
+msgstr ""
+"Nom du service ou de l'entité fournissant ce service, qui sera indiqué dans "
+"les messages de notification"
+
+#: src/pyams_security/interfaces/notification.py:63
+msgid "Sender name"
+msgstr "Nom d'expéditeur"
+
+#: src/pyams_security/interfaces/notification.py:64
+msgid "Visible name of registration mail sender"
+msgstr "Nom de l'expéditeur indiqué dans les messages de notification"
+
+#: src/pyams_security/interfaces/notification.py:67
+msgid "Sender email"
+msgstr "Adresse de l'expéditeur"
+
+#: src/pyams_security/interfaces/notification.py:68
+msgid "Email address of registration mail sender"
+msgstr "Nom de l'adresse d'expédition des messages de notification"
+
+#: src/pyams_security/interfaces/notification.py:71
+msgid "Subject prefix"
+msgstr "Préfixe des sujets"
+
+#: src/pyams_security/interfaces/notification.py:72
+msgid ""
+"This prefix will be inserted into subject prefix of each notification message"
+msgstr "Ce préfixe sera inséré en tête du sujet des messages de notification"
+
+#: src/pyams_security/interfaces/notification.py:77
+msgid "Confirmation template"
+msgstr "Message de confirmation"
+
+#: src/pyams_security/interfaces/notification.py:78
+#, python-format
+msgid ""
+"This template will be used instead of default template to send notification "
+"when a user is registered by a system administrator; you can use some user "
+"properties into the message body, like: {login}, {email}, {firstname}, "
+"{lastname}, {title} or {company_name}; message activation link and footer "
+"are added automatically"
+msgstr ""
+"S'il est renseigné, ce modèle sera utilisé en lieu et place du modèle par "
+"défaut pour l'envoi des notifications lorsqu'un utilisateur est inscrit par "
+"un administrateur ; vous pouvez utiliser certaines propriétés de "
+"l'utilisateur dans le corps du message, en les entourant avec des "
+"accolades : code utilisateur ({login}), adresse de messagerie ({email}), "
+"prénom ({firstname}), nom ({name}), titre ({title}) et société "
+"({company_name}) ; le contenu du lien de confirmation ainsi que le pied du "
+"message seront ajoutés automatiquement"
+
+#: src/pyams_security/interfaces/notification.py:86
+msgid "Registration template"
+msgstr "Message d'enregistrement"
+
+#: src/pyams_security/interfaces/notification.py:87
+#, python-format
+msgid ""
+"This template will be used instead of default template to send notificaiton "
+"when a user is auto-registered; you can use some user properties into the "
+"message body, like: {login}, {email}, {firstname}, {lastname}, {title} or "
+"{company_name}; message activation link and footer are added automatically"
+msgstr ""
+"S'il est renseigné, ce modèle sera utilisé en lieu et place du modèle par "
+"défaut pour l'envoi des notifications lorsqu'un utilisateur s'est auto-"
+"inscrit ; vous pouvez utiliser certaines propriétés de l'utilisateur dans le "
+"corps du message, en les entourant avec des accolades : code utilisateur "
+"({login}), adresse de messagerie ({email}), prénom ({firstname}), nom "
+"({name}), titre ({title}) et société ({company_name}) ; le contenu du lien "
+"de confirmation ainsi que le pied du message seront ajoutés automatiquement"
+
+#: src/pyams_security/interfaces/notification.py:94
+msgid "Email signature"
+msgstr "Signature"
+
+#: src/pyams_security/interfaces/notification.py:95
+msgid "Text displayed in email footer"
+msgstr "Ce texte sera affiché dans le pied des messages de notification"
+
+#: src/pyams_security/plugin/admin.py:129
+msgid "Internal request authentication"
+msgstr "Authentification des services internes"
+
 #: src/pyams_security/plugin/userfolder.py:215
 #, python-format
 msgid "{prefix}{subject}"
@@ -618,38 +652,21 @@ msgstr ""
 msgid "Your password reset hash is no longer valid!"
 msgstr "Votre lien de réinitialisation du mot de passe n'est plus valide !"
 
-#: src/pyams_security/plugin/admin.py:129
-msgid "Internal request authentication"
-msgstr "Authentification des services internes"
-
-#: src/pyams_security/plugin/templates/register-info.pt:2
-#: src/pyams_security/plugin/templates/password-reset.pt:11
-#: src/pyams_security/plugin/templates/register-message.pt:2
-msgid "Hello,"
-msgstr "Bonjour,"
-
-#: src/pyams_security/plugin/templates/register-info.pt:3
-#: src/pyams_security/plugin/templates/password-reset.pt:12
-#: src/pyams_security/plugin/templates/register-message.pt:3
-msgid "${service_name} is a service provided by ${service_owner}."
-msgstr "${service_name} est un service fourni par ${service_owner}"
-
-#: src/pyams_security/plugin/templates/register-info.pt:5
-msgid ""
-"A new account has been created for your email address, that you may confirm "
-"before being able to use the service."
-msgstr ""
-"Un nouveau compte utilisateur vient d'être créé pour votre adresse de "
-"messagerie, que vous devez confirmer avant de pouvoir utiliser ce service."
-
-#: src/pyams_security/plugin/templates/register-info.pt:7
-msgid "The login that was given to your account is: ${login}."
-msgstr ""
-"L'identifiant de connexion qui a été fourni pour votre compte est : ${login}."
-
 #: src/pyams_security/plugin/templates/password-reset.pt:7
 msgid "${header} Password reset"
 msgstr "${header} Réinitialisation de mot de passe"
+
+#: src/pyams_security/plugin/templates/password-reset.pt:11
+#: src/pyams_security/plugin/templates/register-message.pt:2
+#: src/pyams_security/plugin/templates/register-info.pt:2
+msgid "Hello,"
+msgstr "Bonjour,"
+
+#: src/pyams_security/plugin/templates/password-reset.pt:12
+#: src/pyams_security/plugin/templates/register-message.pt:3
+#: src/pyams_security/plugin/templates/register-info.pt:3
+msgid "${service_name} is a service provided by ${service_owner}."
+msgstr "${service_name} est un service fourni par ${service_owner}"
 
 #: src/pyams_security/plugin/templates/password-reset.pt:14
 msgid "A password reset has been requested for your account: ${login}."
@@ -680,14 +697,6 @@ msgstr ""
 msgid "Thank you for using our services."
 msgstr "Merci d'utiliser nos services."
 
-#: src/pyams_security/plugin/templates/register-message.pt:5
-msgid ""
-"You have registered a new account that you may confirm before being able to "
-"use the service."
-msgstr ""
-"Vous avez enregistré un nouveau compte que vous devez confirmer avant de "
-"pouvoir utiliser ce service."
-
 #: src/pyams_security/plugin/templates/register-body.pt:7
 msgid "${header} Registration notice"
 msgstr "${header} Inscription effectuée"
@@ -709,6 +718,27 @@ msgstr ""
 "Si vous ne souhaitez pas confirmer cette inscription, ou si celle-ci a été "
 "faite sans votre consentement, il vous suffit d'ignorer ce message et votre "
 "inscription sera supprimée automatiquement dans un délai de ${delay} jours."
+
+#: src/pyams_security/plugin/templates/register-message.pt:5
+msgid ""
+"You have registered a new account that you may confirm before being able to "
+"use the service."
+msgstr ""
+"Vous avez enregistré un nouveau compte que vous devez confirmer avant de "
+"pouvoir utiliser ce service."
+
+#: src/pyams_security/plugin/templates/register-info.pt:5
+msgid ""
+"A new account has been created for your email address, that you may confirm "
+"before being able to use the service."
+msgstr ""
+"Un nouveau compte utilisateur vient d'être créé pour votre adresse de "
+"messagerie, que vous devez confirmer avant de pouvoir utiliser ce service."
+
+#: src/pyams_security/plugin/templates/register-info.pt:7
+msgid "The login that was given to your account is: ${login}."
+msgstr ""
+"L'identifiant de connexion qui a été fourni pour votre compte est : ${login}."
 
 #~ msgid "Enable free registration?"
 #~ msgstr "Autoriser l'inscription publique ?"

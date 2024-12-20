@@ -24,8 +24,9 @@ from zope.password.password import MD5PasswordManager, PlainTextPasswordManager,
 from pyams_security.interfaces import IDefaultProtectionPolicy
 from pyams_security.interfaces.base import MANAGE_PERMISSION, MANAGE_ROLES_PERMISSION, \
     MANAGE_SECURITY_PERMISSION, MANAGE_SYSTEM_PERMISSION, PUBLIC_PERMISSION, \
-    ROLE_ID, USE_INTERNAL_API_PERMISSION, VIEW_PERMISSION, VIEW_SYSTEM_PERMISSION
-from pyams_security.interfaces.names import ADMIN_USER_ID, SYSTEM_ADMIN_ROLE, SYSTEM_VIEWER_ROLE
+    ROLE_ID, USE_INTERNAL_API_PERMISSION, USE_PUBLIC_API_PERMISSION, VIEW_PERMISSION, VIEW_SYSTEM_PERMISSION
+from pyams_security.interfaces.names import ADMIN_USER_ID, INTERNAL_API_ROLE, PUBLIC_API_ROLE, SYSTEM_ADMIN_ROLE, \
+    SYSTEM_VIEWER_ROLE
 from pyams_security.permission import register_permission
 from pyams_security.plugin import PluginSelector
 from pyams_security.role import RoleSelector, register_role, upgrade_role
@@ -99,6 +100,10 @@ def include_package(config):
         'id': USE_INTERNAL_API_PERMISSION,
         'title': _("Use internal API")
     })
+    config.register_permission({
+        'id': USE_PUBLIC_API_PERMISSION,
+        'title': _("Use public API")
+    })
 
     # register standard roles
     config.register_role({
@@ -107,7 +112,7 @@ def include_package(config):
         'permissions': {
             PUBLIC_PERMISSION, VIEW_PERMISSION, MANAGE_PERMISSION,
             MANAGE_SYSTEM_PERMISSION, VIEW_SYSTEM_PERMISSION, MANAGE_SECURITY_PERMISSION,
-            MANAGE_ROLES_PERMISSION
+            MANAGE_ROLES_PERMISSION, USE_INTERNAL_API_PERMISSION, USE_PUBLIC_API_PERMISSION
         },
         'managers': {
             ADMIN_USER_ID,
@@ -119,6 +124,28 @@ def include_package(config):
         'title': _("System viewer (role)"),
         'permissions': {
             PUBLIC_PERMISSION, VIEW_PERMISSION, VIEW_SYSTEM_PERMISSION
+        },
+        'managers': {
+            ADMIN_USER_ID,
+            ROLE_ID.format(SYSTEM_ADMIN_ROLE)
+        }
+    })
+    config.register_role({
+        'id': INTERNAL_API_ROLE,
+        'title': _("Private API user (role)"),
+        'permissions': {
+            PUBLIC_PERMISSION, VIEW_PERMISSION, USE_INTERNAL_API_PERMISSION
+        },
+        'managers': {
+            ADMIN_USER_ID,
+            ROLE_ID.format(SYSTEM_ADMIN_ROLE)
+        }
+    })
+    config.register_role({
+        'id': PUBLIC_API_ROLE,
+        'title': _("Public API user (role)"),
+        'permissions': {
+            PUBLIC_PERMISSION, VIEW_PERMISSION, USE_PUBLIC_API_PERMISSION
         },
         'managers': {
             ADMIN_USER_ID,

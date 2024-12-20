@@ -32,6 +32,8 @@ from pyams_utils.adapter import ContextAdapter, adapter_config
 class SiteRootRoles(ProtectedObjectRoles):
     """Site root roles"""
 
+    internal_api = RolePrincipalsFieldProperty(ISiteRootRoles['internal_api'])
+    public_api = RolePrincipalsFieldProperty(ISiteRootRoles['public_api'])
     managers = RolePrincipalsFieldProperty(ISiteRootRoles['managers'])
     viewers = RolePrincipalsFieldProperty(ISiteRootRoles['viewers'])
 

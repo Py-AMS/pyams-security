@@ -16,7 +16,7 @@ This module defines site root roles interface.
 """
 
 from pyams_security.interfaces import IContentRoles
-from pyams_security.interfaces.names import SYSTEM_ADMIN_ROLE, SYSTEM_VIEWER_ROLE
+from pyams_security.interfaces.names import INTERNAL_API_ROLE, PUBLIC_API_ROLE, SYSTEM_ADMIN_ROLE, SYSTEM_VIEWER_ROLE
 from pyams_security.schema import PrincipalsSetField
 
 
@@ -28,6 +28,18 @@ from pyams_security import _
 class ISiteRootRoles(IContentRoles):
     """Site root roles"""
 
+    internal_api = PrincipalsSetField(title=_("Internal API"),
+                                      description=_("These principals are allowed to access "
+                                                    "internal API"),
+                                      role_id=INTERNAL_API_ROLE,
+                                      required=False)
+    
+    public_api = PrincipalsSetField(title=_("Public API"),
+                                    description=_("These principals are allowed to access "
+                                                  "public API"),
+                                    role_id=PUBLIC_API_ROLE,
+                                    required=False)
+    
     managers = PrincipalsSetField(title=_("Site managers"),
                                   description=_("These principals are allowed to manage the "
                                                 "whole application environment"),
