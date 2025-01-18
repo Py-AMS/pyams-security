@@ -201,7 +201,7 @@ class RoleProtectedObject(Persistent, Contained):
         # and 'public' permission to everyone
         result = []
         registry = get_pyramid_registry()
-        if asbool(registry.settings.get('pyams.security.deny_forbidden_to_admin', True)):
+        if asbool(registry.settings.get('pyams_security.deny_forbidden_to_admin', True)):
             result.append((Deny, Everyone, {FORBIDDEN_PERMISSION}))
         result.extend([
             (Allow, ADMIN_USER_ID, ALL_PERMISSIONS),
