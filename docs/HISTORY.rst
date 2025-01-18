@@ -1,6 +1,10 @@
 Changelog
 =========
 
+2.6.1
+-----
+ - updated configuration settings keys
+
 2.6.0
 -----
  - added permissions and associated roles to handle internal and public API access

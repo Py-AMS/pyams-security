@@ -463,8 +463,7 @@ msgstr "API internes"
 
 #: src/pyams_security/interfaces/site.py:32
 msgid "These principals are allowed to access internal API"
-msgstr ""
-"Les détenteurs de ce rôle sont habilités à accéder aux API internes"
+msgstr "Les détenteurs de ce rôle sont habilités à accéder aux API internes"
 
 #: src/pyams_security/interfaces/site.py:37
 msgid "Public API"
@@ -472,8 +471,7 @@ msgstr "API publiques"
 
 #: src/pyams_security/interfaces/site.py:38
 msgid "These principals are allowed to access public API"
-msgstr ""
-"Les détenteurs de ce rôle sont habilités à accéder aux API publiques"
+msgstr "Les détenteurs de ce rôle sont habilités à accéder aux API publiques"
 
 #: src/pyams_security/interfaces/site.py:43
 msgid "Site managers"
