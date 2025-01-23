@@ -34,3 +34,9 @@ class PrincipalsRoleIndex(KeywordIndex):
         if protected_object is None:
             return default
         return protected_object.get_principals(self.role_id)
+
+    def index_doc(self, docid, obj):
+        protected_object = IProtectedObject(obj, None)
+        if protected_object is None:
+            return None
+        return super().index_doc(docid, obj)
