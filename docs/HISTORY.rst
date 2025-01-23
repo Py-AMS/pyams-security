@@ -1,6 +1,10 @@
 Changelog
 =========
 
+2.6.3
+-----
+ - packaging issue
+
 2.6.2
 -----
  - exclude unprotected objects from principals role index
