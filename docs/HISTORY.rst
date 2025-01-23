@@ -1,6 +1,10 @@
 Changelog
 =========
 
+2.6.2
+-----
+ - exclude unprotected objects from principals role index
+
 2.6.1
 -----
  - updated configuration settings keys
