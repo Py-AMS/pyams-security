@@ -1,6 +1,11 @@
 Changelog
 =========
 
+2.7.0
+-----
+ - added PyAMS monitoring extension
+ - added checks when getting user registration views adapter
+
 2.6.3
 -----
  - packaging issue
