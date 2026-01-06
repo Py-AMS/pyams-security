@@ -20,6 +20,8 @@ permissions which are automatically granted to principals to whose the role is a
     >>> include_zodbconn(config)
     >>> from cornice import includeme as include_cornice
     >>> include_cornice(config)
+    >>> from cornice_swagger import includeme as include_swagger
+    >>> include_swagger(config)
     >>> from pyams_utils import includeme as include_utils
     >>> include_utils(config)
     >>> from pyams_mail import includeme as include_mail
@@ -38,7 +40,7 @@ permissions which are automatically granted to principals to whose the role is a
     >>> app = upgrade_site(request)
     Upgrading PyAMS timezone to generation 1...
     Upgrading PyAMS catalog to generation 1...
-    Upgrading PyAMS file to generation 3...
+    Upgrading PyAMS file to generation 4...
     Upgrading PyAMS security to generation 2...
 
 
