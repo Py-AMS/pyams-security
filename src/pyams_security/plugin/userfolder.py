@@ -259,8 +259,10 @@ def notify_user_activation(user, request=None):
             'settings': settings
         })
     registry = get_pyramid_registry()
+    views = None
     if hasattr(request, 'root'):
-        views = registry.getMultiAdapter((request.root, request), IUserRegistrationViews)
+        views = registry.queryMultiAdapter((request.root, request), IUserRegistrationViews)
+    if views is not None:
         send_message(_("Please confirm registration"), 'templates/register-body.pt', user, request,
                      message=message_text,
                      confirm_url=views.register_confirm_view,
@@ -277,9 +279,10 @@ def notify_password_reset(user, request=None):
     if request is None:
         request = check_request()
     registry = get_pyramid_registry()
-    views = registry.getMultiAdapter((request.root, request), IUserRegistrationViews)
-    send_message(_("Password reset"), 'templates/password-reset.pt', user, request,
-                 change_url=views.password_change_view)
+    views = registry.queryMultiAdapter((request.root, request), IUserRegistrationViews)
+    if views is not None:
+        send_message(_("Password reset"), 'templates/password-reset.pt', user, request,
+                     change_url=views.password_change_view)
 
 
 @factory_config(ILocalUser)
